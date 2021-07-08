@@ -9,18 +9,28 @@
     <table>
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Location</th>
-        <th>Favorite Language</th>
+        <!-- Iterate through each key in the first entry to get the
+        column name -->
+        {% for key in items[0].keys() %}
+
+        <!-- Create a <th> tag with the key inside of it, this will be
+        our header row -->
+        <th>{{ key }}</th>
+
+        <!-- End of this for loop -->
+        {% endfor %}
     </tr>
     <tbody>
-    {% for item in people %}
+
+    <!-- Now, iterate through every person in the table -->
+    {% for item in items %}
     <tr>
-        <td>{{item['name']}}</td>
-        <td>{{item['age']}}</td>
-        <td>{{item['location']}}</td>
-        <td>{{item['favorite_color']}}</td>
+        <!-- Then iterate through every key in the current dictionary -->
+        {% for key in item.keys() %}
+
+        <!-- Create a <td> element with the value of that key in it -->
+        <td>{{item[key]}}</td>
+        {% endfor %}
     </tr>
     {% endfor %}
     </table>
