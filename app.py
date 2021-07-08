@@ -1,23 +1,24 @@
 # Dependencies
-from flask import Flask, render_template, json
+from flask import Flask, render_template, json, url_for, request
 import os
-import database.db_connector as db
+#import database.db_connector as db
+from markupsafe import escape
 
 # Configuration
 app = Flask(__name__)
-db_connection = db.connect_to_database()
+#db_connection = db.connect_to_database()
 
 # Routes
 @app.route("/")
 def root():
     return render_template("main.j2")
 
-@app.route("/courses")
-def courses():
-    query = "SELECT * FROM courses;"
-    cursor = db.execute_query(db_connection=db_connection, query=query)
-    results = cursor.fetchall()
-    return render_template("courses.j2", courses=results)
+#@app.route("/courses")
+#def courses():
+#    query = "SELECT * FROM courses;"
+#    cursor = db.execute_query(db_connection=db_connection, query=query)
+#    results = cursor.fetchall()
+#    return render_template("courses.j2", courses=results)
 
 # Listener
 if __name__ == "__main__":
