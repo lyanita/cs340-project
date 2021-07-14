@@ -1,5 +1,7 @@
+DROP TABLE campuses;
+
 CREATE TABLE campuses(
-    campus_id INT(10) PRIMARY KEY AUTO_INCREMENT,
+    campus_id INT PRIMARY KEY AUTO_INCREMENT,
     campus_name VARCHAR(255) NOT NULL UNIQUE,
     campus_city TEXT,
     campus_country TEXT,

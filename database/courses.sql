@@ -1,5 +1,7 @@
+DROP TABLE courses;
+
 CREATE TABLE courses(
-    course_id INT(10) PRIMARY KEY AUTO_INCREMENT,
+    course_id INT PRIMARY KEY AUTO_INCREMENT,
     course_name VARCHAR(255) NOT NULL UNIQUE
 );
 
