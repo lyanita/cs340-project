@@ -45,38 +45,19 @@
     </div>
 
     <div class="info">
-        
-    </div>
-
-    <div class="tables">
-        <table>
-            <thead>
-                <tr>
-                    <!-- Iterate through each key in the first entry to get the
-                column name -->
-                    {% for key in items[0].keys() %}
-
-                    <!-- Create a <th> tag with the key inside of it, this will be
-                our header row -->
-                    <th>{{ key }}</th>
-
-                    <!-- End of this for loop -->
-                    {% endfor %}
-                </tr>
-            <tbody>
-
-                <!-- Now, iterate through every person in the table -->
-                {% for item in items %}
-                <tr>
-                    <!-- Then iterate through every key in the current dictionary -->
-                    {% for key in item.keys() %}
-
-                    <!-- Create a <td> element with the value of that key in it -->
-                    <td>{{item[key]}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-        </table>
+        {% for item in items %}
+        <div class="info_column">
+            <h2>{{item.campus_name}}</h2>
+            <img src='/static/img/{{ images[loop.index0] }}' width=90%>
+            <h3>{{item.campus_city}}</h3>
+            <h3>{{item.campus_country}}</h3>
+            {% if item.campus_online == 1 %}
+            <h4>E-Campus</h4>
+            {% else %}
+            <h4>In Person Campus</h4>
+            {% endif %}
+        </div>
+        {% endfor %}
     </div>
 
 </body>
