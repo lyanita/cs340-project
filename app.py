@@ -29,7 +29,8 @@ def campuses():
     query = "SELECT * FROM campuses;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
-    return render_template("campuses.html", items=results)
+    images = os.listdir(os.path.join(app.static_folder, "img"))
+    return render_template("campuses.html", items=results, images=images)
 
 @app.route("/contact")
 def contact():
