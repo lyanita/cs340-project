@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+
+    <div class="links">
+        <ul class="nav">
+            <li class="link"><a href="index">Home</a></li>
+            <li class="link"><a class="active" href="campuses">Campus Enrollment</a></li>
+            <li class="link"><a href="courses">Course Registration</a></li>
+            <li class="link"><a href="contact">Contact Us</a></li>
+        </ul>
+    </div>
+
+    <div class="forms">
+        <form method="post">
+            <fieldset>
+                <legend>Campus Enrollment</legend>
+                <legend>
+                    <label>First Name
+                        <input type="text" name="first_name" id="first_name">
+                    </label>
+                    <label>Last Name
+                        <input type="text" name="last_name" id="last_name">
+                    </label>
+                </legend>
+                <legend>
+                    <label>Choose a campus:</label>
+                    <input type="radio" name="campus" id="campus_corvallis" value="Corvallis">
+                    <label for="campus_corvallis">Corvallis</label>
+                    <input type="radio" name="campus" id="campus_davis" value="Davis">
+                    <label for="campus_davis">Davis</label>
+                    <input type="radio" name="campus" id="campus_washington" value="Washington">
+                    <label for="campus_washington">Washington</label>
+                </legend>
+                <br>
+                <input type="submit" id="campus_post">
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="info">
+        
+    </div>
+
+    <div class="tables">
+        <table>
+            <thead>
+                <tr>
+                    <!-- Iterate through each key in the first entry to get the
+                column name -->
+                    {% for key in items[0].keys() %}
+
+                    <!-- Create a <th> tag with the key inside of it, this will be
+                our header row -->
+                    <th>{{ key }}</th>
+
+                    <!-- End of this for loop -->
+                    {% endfor %}
+                </tr>
+            <tbody>
+
+                <!-- Now, iterate through every person in the table -->
+                {% for item in items %}
+                <tr>
+                    <!-- Then iterate through every key in the current dictionary -->
+                    {% for key in item.keys() %}
+
+                    <!-- Create a <td> element with the value of that key in it -->
+                    <td>{{item[key]}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+
+</body>
+
+</html>

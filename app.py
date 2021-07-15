@@ -11,21 +11,29 @@ db_connection = db.connect_to_database()
 # Routes
 @app.route("/")
 def root():
-    return render_template("main.j2")
+    return render_template("index.html")
+
+@app.route("/index")
+def index():
+    return render_template("index.html")
 
 @app.route("/courses")
 def courses():
     query = "SELECT * FROM courses;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
-    return render_template("main.j2", items=results)
+    return render_template("courses.html", items=results)
 
 @app.route("/campuses")
 def campuses():
     query = "SELECT * FROM campuses;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
-    return render_template("main.j2", items=results)
+    return render_template("campuses.html", items=results)
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
 
 # Listener
 if __name__ == "__main__":

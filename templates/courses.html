@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+
+    <div class="links">
+        <ul class="nav">
+            <li class="link"><a href="index">Home</a></li>
+            <li class="link"><a href="campuses">Campus Enrollment</a></li>
+            <li class="link"><a class="active" href="courses">Course Registration</a></li>
+            <li class="link"><a href="contact">Contact Us</a></li>
+        </ul>
+    </div>
+
+    <div class="tables">
+        <table>
+            <thead>
+                <tr>
+                    <!-- Iterate through each key in the first entry to get the
+                column name -->
+                    {% for key in items[0].keys() %}
+
+                    <!-- Create a <th> tag with the key inside of it, this will be
+                our header row -->
+                    <th>{{ key }}</th>
+
+                    <!-- End of this for loop -->
+                    {% endfor %}
+                </tr>
+            <tbody>
+
+                <!-- Now, iterate through every person in the table -->
+                {% for item in items %}
+                <tr>
+                    <!-- Then iterate through every key in the current dictionary -->
+                    {% for key in item.keys() %}
+
+                    <!-- Create a <td> element with the value of that key in it -->
+                    <td>{{item[key]}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+
+</body>
+
+</html>
