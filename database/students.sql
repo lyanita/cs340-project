@@ -9,10 +9,10 @@ CREATE TABLE students(
 );
 
 INSERT INTO students(student_first_name, student_last_name, campus_id) 
-VALUES
+VALUES 
     ("Amal", "Chamlee", 1),
     ("Clair", "Hansel", 1),
     ("David", "Byer", 2),
     ("Drew", "Kenyon", 3),
     ("John", "Snow", 3)
-);
+;

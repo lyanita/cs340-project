@@ -6,4 +6,8 @@ CREATE TABLE courses(
 );
 
 INSERT INTO courses(course_name)
-VALUES ("Introduction to Databases"), ("Introduction to Computer Science"), ("Software Engineering");
+VALUES 
+    ("Introduction to Databases"), 
+    ("Introduction to Computer Science"), 
+    ("Software Engineering")
+;

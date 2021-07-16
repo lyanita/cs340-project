@@ -9,6 +9,8 @@ CREATE TABLE campuses(
 );
 
 INSERT INTO campuses(campus_name, campus_city, campus_country, campus_online)
-VALUES ("Corvallis", "Corvallis", "United States of America", TRUE), 
-("Davis", "Los Angeles", "United States of America", FALSE), 
-("Washington", "Seattle", "United States of America", TRUE);
+VALUES 
+    ("Corvallis", "Corvallis", "United States of America", TRUE), 
+    ("Davis", "Los Angeles", "United States of America", FALSE), 
+    ("Washington", "Seattle", "United States of America", TRUE)
+;
