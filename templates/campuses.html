@@ -56,6 +56,12 @@
             {% else %}
             <h4>In Person Campus</h4>
             {% endif %}
+            <p>Number of Students: </p>
+            {% if loop.index0 >= count|length %}
+            {{ 0 }}
+            {% else %}
+            {{ count[loop.index0].count }}
+            {% endif %}
         </div>
         {% endfor %}
     </div>

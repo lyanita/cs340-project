@@ -31,6 +31,10 @@ def campuses():
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
     images = os.listdir(os.path.join(app.static_folder, "img"))
+
+    student_query = "SELECT campus_id, COUNT(*) AS count FROM students GROUP BY campus_id ORDER BY campus_id ASC;"
+    student_cursor = db.execute_query(db_connection=db_connection, query=student_query)
+    student_result = student_cursor.fetchall()
     
     if request.method == "POST":
         first_name = request.form['first_name']
@@ -50,7 +54,7 @@ def campuses():
         data = (first_name, last_name, campus_id)
         insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
 
-    return render_template("campuses.html", items=results, images=images)
+    return render_template("campuses.html", items=results, images=images, count=student_result)
 
 @app.route("/contact")
 def contact():
