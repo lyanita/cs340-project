@@ -6,15 +6,103 @@
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
+<!-- The Courses page will list all the courses. When a course name is clicked, 
+it will display all the available section numbers with detailed information such as a current 
+enrollment, a campus, an instructor name etc. There will be a register button for each section. 
+If a student clicks the register button, they can register for the course by entering 
+their first and last name and their student_id.-->
+
 <body>
+
+    <!-- page header placeholder-->
+    <div id="header"></div>
 
     <div class="links">
         <ul class="nav">
-            <li class="link"><a href="index">Home</a></li>
-            <li class="link"><a href="campuses">Campus Enrollment</a></li>
-            <li class="link"><a class="active" href="courses">Course Registration</a></li>
-            <li class="link"><a href="contact">Contact Us</a></li>
+            <li class="link"><a href="index.html">Home</a></li>
+            <li class="link"><a href="campuses.html">Campus Enrollment</a></li>
+            <li class="link"><a class="active" href="courses.html">Course Registration</a></li>
+            <li class="link"><a href="contact.html">Contact Us</a></li>
         </ul>
+    </div>
+
+    <!-- courses table -->
+    <div id="coursesTableContainer">
+        <h3>Courses</h3>
+        <table id="coursesTable">
+            <thead>
+                <tr>
+                    <th>Section ID</th>
+                    <th>Course Name</th>
+                    <th>Instructor</th>
+                    <th>Campus</th>
+                    <th>Max Occupancy</th>
+                    <th>Current Occupancy</th>
+                </tr>
+            </thead>
+            <tbody id="coursesTableBody">
+                <!-- temporary hard coded sample data -->
+                <tr>
+                    <td>0A01</td>
+                    <td>Introduction to Computer Science</td>
+                    <td>Tommy Pickles</td>
+                    <td>Corvallis</td>
+                    <td></td>
+                    <td></td>
+                    <td><button>Register</button></td>
+                </tr>
+                <tr>
+                    <td>0A02</td>
+                    <td>Introduction to Computer Science</td>
+                    <td>Kimi Finster</td>
+                    <td>Davis</td>
+                    <td></td>
+                    <td></td>
+                    <td><button>Register</button></td>
+                </tr>
+                <tr>
+                    <td>0C03</td>
+                    <td>Introduction to Databases</td>
+                    <td>Edwin Deville</td>
+                    <td>Washington</td>
+                    <td></td>
+                    <td></td>
+                    <td><button>Register</button></td>
+                </tr>
+                <tr>
+                    <td>0D11</td>
+                    <td>Software Engineering</td>
+                    <td>Angel Carmin</td>
+                    <td>Washington</td>
+                    <td></td>
+                    <td></td>
+                    <td><button>Register</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- register table (hidden at default) -->
+    <div id="register">
+        <div class="forms">
+            <form method="post">
+                <fieldset id="courseRegisterForm">
+                    <legend>Course Registration</legend>
+                    <legend>
+                        <label>First Name
+                            <input type="text" name="first_name" id="first_name">
+                        </label></br>
+                        <label>Last Name
+                            <input type="text" name="last_name" id="last_name">
+                        </label></br>
+                        <label>Student ID
+                            <input type="text" name="student_id" id="student_id">
+                        </label>
+                    </legend>
+                    <input type="submit" id="course_post">
+                </fieldset>
+            </form>
+        </div>
     </div>
 
     <div class="tables">
@@ -47,6 +135,13 @@
                 {% endfor %}
         </table>
     </div>
+    
+    <!-- page footer placeholder-->
+    <div id="footer"></div>
+
+    <!-- javascript -->
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
 
 </body>
 
