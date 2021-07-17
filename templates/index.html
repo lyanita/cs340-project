@@ -1,21 +1,47 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
+<head>
     <title>AH University</title>
     <link rel="stylesheet" href="../static/css/main.css">
-  </head>
-  
-  <body>
+</head>
+
+<body>
 
     <div class="links">
-      <ul class="nav">
-        <li class="link"><a class="active" href="index">Home</a></li>
-        <li class="link"><a href="campuses">Campus Enrollment</a></li>
-        <li class="link"><a href="courses">Course Registration</a></li>
-        <li class="link"><a href="contact">Contact Us</a></li>
-      </ul>
-    </div>
+        <ul class="nav">
+            <li class="link"><a class="active" href="index.html">Home</a></li>
+            <li class="link"><a href="campuses.html">Campus Enrollment</a></li>
+            <li class="link"><a href="courses.html">Course Registration</a></li>
+            <li class="link"><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </div> 
 
-  </body>
+    <div class="messages">IMAGINE THE POSSIBILITIES</div>
+
+    <!-- picture carousel animation -->
+    <div class="imageContainer">
+
+        <!-- image slides -->
+        <img class="imageSlides" src="../img/1.jpg" alt="campus1">
+        <img class="imageSlides" src="../img/2.jpg" alt="campus2">
+        <img class="imageSlides" src="../img/3.jpg" alt="campus3">
+
+        <!-- side arrows for manual forward and backward scroll -->
+        <img id="leftArrow" class="slideshowArrow" src="../img/white-arrow-left.png" alt="left-arrow-white">
+        <img id="rightArrow" class="slideshowArrow" src="../img/white-arrow-right.png" alt="right-arrow-white">
+
+        <!-- slideshow circles on the bottom of image slides -->
+        <div class="slideshowCircles">
+            <span class="circle"></span>
+            <span class="circle"></span>
+            <span class="circle"></span>
+        </div>
+    </div>
+    <!-- javascript -->
+    <script src="header.js"></script>
+    <script src="nav.js"></script>
+    <script src="slideshow.js"></script>
+</body>
+
 </html>
