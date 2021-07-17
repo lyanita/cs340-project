@@ -269,7 +269,6 @@ td {
 
 #footer a {
   display: block;
-  font-family: Calibri, Candara, Segoe;
   font-size: 17px;
   color: #333;
   text-align: center;
@@ -281,6 +280,7 @@ td {
   opacity: 0.8;
 }
 
+/* index.html */
 #messages {
   position: absolute;
   top: 50%;
@@ -289,6 +289,8 @@ td {
   color: white;
   font-size: 50px;
   font-family: 'Times New Roman', Times, serif;
+  text-shadow: 2px 2px 0 #666;
+  text-align: center;
 }
 
 #map {
@@ -328,4 +330,10 @@ td {
 .float-child-right {
   width: 65%;
   float: left;
+}
+
+.bodyContainer {
+  display: block;
+  margin: auto;
+  width: 70%;
 }
