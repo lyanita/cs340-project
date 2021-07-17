@@ -8,6 +8,10 @@
 
 <body>
 
+    <div class="header-title">
+        <h2>AH UNIVERSITY</h2>
+      </div>
+
     <div class="links">
         <ul class="nav">
             <li class="link"><a href="index">Home</a></li>
@@ -40,6 +44,7 @@
                 </legend>
                 <br>
                 <input type="submit" id="campus_post">
+                <p>{{ message }}</p>
             </fieldset>
         </form>
     </div>
@@ -56,7 +61,7 @@
             {% else %}
             <h4>In Person Campus</h4>
             {% endif %}
-            <p>Number of Students: </p>
+            <p>Current Student Enrollment: </p>
             {% if loop.index0 >= count|length %}
             {{ 0 }}
             {% else %}

@@ -19,7 +19,6 @@ h6 {
   letter-spacing: 0;
   font-weight: normal;
   position: relative;
-  padding: 0 0 10px 0;
   font-weight: normal;
   line-height: normal;
   color: #111111;
@@ -27,27 +26,30 @@ h6 {
 }
 
 h1 {
-  font-size: 24px;
+  font-size: 3vw;
+  color: white;
+  text-align: center;
 }
 
 h2 {
-  font-size: 22px;
+  font-size: 36px;
+  font-weight: bold;
 }
 
 h3 {
-  font-size: 18px;
+  font-size: 24px;
 }
 
 h4 {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 h5 {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 h6 {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 ul,
@@ -67,7 +69,7 @@ p {
 
 .title {
   font-size: 60px;
-  color: red;
+  color: rgb(17, 75, 161);
   font-family: 'Pacifico', sans-serif;
 }
 
@@ -82,7 +84,7 @@ label {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #8B0000;
+  background-color: rgb(17, 75, 161);
 }
 
 .link {
@@ -122,8 +124,31 @@ label {
   clear: both;
 }
 
-#mapid {
-  height: 60vh;
-  margin: 5px auto;
-  text-align: center;
+#map {
+  height: 50vh;
+  width: 30vw;
+  margin: 5px 0px;
+}
+
+.contact {
+  margin: 5px auto 0px;
+  position: relative;
+}
+
+.text-block {
+  position: absolute;
+  background-color: rgba(0,33,69,0.6);
+  display: block;
+  color: white;
+  z-index: 2;
+  padding: 1% 1% 1% 14.5%;
+  bottom: 5%;
+  height: 10%;
+  display: inline;
+}
+
+.container {
+  margin-left: 0;
+  margin-right: 0;
+  width: auto;
 }

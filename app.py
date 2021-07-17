@@ -29,7 +29,8 @@ def courses():
 @app.route("/campuses", methods=["GET", "POST"])
 def campuses():
     error = None
-    query = "SELECT * FROM campuses;"
+    message = ""
+    query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
     images = os.listdir(os.path.join(app.static_folder, "img"))
@@ -56,7 +57,14 @@ def campuses():
         data = (first_name, last_name, campus_id)
         insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
 
-    return render_template("campuses.html", items=results, images=images, count=student_result)
+        register_query = "SELECT MAX(student_id) AS student_id FROM students;"
+        register_cursor = db.execute_query(db_connection=db_connection, query=register_query)
+        register_results = register_cursor.fetchall()
+        print(register_results)
+        student_id = str(register_results[0].get('student_id') + 1)
+        message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
+
+    return render_template("campuses.html", items=results, images=images, count=student_result, message=message)
 
 @app.route("/contact")
 def contact():
