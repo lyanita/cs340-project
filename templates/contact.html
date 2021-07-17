@@ -1,21 +1,58 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <title>AH University</title>
-    <link rel="stylesheet" href="../static/css/main.css">
-  </head>
-  
-  <body>
+<head>
+  <title>AH University</title>
+  <link rel="stylesheet" href="../static/css/main.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+</head>
 
-    <div class="links">
-      <ul class="nav">
-        <li class="link"><a href="index">Home</a></li>
-        <li class="link"><a href="campuses">Campus Enrollment</a></li>
-        <li class="link"><a href="courses">Course Registration</a></li>
-        <li class="link"><a class="active" href="contact">Contact Us</a></li>
-      </ul>
-    </div>
+<body>
 
-  </body>
+  <div class="links">
+    <ul class="nav">
+      <li class="link"><a href="index">Home</a></li>
+      <li class="link"><a href="campuses">Campus Enrollment</a></li>
+      <li class="link"><a href="courses">Course Registration</a></li>
+      <li class="link"><a class="active" href="contact">Contact Us</a></li>
+    </ul>
+  </div>
+
+  <div id="contact">
+
+  </div>
+
+  <div id="mapid">
+  </div>
+
+  <script type="text/javascript">
+    var map = L.map('mapid').setView([42.19, -122.52], 5);
+
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      minZoom: 0,
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 256,
+      //zoomOffset: -1,
+      accessToken: 'mapbox-token'
+    }).addTo(map);
+
+    var markers = {{ markers|safe }};
+
+    for (var i = 0; i < markers.length; i++) {
+      marker = new L.marker([markers[i][1], markers[i][2]])
+        .bindPopup(markers[i][0] + " | " + markers[i][3] + "<br>" + markers[i][4])
+        .addTo(map);
+    }
+  </script>
+
+</body>
+
 </html>

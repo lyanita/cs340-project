@@ -3,6 +3,8 @@ from flask import Flask, render_template, json, url_for, request
 import os
 import database.db_connector as db
 from markupsafe import escape
+import geopy as gp
+import json
 
 # Configuration
 app = Flask(__name__)
@@ -58,7 +60,26 @@ def campuses():
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html")
+    query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
+    cursor = db.execute_query(db_connection=db_connection, query=query)
+    results = cursor.fetchall()
+
+    coordinates_list = []
+    locator = gp.Nominatim(user_agent="Geocoder")
+    for dict in results:
+        campus_city = dict.get("campus_city")
+        campus_name = dict.get("campus_name")
+        location = locator.geocode(campus_city)
+        if location:
+            print(location)
+            lat = location.latitude
+            long = location.longitude
+            email = campus_name.lower() + "@ah.edu"
+            coordinates = [campus_name, lat, long, campus_city, email]
+            print(coordinates)
+            coordinates_list.append(coordinates)
+
+    return render_template("contact.html", items=results, markers=json.dumps(coordinates_list))
 
 # Listener
 if __name__ == "__main__":
