@@ -1,131 +1,135 @@
 html {
-    scroll-behavior: smooth;
-  }
-  
-  body {
-    color: #666666;
-    font-size: 14px;
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.80857;
-    font-weight: normal;
-  }
-  
-  h1,
-  h2,
-  h3 {
-    font-weight: normal;
-    position: relative;
-    padding: 0 0 0 20px;
-  }
-  h4,
-  h5,
-  h6 {
-    letter-spacing: 0;
-    font-weight: normal;
-    position: relative;
-    padding: 0 0 10px 0;
-    font-weight: normal;
-    line-height: normal;
-    color: #111111;
-    margin: 0
-  }
-  
-  h1 {
-    font-size: 24px;
-  }
-  
-  h2 {
-    font-size: 22px;
-  }
-  
-  h3 {
-    font-size: 18px;
-  }
-  
-  h4 {
-    font-size: 16px;
-  }
-  
-  h5 {
-    font-size: 14px;
-  }
-  
-  h6 {
-    font-size: 13px;
-  }
-  
-  ul,
-  li,
-  ol {
-    margin: 3px;
-    padding: 0px;
-    list-style: none;
-  }
-  
-  p {
-    margin: 0px;
-    font-weight: 300;
-    font-size: 15px;
-    line-height: 24px;
-  }
-  
-  .title {
-    font-size: 60px;
-    color: red;
-    font-family: 'Pacifico', sans-serif;
-  }
-  
-  label {
-    font-size: 16px;
-    text-align: center;
-    margin: 0 auto;
-  }
-  
-  .nav {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #8B0000;
-  }
-  
-  .link {
-    float: left;
-    color: #666666
-  }
-  
-  .link a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  .link a:hover:not(.active) {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  
-  .active {
-    background-color: black;
-  }
-  
-  .info_column {
-    box-sizing: border-box;
-    float: left;
-    width: 33%;
-    padding: 5px;
-    margin: 2px;
-    height: 500px;
-    text-align: center;
-    /*background-color: teal;*/
-  }
-  
-  .info:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+  scroll-behavior: smooth;
+}
+
+body {
+  color: #666666;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.80857;
+  font-weight: normal;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  position: relative;
+  padding: 0 0 0 20px;
+}
+
+h4,
+h5,
+h6 {
+  letter-spacing: 0;
+  font-weight: normal;
+  position: relative;
+  padding: 0 0 10px 0;
+  font-weight: normal;
+  line-height: normal;
+  color: #111111;
+  margin: 0
+}
+
+h1 {
+  font-size: 3vw;
+  color: white;
+  text-align: center;
+}
+
+h2 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+h6 {
+  font-size: 14px;
+}
+
+ul,
+li,
+ol {
+  margin: 3px;
+  padding: 0px;
+  list-style: none;
+}
+
+p {
+  margin: 0px;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.title {
+  font-size: 60px;
+  color: red;
+  font-family: 'Pacifico', sans-serif;
+}
+
+label {
+  font-size: 16px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #8B0000;
+}
+
+.link {
+  float: left;
+  color: #666666
+}
+
+.link a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.link a:hover:not(.active) {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.active {
+  background-color: black;
+}
+
+.info_column {
+  box-sizing: border-box;
+  float: left;
+  width: 33%;
+  padding: 5px;
+  margin: 2px;
+  height: 500px;
+  text-align: center;
+  /*background-color: teal;*/
+}
+
+.info:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
 /* image slideshow */
 .imageContainer {
@@ -214,7 +218,9 @@ html {
   display: block;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
   padding: 2px 7px 2px 7px;
 }
@@ -223,7 +229,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   text-align: center;
 }
 
@@ -281,5 +288,44 @@ th, td {
   transform: translate(-50%, -50%);
   color: white;
   font-size: 50px;
-  font-family:'Times New Roman', Times, serif;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+#map {
+  height: 50vh;
+  width: 30vw;
+  margin: 5px 0px;
+}
+
+.contact {
+  margin: 5px auto 0px;
+  position: relative;
+}
+
+.text-block {
+  position: absolute;
+  background-color: rgba(0, 33, 69, 0.6);
+  display: block;
+  color: white;
+  z-index: 2;
+  padding: 1% 1% 1% 14.5%;
+  bottom: 5%;
+  height: 10%;
+  display: inline;
+}
+
+.container {
+  margin-left: 0;
+  margin-right: 0;
+  width: auto;
+}
+
+.float-child-left {
+  width: 35%;
+  float: left;
+}
+
+.float-child-right {
+  width: 65%;
+  float: left;
 }
