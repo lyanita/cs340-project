@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+
+    <!-- page header placeholder-->
+    <div id="header"></div>
+
+    <div class="links">
+        <ul class="nav">
+            <li class="link"><a href="index.html">Home</a></li>
+            <li class="link"><a href="campuses.html">Campus Enrollment</a></li>
+            <li class="link"><a class="active" href="courses.html">Course Registration</a></li>
+            <li class="link"><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </div>
+
+    <div class="bodyContainer">
+        <div id="courseInfo">
+            <h3>Course Information</h3>
+            <!-- course info -->
+            <table id="courseInfoTable">
+                <thead>
+                    <tr>
+                        <th>Section ID</th>
+                        <th>Course Name</th>
+                        <th>Instructor</th>
+                        <th>Campus</th>
+                        <th>Type</th>
+                        <th>Capacity</th>
+                        <th>Available</th>
+                    </tr>
+                </thead>
+                <tbody id="courseInfoTableBody">
+                    <!-- temporary hard coded sample data -->
+                    <tr>
+                        <td>0A01</td>
+                        <td>Introduction to Computer Science</td>
+                        <td>Tommy Pickles</td>
+                        <td>Corvallis</td>
+                        <td>Online</td>
+                        <td></td>
+                        <td></td>
+                </tbody>
+            </table>
+        </div>
+        <!-- register table -->
+        <div id="register">
+            <h3>Registration</h3>
+            <div class="forms" id="courseRegisterForm">
+                <form method="post">
+                    <legend>
+                        <label>First Name
+                            <input type="text" name="first_name" id="first_name">
+                        </label></br>
+                        <label>Last Name
+                            <input type="text" name="last_name" id="last_name">
+                        </label></br>
+                        <label>Student ID
+                            <input type="text" name="student_id" id="student_id">
+                        </label>
+                    </legend>
+                    <input type="submit" id="course_post">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- page footer placeholder-->
+    <div id="footer"></div>
+
+    <!-- javascript -->
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+
+</body>
+
+</html>
