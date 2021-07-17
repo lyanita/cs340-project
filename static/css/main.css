@@ -1,166 +1,285 @@
 html {
-  scroll-behavior: smooth;
-}
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    color: #666666;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.80857;
+    font-weight: normal;
+  }
+  
+  h1,
+  h2,
+  h3 {
+    font-weight: normal;
+    position: relative;
+    padding: 0 0 0 20px;
+  }
+  h4,
+  h5,
+  h6 {
+    letter-spacing: 0;
+    font-weight: normal;
+    position: relative;
+    padding: 0 0 10px 0;
+    font-weight: normal;
+    line-height: normal;
+    color: #111111;
+    margin: 0
+  }
+  
+  h1 {
+    font-size: 24px;
+  }
+  
+  h2 {
+    font-size: 22px;
+  }
+  
+  h3 {
+    font-size: 18px;
+  }
+  
+  h4 {
+    font-size: 16px;
+  }
+  
+  h5 {
+    font-size: 14px;
+  }
+  
+  h6 {
+    font-size: 13px;
+  }
+  
+  ul,
+  li,
+  ol {
+    margin: 3px;
+    padding: 0px;
+    list-style: none;
+  }
+  
+  p {
+    margin: 0px;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 24px;
+  }
+  
+  .title {
+    font-size: 60px;
+    color: red;
+    font-family: 'Pacifico', sans-serif;
+  }
+  
+  label {
+    font-size: 16px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #8B0000;
+  }
+  
+  .link {
+    float: left;
+    color: #666666
+  }
+  
+  .link a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  .link a:hover:not(.active) {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .active {
+    background-color: black;
+  }
+  
+  .info_column {
+    box-sizing: border-box;
+    float: left;
+    width: 33%;
+    padding: 5px;
+    margin: 2px;
+    height: 500px;
+    text-align: center;
+    /*background-color: teal;*/
+  }
+  
+  .info:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 
-body {
-  color: #666666;
-  font-size: 14px;
-  font-family: 'Roboto', sans-serif;
-  line-height: 1.80857;
-  font-weight: normal;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  letter-spacing: 0;
-  font-weight: normal;
+/* image slideshow */
+.imageContainer {
   position: relative;
-  font-weight: normal;
-  line-height: normal;
-  color: #111111;
-  margin: 0
-}
-
-h1 {
-  font-size: 3vw;
-  color: white;
-  text-align: center;
-}
-
-h2 {
-  font-size: 36px;
-  font-weight: bold;
-}
-
-h3 {
-  font-size: 24px;
-}
-
-h4 {
-  font-size: 18px;
-}
-
-h5 {
-  font-size: 16px;
-}
-
-h6 {
-  font-size: 14px;
-  text-align: center;
-}
-
-ul,
-li,
-ol {
-  margin: 3px;
-  padding: 0px;
-  list-style: none;
-}
-
-p {
-  margin: 0px;
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 24px;
-  text-align: center;
-}
-
-.title {
-  font-size: 60px;
-  color: rgb(17, 75, 161);
-  font-family: 'Pacifico', sans-serif;
-}
-
-label {
-  font-size: 16px;
-  text-align: center;
-  margin: 0 auto;
-}
-
-.nav {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
   overflow: hidden;
-  background-color: rgb(17, 75, 161);
+  width: 100%;
+  height: 480px;
 }
 
-.link {
-  float: left;
+.imageSlides {
+  position: absolute;
+  z-index: -1;
+  /* display middle part of the images */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
 }
 
-.link a {
-  display: block;
-  color: white;
+/* visibleImage class from Javascript */
+.visibleImage {
+  opacity: 1;
+}
+
+/* slideshow arrows on the each side of images */
+#leftArrow {
+  width: 20px;
+  height: auto;
+  position: absolute;
+  left: 3%;
+  top: 50%;
+}
+
+#rightArrow {
+  width: 20px;
+  height: auto;
+  position: absolute;
+  right: 3%;
+  top: 50%;
+}
+
+.slideshowArrow {
+  cursor: pointer;
+}
+
+.slideshowArrow:hover {
+  opacity: 0.8;
+}
+
+/* slideshow circles on the bottom of images */
+.slideshowCircles {
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
   text-align: center;
-  padding: 14px 16px;
+}
+
+.circle {
+  display: inline-block;
+  margin: 0 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: solid 2px rgba(255, 255, 255, 0.5);
+  transition: 0.5s ease-in-out;
+}
+
+/* filledCircle class from Javascript */
+.filledCircle {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: solid 2px rgba(255, 255, 255, 0.7);
+}
+
+/* horizontal line below navigation bar */
+.line {
+  background-color: rgba(202, 176, 155, 0.2);
+  text-align: center;
+  border: none;
+  height: 1px;
+}
+
+#register {
+  display: block;
+}
+
+table, th, td {
+  border: 1px solid black;
+  padding: 2px 7px 2px 7px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: center;
+}
+
+#courseRegisterForm {
+  width: 50%;
+}
+
+#header {
+  text-align: center;
+  font-size: 35px;
+  padding-top: 12px;
+  font-family: 'Georgia';
+  color: black;
+}
+
+.logo {
+  height: 35px;
+}
+
+#header a {
   text-decoration: none;
 }
 
-.link a:hover:not(.active) {
-  background-color: #111;
-}
-
-.active {
-  background-color: #576064;
-}
-
-.info_column {
-  box-sizing: border-box;
-  float: left;
-  width: 33%;
-  padding: 5px;
-  margin: 2px;
-  height: 500px;
-  text-align: center;
-  /*background-color: teal;*/
-}
-
-.info:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-#map {
-  height: 50vh;
-  width: 30vw;
-  margin: 5px 0px;
-}
-
-.contact {
-  margin: 5px auto 0px;
-  position: relative;
-}
-
-.text-block {
-  position: absolute;
-  background-color: rgba(0,33,69,0.6);
-  display: block;
+/* footer */
+#footer {
+  background-color: black;
   color: white;
-  z-index: 2;
-  padding: 1% 1% 1% 14.5%;
-  bottom: 5%;
-  height: 10%;
-  display: inline;
+  position: fixed;
+  text-align: center;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  z-index: 1;
 }
 
-.container {
-  margin-left: 0;
-  margin-right: 0;
-  width: auto;
+#footer a {
+  display: block;
+  font-family: Calibri, Candara, Segoe;
+  font-size: 17px;
+  color: #333;
+  text-align: center;
+  text-decoration: none;
+  padding: 2px;
 }
 
-.float-child-left {
-  width: 35%;
-  float: left;
-}  
+#footer a:hover {
+  opacity: 0.8;
+}
 
-.float-child-right {
-  width: 65%;
-  float: left;
-} 
+#messages {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 50px;
+  font-family:'Times New Roman', Times, serif;
+}
