@@ -14,6 +14,10 @@
 
 <body>
 
+  <div class="header-title">
+    <h2>AH UNIVERSITY</h2>
+  </div>
+
   <div class="links">
     <ul class="nav">
       <li class="link"><a href="index">Home</a></li>
@@ -23,15 +27,47 @@
     </ul>
   </div>
 
-  <div id="contact">
-
+  <div class="contact">
+    <img src="static/img/contact.png" alt="Contact Us" width=100%>
+    <div class="container">
+      <div class="text-block">
+        <h1>Contact us</h1>
+      </div>
+    </div>
   </div>
 
-  <div id="mapid">
+  <div class="float-container">
+    <div class="float-child-left">
+      <div id="map"></div>
+    </div>
+    <div class="float-child-right">
+      <div class="details">
+        <p>We are here to help you throughout the application process. Should you need any assistance or have any prospective student questions, please contact us.</p>
+        <br>
+        <h6>For all campuses (Corvallis, Davis and Washington), please mail your application transcripts and documents to:</h6>
+        <br>
+        <p>AH University</p>
+        <p>Enrollment Services</p>
+        <p>104 Kerr Admin Building</p>
+        <p>Corvallis, Oregon 87331-2106</p>
+        <br>
+        <h6>Our phone number for all application inquiries:</h6>
+        <br>
+        <p>Phone: 541-643-5634</p>
+        <p>Toll-Free: 800-049-3432</p>
+        <p>Fax: 541-643-5635</p>
+        <br>
+        <h6>For general application email inquiries, please contact us via:</h6>
+        <p>Email: application@ah.edu</p>
+      </div>
+    </div>
   </div>
+ 
+  <script type="text/javascript" src="static/config.js"></script>
 
   <script type="text/javascript">
-    var map = L.map('mapid').setView([42.19, -122.52], 5);
+    var map = L.map('map').setView([42.19, -122.52], 4);
+    var token = config.TOKEN;
 
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -41,14 +77,14 @@
       id: 'mapbox/streets-v11',
       tileSize: 256,
       //zoomOffset: -1,
-      accessToken: 'mapbox-token'
+      accessToken: token
     }).addTo(map);
 
     var markers = {{ markers|safe }};
 
     for (var i = 0; i < markers.length; i++) {
       marker = new L.marker([markers[i][1], markers[i][2]])
-        .bindPopup(markers[i][0] + " | " + markers[i][3] + "<br>" + markers[i][4])
+        .bindPopup(markers[i][0] + "<br>" + "City: " + markers[i][3] + "<br>" + "Email: " + markers[i][4])
         .addTo(map);
     }
   </script>
