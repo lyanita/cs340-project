@@ -297,11 +297,20 @@ td {
   height: 50vh;
   width: 30vw;
   margin: 5px 0px;
+  z-index: -1;
 }
 
 .contact {
   margin: 5px auto 0px;
   position: relative;
+}
+
+h1.contact-us {
+  font-size: 3vw;
+  color: white;
+  text-align: center;
+  /*padding: 0 0 0 20px;*/
+  display: inline;
 }
 
 .text-block {
@@ -325,11 +334,13 @@ td {
 .float-child-left {
   width: 35%;
   float: left;
+  height: 800px;
 }
 
 .float-child-right {
   width: 65%;
   float: left;
+  height: 800px;
 }
 
 .bodyContainer {
