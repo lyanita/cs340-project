@@ -103,5 +103,5 @@ def contact():
 
 # Listener
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 7676))
     app.run(port=port, debug=True) # Use 'python app.py' or 'flask run' to run in terminal
