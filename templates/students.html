@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+
+    <div class="header-title">
+        <h2>AH UNIVERSITY</h2>
+      </div>
+
+      <div class="links">
+        <ul class="nav">
+            <li class="link"><a href="index.html">Home</a></li>
+            <li class="link"><a class="active" href="students.html">Student Enrollment</a></li>
+            <li class="link"><a href="sections.html">Section Registration</a></li>
+            <li class="link"><a href="contact.html">Contact Us</a></li>
+            <li class="link"><a href="campuses.html">Admin - Campus Creation</a></li>
+            <li class="link"><a href="courses.html">Admin - Course Management</a></li>
+            <li class="link"><a href="instructors.html">Admin - Instructor Employment</a></li>
+        </ul>
+    </div>
+
+    <div class="forms">
+        <form method="post">
+            <fieldset>
+                <legend>Campus Enrollment</legend>
+                <legend>
+                    <label>First Name
+                        <input type="text" name="first_name" id="first_name">
+                    </label>
+                    <label>Last Name
+                        <input type="text" name="last_name" id="last_name">
+                    </label>
+                </legend>
+                <legend>
+                    <label>Choose a campus:</label>
+                    <input type="radio" name="campus" id="campus_corvallis" value="Corvallis">
+                    <label for="campus_corvallis">Corvallis</label>
+                    <input type="radio" name="campus" id="campus_davis" value="Davis">
+                    <label for="campus_davis">Davis</label>
+                    <input type="radio" name="campus" id="campus_washington" value="Washington">
+                    <label for="campus_washington">Washington</label>
+                </legend>
+                <br>
+                <input type="submit" id="campus_post">
+                <p>{{ message }}</p>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="info">
+        {% for item in items %}
+        <div class="info_column">
+            <h2>{{item.campus_name}}</h2>
+            <img src='/static/img/{{ images[loop.index0] }}' width=90%>
+            <h3>{{item.campus_city}}</h3>
+            <h3>{{item.campus_country}}</h3>
+            {% if item.campus_online == 1 %}
+            <h4>E-Campus</h4>
+            {% else %}
+            <h4>In Person Campus</h4>
+            {% endif %}
+            <p>Current Student Enrollment: </p>
+            {% if loop.index0 >= count|length %}
+            {{ 0 }}
+            {% else %}
+            {{ count[loop.index0].count }}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- page footer placeholder-->
+    <div id="footer"></div>
+
+    <!-- javascript -->
+    <script src="static/header.js"></script>
+    <script src="static/footer.js"></script>
+
+</body>
+
+</html>

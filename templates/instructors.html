@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University - List instructors, Add new instructors</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+    <!-- page header placeholder-->
+    <div id="header"></div>
+
+    <div class="links">
+        <ul class="nav">
+            <li class="link"><a href="index.html">Home</a></li>
+            <li class="link"><a href="students.html">Student Enrollment</a></li>
+            <li class="link"><a href="sections.html">Section Registration</a></li>
+            <li class="link"><a href="contact.html">Contact Us</a></li>
+            <li class="link"><a href="campuses.html">Admin - Campus Creation</a></li>
+            <li class="link"><a href="courses.html">Admin - Course Management</a></li>
+            <li class="link"><a class="active" href="instructors.html">Admin - Instructor Employment</a></li>
+        </ul>
+    </div>
+
+    <!-- Instructors table -->
+    <div class="bodyContainer">
+        <div id="instructorsContainer">
+            <h3>Instructors - List instructors, Add new instructors</h3>
+            <table id="instructorsTable">
+                <thead>
+                    <tr>
+                        <th>Instructor ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Campus</th>
+                    </tr>
+                </thead>
+                <tbody id="instructorsTableBody">
+                    <!-- temporary hard coded sample data -->
+                    <tr>
+                        <td>1</td>
+                        <td>Chuckie</td>
+                        <td>Finster</td>
+                        <td>Corvallis</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Tommy</td>
+                        <td>Pickles</td>
+                        <td>Corvallis</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Kimi</td>
+                        <td>Finster</td>
+                        <td>Davis</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Matt</td>
+                        <td>Chung</td>
+                        <td>Davis</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Edwin</td>
+                        <td>Deville</td>
+                        <td>Washington</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Angel</td>
+                        <td>Carmin</td>
+                        <td>Washington</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add new instructors -->
+        <div class="forms">
+            <h3>Add a new instructor</h3>
+            <form method="post">
+                <legend>
+                    <label>First Name
+                        <input type="text" name="first_name" id="first_name">
+                    </label>
+                    <label>Last Name
+                        <input type="text" name="last_name" id="last_name">
+                    </label>
+                </legend>
+                <legend>
+                    <label>Choose a campus:</label>
+                    <input type="radio" name="campus" id="campus_corvallis" value="Corvallis">
+                    <label for="campus_corvallis">Corvallis</label>
+                    <input type="radio" name="campus" id="campus_davis" value="Davis">
+                    <label for="campus_davis">Davis</label>
+                    <input type="radio" name="campus" id="campus_washington" value="Washington">
+                    <label for="campus_washington">Washington</label>
+                </legend>
+                <br>
+                <input type="submit" id="instructor_post">
+            </form>
+        </div>
+    </div>
+
+    <!-- page footer placeholder-->
+    <div id="footer"></div>
+
+    <!-- javascript -->
+    <script src="static/header.js"></script>
+    <script src="static/footer.js"></script>
+
+</body>
+
+</html>

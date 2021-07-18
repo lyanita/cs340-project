@@ -2,75 +2,98 @@
 <html>
 
 <head>
-    <title>AH University</title>
+    <title>AH University - List campuses, Add new campus</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
 <body>
-
-    <div class="header-title">
-        <h2>AH UNIVERSITY</h2>
-      </div>
+    <!-- page header placeholder-->
+    <div id="header"></div>
 
     <div class="links">
         <ul class="nav">
-            <li class="link"><a href="index">Home</a></li>
-            <li class="link"><a class="active" href="campuses">Campus Enrollment</a></li>
-            <li class="link"><a href="courses">Course Registration</a></li>
-            <li class="link"><a href="contact">Contact Us</a></li>
+            <li class="link"><a href="index.html">Home</a></li>
+            <li class="link"><a href="students.html">Student Enrollment</a></li>
+            <li class="link"><a href="sections.html">Section Registration</a></li>
+            <li class="link"><a href="contact.html">Contact Us</a></li>
+            <li class="link"><a class="active" href="campuses.html">Admin - Campus Creation</a></li>
+            <li class="link"><a href="courses.html">Admin - Course Management</a></li>
+            <li class="link"><a href="instructors.html">Admin - Instructor Employment</a></li>
         </ul>
     </div>
 
-    <div class="forms">
-        <form method="post">
-            <fieldset>
-                <legend>Campus Enrollment</legend>
-                <legend>
-                    <label>First Name
-                        <input type="text" name="first_name" id="first_name">
-                    </label>
-                    <label>Last Name
-                        <input type="text" name="last_name" id="last_name">
-                    </label>
-                </legend>
-                <legend>
-                    <label>Choose a campus:</label>
-                    <input type="radio" name="campus" id="campus_corvallis" value="Corvallis">
-                    <label for="campus_corvallis">Corvallis</label>
-                    <input type="radio" name="campus" id="campus_davis" value="Davis">
-                    <label for="campus_davis">Davis</label>
-                    <input type="radio" name="campus" id="campus_washington" value="Washington">
-                    <label for="campus_washington">Washington</label>
-                </legend>
-                <br>
-                <input type="submit" id="campus_post">
-                <p>{{ message }}</p>
-            </fieldset>
-        </form>
-    </div>
-
-    <div class="info">
-        {% for item in items %}
-        <div class="info_column">
-            <h2>{{item.campus_name}}</h2>
-            <img src='/static/img/{{ images[loop.index0] }}' width=90%>
-            <h3>{{item.campus_city}}</h3>
-            <h3>{{item.campus_country}}</h3>
-            {% if item.campus_online == 1 %}
-            <h4>E-Campus</h4>
-            {% else %}
-            <h4>In Person Campus</h4>
-            {% endif %}
-            <p>Current Student Enrollment: </p>
-            {% if loop.index0 >= count|length %}
-            {{ 0 }}
-            {% else %}
-            {{ count[loop.index0].count }}
-            {% endif %}
+    <!-- campuses table -->
+    <div class="bodyContainer">
+        <div id="campusesContainer">
+            <h3>Campuses - List campuses, Add new campus</h3>
+            <table id="campusesTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Campus Name</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>Type</th> <!-- Online if campus_online = true, On-campus if campus_online = false -->
+                    </tr>
+                </thead>
+                <tbody id="campusesTableBody">
+                    <!-- temporary hard coded sample data -->
+                    <tr>
+                        <td>1</td>
+                        <td>Corvallis</td>
+                        <td>Corvallis</td>
+                        <td>United States of America</td>
+                        <td>Online</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Davis</td>
+                        <td>Los Angeles</td>
+                        <td>United States of America</td>
+                        <td>On-Campus</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Washington</td>
+                        <td>Seattle</td>
+                        <td>United States of America</td>
+                        <td>Online</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        {% endfor %}
-    </div>
 
+        <!-- Add new campuses -->
+        <div class="forms">
+            <h3>Add a new campus</h3>
+            <div class="forms" id="sectionRegisterForm">
+                <form method="post">
+                    <legend>
+                        <label>Campus Name
+                            <input type="text" name="campus_name" id="campus_name">
+                        </label></br>
+                        <label>City
+                            <input type="text" name="city" id="city">
+                        </label></br>
+                        <label>Country
+                            <input type="text" name="country" id="country">
+                        </label></br>
+                        <label>Online
+                            <input type="boolean" name="type" id="type">
+                        </label>
+                    </legend>
+                    <input type="submit" id="campus_post">
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- page footer placeholder-->
+    <div id="footer"></div>
+
+    <!-- javascript -->
+    <script src="static/header.js"></script>
+    <script src="static/footer.js"></script>
 </body>
 
 </html>
