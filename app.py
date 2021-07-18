@@ -15,19 +15,31 @@ db_connection = db.connect_to_database()
 def root():
     return render_template("index.html")
 
-@app.route("/index")
+@app.route("/index.html")
 def index():
     return render_template("index.html")
 
-@app.route("/courses")
+@app.route("/campuses.html")
+def campuses():
+    return render_template("campuses.html")
+
+@app.route("/sections.html")
+def sections():
+    return render_template("sections.html")
+
+@app.route("/instructors.html")
+def instructors():
+    return render_template("instructors.html")
+
+@app.route("/courses.html")
 def courses():
     query = "SELECT * FROM courses;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
     return render_template("courses.html", items=results)
 
-@app.route("/campuses", methods=["GET", "POST"])
-def campuses():
+@app.route("/students.html", methods=["GET", "POST"])
+def students():
     error = None
     message = ""
     query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
@@ -64,9 +76,9 @@ def campuses():
         student_id = str(register_results[0].get('student_id') + 1)
         message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
 
-    return render_template("campuses.html", items=results, images=images, count=student_result, message=message)
+    return render_template("students.html", items=results, images=images, count=student_result, message=message)
 
-@app.route("/contact")
+@app.route("/contact.html")
 def contact():
     query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
