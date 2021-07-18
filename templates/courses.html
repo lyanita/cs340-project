@@ -2,18 +2,11 @@
 <html>
 
 <head>
-    <title>AH University</title>
+    <title>AH University - List courses, Add new courses</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
-<!-- The Courses page will list all the courses. When a course name is clicked, 
-it will display all the available section numbers with detailed information such as a current 
-enrollment, a campus, an instructor name etc. There will be a register button for each section. 
-If a student clicks the register button, they can register for the course by entering 
-their first and last name and their student_id.-->
-
 <body>
-
     <!-- page header placeholder-->
     <div id="header"></div>
 
@@ -28,124 +21,57 @@ their first and last name and their student_id.-->
             <li class="link"><a href="instructors.html">Admin - Instructor Management</a></li>
         </ul>
     </div>
-    
-    <!-- courses table -->
-    <div id="coursesTableContainer">
-        <h3>Courses</h3>
-        <table id="coursesTable">
-            <thead>
-                <tr>
-                    <th>Section ID</th>
-                    <th>Course Name</th>
-                    <th>Instructor</th>
-                    <th>Campus</th>
-                    <th>Max Occupancy</th>
-                    <th>Current Occupancy</th>
-                </tr>
-            </thead>
-            <tbody id="coursesTableBody">
-                <!-- temporary hard coded sample data -->
-                <tr>
-                    <td>0A01</td>
-                    <td>Introduction to Computer Science</td>
-                    <td>Tommy Pickles</td>
-                    <td>Corvallis</td>
-                    <td></td>
-                    <td></td>
-                    <td><button>Register</button></td>
-                </tr>
-                <tr>
-                    <td>0A02</td>
-                    <td>Introduction to Computer Science</td>
-                    <td>Kimi Finster</td>
-                    <td>Davis</td>
-                    <td></td>
-                    <td></td>
-                    <td><button>Register</button></td>
-                </tr>
-                <tr>
-                    <td>0C03</td>
-                    <td>Introduction to Databases</td>
-                    <td>Edwin Deville</td>
-                    <td>Washington</td>
-                    <td></td>
-                    <td></td>
-                    <td><button>Register</button></td>
-                </tr>
-                <tr>
-                    <td>0D11</td>
-                    <td>Software Engineering</td>
-                    <td>Angel Carmin</td>
-                    <td>Washington</td>
-                    <td></td>
-                    <td></td>
-                    <td><button>Register</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <!-- register table (hidden at default) -->
-    <div id="register">
+    <!-- courses table -->
+    <div class="bodyContainer">
+        <div id="coursesContainer">
+            <h3>Courses - List courses, Add new courses</h3>
+            <table id="coursesTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Course Name</th>
+                    </tr>
+                </thead>
+                <tbody id="coursesTableBody">
+                    <!-- temporary hard coded sample data -->
+                    <tr>
+                        <td>1</td>
+                        <td>Introduction to Databases</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Introduction to Computer Science</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Software Engineering</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add new courses -->
         <div class="forms">
-            <form method="post">
-                <fieldset id="courseRegisterForm">
-                    <legend>Course Registration</legend>
+            <h3>Add a new course</h3>
+            <div class="forms" id="courseRegisterForm">
+                <form method="post">
                     <legend>
-                        <label>First Name
-                            <input type="text" name="first_name" id="first_name">
-                        </label></br>
-                        <label>Last Name
-                            <input type="text" name="last_name" id="last_name">
-                        </label></br>
-                        <label>Student ID
-                            <input type="text" name="student_id" id="student_id">
+                        <label>Course Name
+                            <input type="text" name="course_name" id="course_name">
                         </label>
                     </legend>
+                    <br>
                     <input type="submit" id="course_post">
-                </fieldset>
             </form>
         </div>
     </div>
 
-    <div class="tables">
-        <table>
-            <thead>
-                <tr>
-                    <!-- Iterate through each key in the first entry to get the
-                column name -->
-                    {% for key in items[0].keys() %}
-
-                    <!-- Create a <th> tag with the key inside of it, this will be
-                our header row -->
-                    <th>{{ key }}</th>
-
-                    <!-- End of this for loop -->
-                    {% endfor %}
-                </tr>
-            <tbody>
-
-                <!-- Now, iterate through every person in the table -->
-                {% for item in items %}
-                <tr>
-                    <!-- Then iterate through every key in the current dictionary -->
-                    {% for key in item.keys() %}
-
-                    <!-- Create a <td> element with the value of that key in it -->
-                    <td>{{item[key]}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-        </table>
-    </div>
-    
     <!-- page footer placeholder-->
     <div id="footer"></div>
 
     <!-- javascript -->
     <script src="../static/header.js"></script>
     <script src="../static/footer.js"></script>
-
 </body>
-
 </html>
