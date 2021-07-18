@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University - Register for sections</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+    <!-- page header placeholder-->
+    <div id="header"></div>
+
+    <div class="links">
+        <ul class="nav">
+            <li class="link"><a href="index.html">Home</a></li>
+            <li class="link"><a href="students.html">Student Enrollment</a></li>
+            <li class="link"><a class="active" href="sections.html">Section Registration</a></li>
+            <li class="link"><a href="contact.html">Contact Us</a></li>
+            <li class="link"><a href="campuses.html">Admin - Campus Management</a></li>
+            <li class="link"><a href="courses.html">Admin - Course Management</a></li>
+            <li class="link"><a href="instructors.html">Admin - Instructor Management</a></li>
+        </ul>
+    </div>
+
+    <div class="bodyContainer">
+        <div id="sectionInfo">
+            <h3>Section Information</h3>
+            <!-- course info -->
+            <table id="sectionInfoTable">
+                <thead>
+                    <tr>
+                        <th>Section ID</th>
+                        <th>Course Name</th> <!-- select course_name from courses where course_id matches -->
+                        <th>Instructor</th> <!-- select instructor_name(concat) from instructors where instructor_id matches -->
+                        <th>Campus</th>  <!-- select campus_name from campuses where campus_id matches -->
+                        <th>Type</th> <!-- online/on-campus -->
+                        <th>Max Occupancy</th>
+                        <th>Current Occupancy</th>
+                    </tr>
+                </thead>
+                <tbody id="courseInfoTableBody">
+                    <!-- temporary hard coded sample data -->
+                    <!-- the selected row will be displayed -->
+                    <tr>
+                        <td>1</td>
+                        <td>Introduction to Computer Science</td>
+                        <td>Tommy Pickles</td>
+                        <td>Corvallis</td>
+                        <td>Online</td>
+                        <td>30</td>
+                        <td>10</td>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- registration table -->
+        <div id="registerSection">
+            <h3>Register for sections</h3>
+            <div class="forms" id="sectionRegisterForm">
+                <form method="post">
+                    <legend>
+                        <label>First Name
+                            <input type="text" name="first_name" id="first_name">
+                        </label></br>
+                        <label>Last Name
+                            <input type="text" name="last_name" id="last_name">
+                        </label></br>
+                        <label>Student ID
+                            <input type="text" name="student_id" id="student_id">
+                        </label>
+                    </legend>
+                    <input type="submit" id="section_post">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- page footer placeholder-->
+    <div id="footer"></div>
+
+    <!-- javascript -->
+    <script src="../static/header.js"></script>
+    <script src="../static/footer.js"></script>
+
+</body>
+
+</html>
