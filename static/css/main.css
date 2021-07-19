@@ -297,7 +297,7 @@ td {
   height: 50vh;
   width: 30vw;
   margin: 5px 0px;
-  z-index: -1;
+  z-index: 1;
 }
 
 .contact {
