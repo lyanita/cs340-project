@@ -21,9 +21,37 @@ def root():
 def index():
     return render_template("index.html")
 
-@app.route("/campuses.html")
+@app.route("/campuses.html", methods=["GET", "POST"])
 def campuses():
-    return render_template("campuses.html")
+    message = ""
+    campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
+    campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
+    campus_results = campus_cursor.fetchall()
+
+    if request.method == "POST":
+        campus_name = request.form['campus_name']
+        campus_city = request.form['campus_city']
+        campus_country = request.form['campus_country']
+        campus_online = request.form['campus_online']
+        print(campus_online)
+
+        flag = False
+        for dict in campus_results:
+            campus = dict.get('campus_name')
+            if campus_name == campus:
+                flag = True
+                message = "The campus name is already in use. Please enter another name."
+        if not flag:
+            insert_query = "INSERT INTO campuses(campus_name, campus_city, campus_country, campus_online) VALUES (%s, %s, %s, %s);"
+            data = (campus_name, campus_city, campus_country, campus_online)
+            insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
+            message = "You have successfully created a new campus."
+
+        campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
+        campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
+        campus_results = campus_cursor.fetchall()
+
+    return render_template("campuses.html", items=campus_results, message=message)
 
 @app.route("/sections.html")
 def sections():
@@ -44,9 +72,9 @@ def courses():
 def students():
     error = None
     message = ""
-    query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
-    cursor = db.execute_query(db_connection=db_connection, query=query)
-    results = cursor.fetchall()
+    select_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
+    select_cursor = db.execute_query(db_connection=db_connection, query=select_query)
+    select_results = select_cursor.fetchall()
     images = os.listdir(os.path.join(app.static_folder, "img"))
 
     student_query = "SELECT campus_id, COUNT(*) AS count FROM students GROUP BY campus_id ORDER BY campus_id ASC;"
@@ -78,7 +106,7 @@ def students():
         student_id = str(register_results[0].get('student_id') + 1)
         message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
 
-    return render_template("students.html", items=results, images=images, count=student_result, message=message)
+    return render_template("students.html", items=select_results, images=images, count=student_result, message=message)
 
 @app.route("/contact.html")
 def contact():
