@@ -348,3 +348,9 @@ h1.contact-us {
   margin: auto;
   width: 70%;
 }
+
+#courseColumns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+}

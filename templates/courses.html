@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>AH University - List courses, Add new courses</title>
+    <title>AH University - List courses, Add new courses, Add new sections</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
@@ -25,7 +25,7 @@
     <!-- courses table -->
     <div class="bodyContainer">
         <div id="coursesContainer">
-            <h3>Courses - List courses, Add new courses</h3>
+            <h3>Courses - List courses, Add new courses, Add new sections</h3>
             <table id="coursesTable">
                 <thead>
                     <tr>
@@ -50,20 +50,45 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- Add new courses -->
-        <div class="forms">
-            <h3>Add a new course</h3>
-            <div class="forms" id="courseRegisterForm">
-                <form method="post">
-                    <legend>
-                        <label>Course Name
-                            <input type="text" name="course_name" id="course_name">
-                        </label>
-                    </legend>
-                    <br>
-                    <input type="submit" id="course_post">
-            </form>
+        <div id="courseColumns">
+            <!-- Add new courses -->
+            <div class="forms">
+                <h3>Add a new course</h3>
+                <div class="forms" id="courseRegisterForm">
+                    <form method="post">
+                        <legend>
+                            <label>Course Name
+                                <input type="text" name="course_name" id="course_name">
+                            </label>
+                        </legend>
+                        <br>
+                        <input type="submit" id="course_post">
+                    </form>
+                </div>
+            </div>
+            <!-- Add new sections -->
+            <div class="forms">
+                <h3>Add a new section</h3>
+                <div class="forms" id="sectionRegisterForm">
+                    <form method="post">
+                        <legend>
+                            <label>Course ID
+                                <input type="number" name="instructor_id" id="instructor_id">
+                            </label></br>
+                            <label>Instructor ID
+                                <input type="number" name="instructor_id" id="instructor_id">
+                            </label></br>
+                            <label>Campus ID
+                                <input type="number" name="campus_id" id="campus_id">
+                            </label></br>
+                            <label>Type
+                                <input type="boolean" name="type" id="type">
+                            </label>
+                        </legend>
+                        <input type="submit" id="course_post">
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -74,4 +99,5 @@
     <script src="../static/header.js"></script>
     <script src="../static/footer.js"></script>
 </body>
+
 </html>
