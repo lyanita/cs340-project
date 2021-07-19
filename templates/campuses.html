@@ -24,7 +24,6 @@
 
     <!-- Table -->
     <div id="campuses-container">
-        
         <table id="campuses-table">
             <thead>
                 <tr>
@@ -43,6 +42,7 @@
                 <td>{{ item['campus_city'] }}</td>
                 <td>{{ item['campus_country'] }}</td>
                 <td>{{ item['campus_online'] }}</td>
+                <td> <input type='button' name='delete' value='Delete' onclick="window.location='/delete-campus/{{ item['campus_id'] }}'"</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Form (Add Campus) -->
-    <div class="forms">
+    <div class="campuses-forms">
         <form method="post">
             <fieldset>
                 <legend>Add a New Campus</legend>
@@ -73,7 +73,7 @@
                 </label>
                 <br>
                 <input type="submit" id="campus_post">
-                {{ message }}
+                {{ post_message }}
             </fieldset>
         </form>
     </div>

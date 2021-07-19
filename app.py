@@ -1,5 +1,5 @@
 # Dependencies
-from flask import Flask, render_template, json, url_for, request, session
+from flask import Flask, render_template, json, url_for, request, session, redirect
 import os
 import database.db_connector as db
 from markupsafe import escape
@@ -21,9 +21,10 @@ def root():
 def index():
     return render_template("index.html")
 
-@app.route("/campuses.html", methods=["GET", "POST"])
+@app.route("/campuses.html", methods=["GET", "POST", "DELETE"])
 def campuses():
-    message = ""
+    post_message = ""
+    delete_message = ""
     campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
     campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
     campus_results = campus_cursor.fetchall()
@@ -40,18 +41,27 @@ def campuses():
             campus = dict.get('campus_name')
             if campus_name == campus:
                 flag = True
-                message = "The campus name is already in use. Please enter another name."
+                post_message = "The campus name is already in use. Please enter another name."
         if not flag:
             insert_query = "INSERT INTO campuses(campus_name, campus_city, campus_country, campus_online) VALUES (%s, %s, %s, %s);"
             data = (campus_name, campus_city, campus_country, campus_online)
             insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-            message = "You have successfully created a new campus."
+            post_message = "You have successfully created a new campus."
 
         campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
         campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
         campus_results = campus_cursor.fetchall()
 
-    return render_template("campuses.html", items=campus_results, message=message)
+    return render_template("campuses.html", items=campus_results, post_message=post_message, delete_message=delete_message)
+
+@app.route("/delete-campus/<int:id>")
+def delete_campus(id):
+    delete_query = "DELETE FROM campuses WHERE campus_id = %s;"
+    data = (id,)
+    delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
+    delete_message = "You have deleted campus id #" + str(id) + "."
+
+    return redirect("/campuses.html")
 
 @app.route("/sections.html")
 def sections():
