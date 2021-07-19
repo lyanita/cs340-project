@@ -1,13 +1,15 @@
 # Dependencies
-from flask import Flask, render_template, json, url_for, request
+from flask import Flask, render_template, json, url_for, request, session
 import os
 import database.db_connector as db
 from markupsafe import escape
 import geopy as gp
 import json
+import datetime
 
 # Configuration
 app = Flask(__name__)
+app.permanent_session_lifetime = datetime.timedelta(days=365)
 db_connection = db.connect_to_database()
 
 # Routes
