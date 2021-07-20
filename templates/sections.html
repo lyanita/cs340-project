@@ -22,57 +22,30 @@
         </ul>
     </div>
 
-    <!-- sections table -->
-    <div class="bodyContainer">
-        <div id="sectionsContainer">
-            <h3>Sections - List sections, Register for sections</h3>
-            <table id="sectionsTable">
-                <thead>
-                    <tr>
-                        <th>Section ID</th>
-                        <th>Course Name</th>
-                        <th>Instructor</th>
-                        <th>Campus</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody id="sectionsTableBody">
-                    <!-- temporary hard coded sample data -->
-                    <tr>
-                        <td>1</td>
-                        <td>Introduction to Computer Science</td>
-                        <td>Tommy Pickles</td>
-                        <td>Corvallis</td>
-                        <td>Online</td>
-                        <td><a href="section_register.html"><input type="button" value="Register"></a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Introduction to Computer Science</td>
-                        <td>Kimi Finster</td>
-                        <td>Davis</td>
-                        <td>On-campus</td>
-                        <td><a href="section_register.html"><input type="button" value="Register"></a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Introduction to Databases</td>
-                        <td>Edwin Deville</td>
-                        <td>Washington</td>
-                        <td>Online</td>
-                        <td><a href="section_register.html"><input type="button" value="Register"></a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Software Engineering</td>
-                        <td>Angel Carmin</td>
-                        <td>Washington</td>
-                        <td>Online</td>
-                        <td><a href="section_register.html"><input type="button" value="Register"></a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <!-- Table -->
+    <div id="sections-container">
+        <table id="sections-table">
+            <thead>
+                <tr>
+                    <th>Section ID</th>
+                    <th>Course Name</th>
+                    <th>Instructor Name</th>
+                    <th>Campus Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item['section_id'] }}</td>
+                    <td>{{ item['course_name'] }}</td>
+                    <td>{{ item['instructor_name'] }}</td>
+                    <td>{{ item['campus_name'] }}</td>
+                    <td> <input type='button' name='register' value='Register'
+                        onclick="window.location='/section_register.html'"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <!-- page footer placeholder-->
