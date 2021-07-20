@@ -115,12 +115,26 @@ def delete_instructor(id):
 
 @app.route("/sections.html")
 def sections():
-    return render_template("sections.html")
+    db_connection = db.connect_to_database()
+    query = "SELECT section_id, course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, campus_name \
+        FROM sections s \
+        JOIN courses c ON s.course_id = c.course_id \
+        JOIN instructors i ON s.instructor_id = i.instructor_id \
+        JOIN campuses ca ON s.campus_id = ca.campus_id \
+        ORDER BY section_id ASC;"
+    cursor = db.execute_query(db_connection=db_connection, query=query)
+    results = cursor.fetchall()
+    db_connection.close()
+    return render_template("sections.html", items=results)
+
+@app.route("/section_register.html")
+def section_register():
+    return render_template("section_register.html")
 
 @app.route("/courses.html")
 def courses():
     db_connection = db.connect_to_database()
-    query = "SELECT * FROM courses;"
+    query = "SELECT * FROM courses ORDER BY course_id ASC;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
     db_connection.close()
