@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <!-- page header placeholder-->
+    <!-- Page Header Placeholder-->
     <div id="header"></div>
 
     <div class="links">
@@ -22,74 +22,42 @@
         </ul>
     </div>
 
-    <!-- Instructors table -->
-    <div class="bodyContainer">
-        <div id="instructorsContainer">
-            <h3>Instructors - List instructors, Add new instructors</h3>
-            <table id="instructorsTable">
-                <thead>
-                    <tr>
-                        <th>Instructor ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Campus</th>
-                    </tr>
-                </thead>
-                <tbody id="instructorsTableBody">
-                    <!-- temporary hard coded sample data -->
-                    <tr>
-                        <td>1</td>
-                        <td>Chuckie</td>
-                        <td>Finster</td>
-                        <td>Corvallis</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Tommy</td>
-                        <td>Pickles</td>
-                        <td>Corvallis</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Kimi</td>
-                        <td>Finster</td>
-                        <td>Davis</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Matt</td>
-                        <td>Chung</td>
-                        <td>Davis</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Edwin</td>
-                        <td>Deville</td>
-                        <td>Washington</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Angel</td>
-                        <td>Carmin</td>
-                        <td>Washington</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <!-- Table -->
+    <div id="instructors-container">
+        <table id="instructors-table">
+            <thead>
+                <tr>
+                    <th>Instructor_ID</th>
+                    <th>Instructor_First_Name</th>
+                    <th>Instructor_Last_Name</th>
+                    <th>Instructor_Campus</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item['instructor_id'] }}</td>
+                <td>{{ item['instructor_first_name'] }}</td>
+                <td>{{ item['instructor_last_name'] }}</td>
+                <td>{{ item['campus_id'] }}</td>
+                <td> <input type='button' name='delete' value='Delete' onclick="window.location='/delete-instructor/{{ item['instructor_id'] }}'"</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-        <!-- Add new instructors -->
+        <!-- Form (Add Instructor) -->
         <div class="forms">
-            <h3>Add a new instructor</h3>
             <form method="post">
-                <legend>
-                    <label>First Name
+                <fieldset>
+                    <legend>Add a New Instructor</legend>
+                    <label>First Name:
                         <input type="text" name="first_name" id="first_name">
                     </label>
-                    <label>Last Name
+                    <label>Last Name:
                         <input type="text" name="last_name" id="last_name">
                     </label>
-                </legend>
-                <legend>
                     <label>Choose a campus:</label>
                     <input type="radio" name="campus" id="campus_corvallis" value="Corvallis">
                     <label for="campus_corvallis">Corvallis</label>
@@ -97,19 +65,19 @@
                     <label for="campus_davis">Davis</label>
                     <input type="radio" name="campus" id="campus_washington" value="Washington">
                     <label for="campus_washington">Washington</label>
-                </legend>
-                <br>
-                <input type="submit" id="instructor_post">
+                    <br>
+                    <input type="submit" id="instructor_post">
+                    <p>{{ post_message }}</p>
+                </fieldset>
             </form>
         </div>
-    </div>
 
-    <!-- page footer placeholder-->
-    <div id="footer"></div>
+        <!-- Page Footer Placeholder-->
+        <div id="footer"></div>
 
-    <!-- javascript -->
-    <script src="../static/header.js"></script>
-    <script src="../static/footer.js"></script>
+        <!-- Javascript -->
+        <script src="../static/header.js"></script>
+        <script src="../static/footer.js"></script>
 
 </body>
 
