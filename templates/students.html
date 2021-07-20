@@ -25,16 +25,13 @@
     <div class="forms">
         <form method="post">
             <fieldset>
-                <legend>Campus Enrollment</legend>
-                <legend>
-                    <label>First Name
+                <legend>Enroll in a Campus</legend>
+                    <label>First Name:
                         <input type="text" name="first_name" id="first_name">
                     </label>
-                    <label>Last Name
+                    <label>Last Name:
                         <input type="text" name="last_name" id="last_name">
                     </label>
-                </legend>
-                <legend>
                     <label>Choose a campus:</label>
                     <input type="radio" name="campus" id="campus_corvallis" value="Corvallis">
                     <label for="campus_corvallis">Corvallis</label>
@@ -42,10 +39,9 @@
                     <label for="campus_davis">Davis</label>
                     <input type="radio" name="campus" id="campus_washington" value="Washington">
                     <label for="campus_washington">Washington</label>
-                </legend>
                 <br>
-                <input type="submit" id="campus_post">
-                <p>{{ message }}</p>
+                <input type="submit" id="student_post">
+                <p>{{ post_message }}</p>
             </fieldset>
         </form>
     </div>
