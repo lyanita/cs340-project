@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS courses_campuses;
+
 CREATE TABLE courses_campuses(
     course_id INT NOT NULL,
     campus_id INT NOT NULL,

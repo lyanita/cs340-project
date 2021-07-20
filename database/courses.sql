@@ -1,4 +1,4 @@
-DROP TABLE courses;
+DROP TABLE IF EXISTS courses;
 
 CREATE TABLE courses(
     course_id INT PRIMARY KEY AUTO_INCREMENT,
