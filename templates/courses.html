@@ -22,75 +22,71 @@
         </ul>
     </div>
 
-    <!-- courses table -->
-    <div class="bodyContainer">
-        <div id="coursesContainer">
-            <h3>Courses - List courses, Add new courses, Add new sections</h3>
-            <table id="coursesTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Course Name</th>
-                    </tr>
-                </thead>
-                <tbody id="coursesTableBody">
-                    <!-- temporary hard coded sample data -->
-                    <tr>
-                        <td>1</td>
-                        <td>Introduction to Databases</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Introduction to Computer Science</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Software Engineering</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div id="courseColumns">
-            <!-- Add new courses -->
-            <div class="forms">
-                <h3>Add a new course</h3>
-                <div class="forms" id="courseRegisterForm">
-                    <form method="post">
-                        <legend>
-                            <label>Course Name
-                                <input type="text" name="course_name" id="course_name">
-                            </label>
-                        </legend>
-                        <br>
-                        <input type="submit" id="course_post">
-                    </form>
-                </div>
-            </div>
-            <!-- Add new sections -->
-            <div class="forms">
-                <h3>Add a new section</h3>
-                <div class="forms" id="sectionRegisterForm">
-                    <form method="post">
-                        <legend>
-                            <label>Course ID
-                                <input type="number" name="instructor_id" id="instructor_id">
-                            </label></br>
-                            <label>Instructor ID
-                                <input type="number" name="instructor_id" id="instructor_id">
-                            </label></br>
-                            <label>Campus ID
-                                <input type="number" name="campus_id" id="campus_id">
-                            </label></br>
-                            <label>Type
-                                <input type="boolean" name="type" id="type">
-                            </label>
-                        </legend>
-                        <input type="submit" id="course_post">
-                    </form>
-                </div>
-            </div>
-        </div>
+    <!-- Table -->
+    <div id="courses-container">
+        <table id="courses-table">
+            <thead>
+                <tr>
+                    <th>Course_ID</th>
+                    <th>Course_Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item['course_id'] }}</td>
+                    <td>{{ item['course_name'] }}</td>
+                    <td> <input type='button' name='delete' value='Delete'
+                            onclick="window.location='/delete-campus/{{ item['course_id'] }}'"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+
+    <!-- Form (Add Course) -->
+    <div class="courses-forms">
+        <form method="post">
+            <fieldset>
+                <legend>Add a New Course</legend>
+                <label>Course Name:
+                    <input type="text" name="course_name" id="course_name">
+                </label>
+                </br>
+                <input type="submit" id="course_post">
+                {{ post_message }}
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- Form (Add Section) -->
+    <div class="sections-forms">
+        <form method="post">
+            <fieldset>
+                <legend>Add a New Section</legend>
+                <label>Course ID:
+                    <input type="number" name="instructor_id" id="instructor_id">
+                </label></br>
+                <label>Instructor ID:
+                    <input type="number" name="instructor_id" id="instructor_id">
+                </label></br>
+                <label>Campus ID:
+                    <input type="number" name="campus_id" id="campus_id">
+                </label></br>
+                <label>Online/Offline:
+                    <input type="radio" name="campus_online" id="campus_online" value="True">
+                    <label for="campus_online">E-Campus</label>
+                    <input type="radio" name="campus_online" id="campus_offline" value="False">
+                    <label for="campus_offline">In-Person Campus</label>
+                </label>
+                </br>
+                <input type="submit" id="section_post">
+                {{ post_message }}
+            </fieldset>
+        </form>
+    </div>
+
+
 
     <!-- page footer placeholder-->
     <div id="footer"></div>
