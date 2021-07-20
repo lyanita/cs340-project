@@ -1,7 +1,7 @@
-DROP TABLE sections;
+DROP TABLE IF EXISTS sections;
 
 CREATE TABLE sections(
-    section_id INT NOT NULL UNIQUE PRIMARY KEY AUTO_INCREMENT,
+    section_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     course_id INT,
     instructor_id INT,
     campus_id INT,
