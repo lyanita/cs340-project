@@ -78,20 +78,34 @@ def instructors():
     if request.method == "POST":
         instructor_first_name = request.form['instructor_first_name']
         instructor_last_name = request.form['instructor_last_name']
-        campus_id = request.form['campus_id']
+        campus_name = request.form['campus_name']
 
+        campus_query = "SELECT DISTINCT * FROM campuses WHERE campus_name = %s;"
+        data = (campus_name,)
+        campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query, query_params=data)
+        campus_results = campus_cursor.fetchall()
+
+        for dict in campus_results:
+            campus = dict.get('campus_name')
+            if campus_name == campus:
+                campus_id = dict.get('campus_id')
+        
         insert_query = "INSERT INTO instructors(instructor_first_name, instructor_last_name, campus_id) VALUES (%s, %s, %s);"
         data = (instructor_first_name, instructor_last_name, campus_id)
         insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
         post_message = "You have successfully added a new instructor."
 
+        instructor_query = "SELECT * FROM instructors ORDER BY instructor_id ASC;"
+        instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
+        instructor_results = instructor_cursor.fetchall()
+
     db_connection.close()    
-    return render_template("instructors.html", item=instructor_results, post_message=post_message)
+    return render_template("instructors.html", items=instructor_results, post_message=post_message)
 
 @app.route("/delete-instructor/<int:id>")
 def delete_instructor(id):
     db_connection = db.connect_to_database()
-    delete_query = "DELETE FROM campuses WHERE instructor_id = %s;"
+    delete_query = "DELETE FROM instructors WHERE instructor_id = %s;"
     data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
     delete_message = "You have deleted instructor id #" + str(id) + "."
