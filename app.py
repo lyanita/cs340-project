@@ -137,7 +137,11 @@ def students():
 
     student_query = "SELECT campus_id, COUNT(*) AS count FROM students GROUP BY campus_id ORDER BY campus_id ASC;"
     student_cursor = db.execute_query(db_connection=db_connection, query=student_query)
-    student_result = student_cursor.fetchall()
+    student_results = student_cursor.fetchall()
+
+    population_query = "SELECT * FROM students ORDER BY student_id ASC;"
+    population_cursor = db.execute_query(db_connection=db_connection, query=population_query)
+    population_results = population_cursor.fetchall()
     
     if request.method == "POST":
         first_name = request.form['first_name']
@@ -164,8 +168,23 @@ def students():
         student_id = str(register_results[0].get('student_id') + 1)
         post_message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
 
+        population_query = "SELECT * FROM students ORDER BY student_id ASC;"
+        population_cursor = db.execute_query(db_connection=db_connection, query=population_query)
+        population_results = population_cursor.fetchall()
+
     db_connection.close()
-    return render_template("students.html", items=select_results, images=images, count=student_result, post_message=post_message)
+    return render_template("students.html", items=select_results, students=population_results, images=images, count=student_results, post_message=post_message)
+
+@app.route("/delete-student/<int:id>")
+def delete_student(id):
+    db_connection = db.connect_to_database()
+    delete_query = "DELETE FROM students WHERE student_id = %s;"
+    data = (id,)
+    delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
+    delete_message = "You have deleted student id #" + str(id) + "."
+
+    db_connection.close()
+    return redirect("/students.html")
 
 @app.route("/contact.html")
 def contact():
