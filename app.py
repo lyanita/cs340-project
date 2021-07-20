@@ -23,6 +23,7 @@ def index():
 
 @app.route("/campuses.html", methods=["GET", "POST", "DELETE"])
 def campuses():
+    db_connection = db.connect_to_database()
     post_message = ""
     delete_message = ""
     campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
@@ -51,15 +52,20 @@ def campuses():
         campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
         campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
         campus_results = campus_cursor.fetchall()
+    
+    db_connection.close()
 
     return render_template("campuses.html", items=campus_results, post_message=post_message, delete_message=delete_message)
 
 @app.route("/delete-campus/<int:id>")
 def delete_campus(id):
+    db_connection = db.connect_to_database()
     delete_query = "DELETE FROM campuses WHERE campus_id = %s;"
     data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
     delete_message = "You have deleted campus id #" + str(id) + "."
+
+    db_connection.close()
 
     return redirect("/campuses.html")
 
@@ -73,13 +79,16 @@ def instructors():
 
 @app.route("/courses.html")
 def courses():
+    db_connection = db.connect_to_database()
     query = "SELECT * FROM courses;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
+    db_connection.close()
     return render_template("courses.html", items=results)
 
 @app.route("/students.html", methods=["GET", "POST"])
 def students():
+    db_connection = db.connect_to_database()
     error = None
     message = ""
     select_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
@@ -116,10 +125,13 @@ def students():
         student_id = str(register_results[0].get('student_id') + 1)
         message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
 
+    db_connection.close()
+
     return render_template("students.html", items=select_results, images=images, count=student_result, message=message)
 
 @app.route("/contact.html")
 def contact():
+    db_connection = db.connect_to_database()
     query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
@@ -138,6 +150,8 @@ def contact():
             coordinates = [campus_name, lat, long, campus_city, email]
             print(coordinates)
             coordinates_list.append(coordinates)
+    
+    db_connection.close()
 
     return render_template("contact.html", items=results, markers=json.dumps(coordinates_list))
 
