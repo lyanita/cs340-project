@@ -66,9 +66,42 @@
                     <label for="campus_davis">Davis</label>
                     <input type="radio" name="campus_name" id="campus_washington" value="Washington">
                     <label for="campus_washington">Washington</label>
+                    <input type="radio" name="campus_name" id="campus_null" value="Unassigned">
+                    <label for="campus_null">Unassigned</label>
                     <br>
                     <input type="submit" id="instructor_post">
                     <p>{{ post_message }}</p>
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="forms">
+            <form method="post">
+                <fieldset>
+                    <legend>Update an Existing Instructor</legend>
+                    <label>Instructor ID
+                        <input type="text" name="instructor_id" id="instructor_id">
+                    </label>
+                    <br>
+                    <label>First Name:
+                        <input type="text" name="instructor_first_name" id="instructor_first_name">
+                    </label>
+                    <label>Last Name:
+                        <input type="text" name="instructor_last_name" id="instructor_last_name">
+                    </label>
+                    <br>
+                    <label>Choose a campus:</label>
+                    <input type="radio" name="campus_name" id="campus_corvallis" value="Corvallis">
+                    <label for="campus_corvallis">Corvallis</label>
+                    <input type="radio" name="campus_name" id="campus_davis" value="Davis">
+                    <label for="campus_davis">Davis</label>
+                    <input type="radio" name="campus_name" id="campus_washington" value="Washington">
+                    <label for="campus_washington">Washington</label>
+                    <input type="radio" name="campus_name" id="campus_null" value="Unassigned">
+                    <label for="campus_null">Unassigned</label>
+                    <br>
+                    <input type="submit" id="instructor_post">
+                    <p>{{ update_message }}</p>
                 </fieldset>
             </form>
         </div>
