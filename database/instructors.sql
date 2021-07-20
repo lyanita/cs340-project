@@ -1,10 +1,10 @@
-DROP TABLE instructors;
+DROP TABLE IF EXISTS instructors;
 
 CREATE TABLE instructors(
     instructor_id INT NOT NULL UNIQUE PRIMARY KEY AUTO_INCREMENT,
     instructor_first_name VARCHAR(255) NOT NULL,
     instructor_last_name VARCHAR(255) NOT NULL,
-    campus_id INT NOT NULL,
+    campus_id INT,
     FOREIGN KEY (campus_id) REFERENCES campuses(campus_id)
 );
 
