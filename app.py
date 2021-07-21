@@ -151,9 +151,21 @@ def sections():
     db_connection.close()
     return render_template("sections.html", items=results)
 
-@app.route("/section_register.html")
-def section_register():
-    return render_template("section_register.html")
+@app.route("/register-section/<int:id>")
+def register_section(id):
+    db_connection = db.connect_to_database()
+    query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
+        FROM sections s \
+        JOIN courses c ON s.course_id = c.course_id \
+        JOIN instructors i ON s.instructor_id = i.instructor_id \
+        JOIN campuses ca ON s.campus_id = ca.campus_id \
+        WHERE section_id = %s \
+        ORDER BY section_id ASC;"
+    data = (id,)
+    register_cursor = db.execute_query(db_connection=db_connection, query=query, query_params=data)
+    register_results = register_cursor.fetchall()
+    db_connection.close()
+    return render_template("section_register.html", items=register_results)
 
 @app.route("/courses.html")
 def courses():
