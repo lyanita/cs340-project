@@ -1,51 +1,80 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>AH University - List sections, Register for sections</title>
     <link rel="stylesheet" href="../static/css/main.css">
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- page header placeholder-->
     <div id="header"></div>
 
     <div class="links">
-        <ul class="nav">
-            <li class="link"><a href="index.html">Home</a></li>
-            <li class="link"><a href="students.html">Student Enrollment</a></li>
-            <li class="link"><a class="active" href="sections.html">Section Registration</a></li>
-            <li class="link"><a href="contact.html">Contact Us</a></li>
-            <li class="link"><a href="campuses.html">Admin - Campus Management</a></li>
-            <li class="link"><a href="courses.html">Admin - Course Management</a></li>
-            <li class="link"><a href="instructors.html">Admin - Instructor Management</a></li>
-        </ul>
+      <ul class="nav">
+        <li class="link"><a href="index.html">Home</a></li>
+        <li class="link"><a href="students.html">Student Enrollment</a></li>
+        <li class="link"><a class="active" href="sections.html">Section Registration</a></li>
+        <li class="link"><a href="contact.html">Contact Us</a></li>
+        <li class="link"><a href="campuses.html">Admin - Campus Management</a></li>
+        <li class="link"><a href="courses.html">Admin - Course Management</a></li>
+        <li class="link"><a href="instructors.html">Admin - Instructor Management</a></li>
+      </ul>
     </div>
+
+    <!-- Form (Search Section) -->
+    <div id="sections-search">
+      <form method='post'>
+        <fieldset>
+          <legend>Search for Sections</legend>
+          <label>Section ID:
+            <input type='number' name='section_id'></label><br>
+          <label>Course ID:
+            <input type='number' name='course_id'></label><br>
+          <label>Instructor ID:
+            <input type='number' name='instructor_id'></label><br>
+          <label>Campus ID:
+            <input type='number' name='campus_id'></label><br>
+          <input type="submit" id='search' value='Search'>
+        </fieldset>
+      </form>
+    </div>
+    <br>
 
     <!-- Table -->
     <div id="sections-container">
-        <table id="sections-table">
-            <thead>
-                <tr>
-                    <th>Section ID</th>
-                    <th>Course Name</th>
-                    <th>Instructor Name</th>
-                    <th>Campus Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                <tr>
-                    <td>{{ item['section_id'] }}</td>
-                    <td>{{ item['course_name'] }}</td>
-                    <td>{{ item['instructor_name'] }}</td>
-                    <td>{{ item['campus_name'] }}</td>
-                    <td> <input type='button' name='register' value='Register'
-                        onclick="window.location='/section_register.html'"></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+      <table id="sections-table">
+        <thead>
+          <tr>
+            <th>Section ID</th>
+            <th>Course ID</th>
+            <th>Course Name</th>
+            <th>Instructor ID</th>
+            <th>Instructor Name</th>
+            <th>Campus ID</th>
+            <th>Campus Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{{ item['section_id'] }}</td>
+            <td>{{ item['course_id'] }}</td>
+            <td>{{ item['course_name'] }}</td>
+            <td>{{ item['instructor_id'] }}</td>
+            <td>{{ item['instructor_name'] }}</td>
+            <td>{{ item['campus_id'] }}</td>
+            <td>{{ item['campus_name'] }}</td>
+            <td>
+              <input
+                type="button"
+                name="register"
+                value="Register"
+                onclick="window.location='/section_register.html'"/>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
 
     <!-- page footer placeholder-->
@@ -54,7 +83,5 @@
     <!-- javascript -->
     <script src="../static/header.js"></script>
     <script src="../static/footer.js"></script>
-
-</body>
-
+  </body>
 </html>
