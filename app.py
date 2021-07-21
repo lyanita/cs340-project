@@ -10,7 +10,6 @@ import datetime
 # Configuration
 app = Flask(__name__)
 app.permanent_session_lifetime = datetime.timedelta(days=365)
-#db_connection = db.connect_to_database()
 
 # Routes
 @app.route("/")
@@ -167,14 +166,81 @@ def register_section(id):
     db_connection.close()
     return render_template("section_register.html", items=register_results)
 
-@app.route("/courses.html")
+@app.route("/courses.html", methods=["GET", "POST"])
 def courses():
     db_connection = db.connect_to_database()
-    query = "SELECT * FROM courses ORDER BY course_id ASC;"
-    cursor = db.execute_query(db_connection=db_connection, query=query)
-    results = cursor.fetchall()
+    post_message = ""
+    course_query = "SELECT * FROM courses ORDER BY course_id ASC;"
+    course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
+    course_results = course_cursor.fetchall()
+    
+    section_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
+        FROM sections s \
+        JOIN courses c ON s.course_id = c.course_id \
+        JOIN instructors i ON s.instructor_id = i.instructor_id \
+        JOIN campuses ca ON s.campus_id = ca.campus_id \
+        ORDER BY section_id ASC;"
+    section_cursor = db.execute_query(db_connection=db_connection, query=section_query)
+    section_results = section_cursor.fetchall()
+    
+    if request.method == "POST":
+        if request.form['course_name']:
+            course_name = request.form['course_name']
+            insert_query = "INSERT INTO courses(course_name) VALUES (%s);"
+            data = (course_name)
+            insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
+        
+            course_query = "SELECT * FROM courses ORDER BY course_id ASC;"
+            course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
+            course_results = course_cursor.fetchall()
+            
+        if request.form['course_id'] and request.form['instructor_id'] and request.form['campus_id']:
+            course_id = request.form['course_id']
+            instructor_id = request.form['instructor_id']
+            campus_id = request.form['campus_id']
+                        
+            insert_query = "INSERT INTO sections(course_id, instructor_id, campus_id) VALUES (%s, %s, %s);"
+            data = (course_name, instructor_id, campus_id)
+            insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
+        
+            section_query = "SELECT * FROM sections ORDER BY section_id ASC;"
+            section_cursor = db.execute_query(db_connection=db_connection, query=section_query)
+            section_results = section_cursor.fetchall()
+    
+        else:
+            post_message = "Fill out all fields."
+    
     db_connection.close()
-    return render_template("courses.html", items=results)
+    return render_template("courses.html", course_items=course_results, section_items=section_results, post_message=post_message)
+
+@app.route("/delete-course/<int:id>")
+def delete_course(id):
+    db_connection = db.connect_to_database()
+    select_query = "SELECT * FROM sections WHERE course_id = %s;"
+    data = (id)
+    select_cursor = db.execute_query(db_connection=db_connection, query=select_query, query_params=data)
+    select_results = select_cursor.fetchall()
+    if len(select_results) != 0:
+        post_message = "The course has sections created. Delete the sections first."
+        return render_template("courses.html", post_message=post_message)
+    else:
+        delete_query = "DELETE FROM courses WHERE course_id = %s;"
+        delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
+        delete_message = "You have deleted course id #" + str(id) + "."
+
+    db_connection.close()
+    return redirect("/courses.html")
+
+@app.route("/delete-section/<int:id>")
+def delete_section(id):
+    db_connection = db.connect_to_database()
+    delete_query = "DELETE FROM sections WHERE section_id = %s;"
+    data = (id,)
+    delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
+    delete_message = "You have deleted section id #" + str(id) + "."
+
+    db_connection.close()
+    return redirect("/courses.html")
 
 @app.route("/students.html", methods=["GET", "POST"])
 def students():
