@@ -113,17 +113,31 @@ def delete_instructor(id):
     db_connection.close()
     return redirect("/instructors.html")
 
-@app.route("/sections.html")
+@app.route("/sections.html", methods=["GET", "POST"])
 def sections():
     db_connection = db.connect_to_database()
-    query = "SELECT section_id, course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, campus_name \
+    query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
         FROM sections s \
         JOIN courses c ON s.course_id = c.course_id \
         JOIN instructors i ON s.instructor_id = i.instructor_id \
         JOIN campuses ca ON s.campus_id = ca.campus_id \
         ORDER BY section_id ASC;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
-    results = cursor.fetchall()
+    results = cursor.fetchall()    
+    
+    if request.method == "POST":        
+        section_id = request.form['section_id']
+        course_id = request.form['course_id']
+        instructor_id = request.form['instructor_id']
+        campus_id = request.form['campus_id']
+        
+        search_query = "SELECT * FROM sections WHERE section_id LIKE %s OR course_id LIKE %s OR instructor_id LIKE %s OR campus_id LIKE %s ORDER BY section_id ASC;"
+        data = (section_id, course_id, instructor_id, campus_id)
+        search_cursor = db.execute_query(db_connection=db_connection, query=search_query, query_params=data)
+        search_results = search_cursor.fetchall()
+        print(search_results)
+        return render_template("results.html", search_results=search_results)
+    
     db_connection.close()
     return render_template("sections.html", items=results)
 
