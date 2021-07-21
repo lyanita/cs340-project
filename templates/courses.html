@@ -24,6 +24,7 @@
 
     <!-- Table -->
     <div id="courses-container">
+        <h3>Courses</h3>
         <table id="courses-table">
             <thead>
                 <tr>
@@ -32,17 +33,18 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in items %}
+                {% for item in course_items %}
                 <tr>
                     <td>{{ item['course_id'] }}</td>
                     <td>{{ item['course_name'] }}</td>
                     <td> <input type='button' name='delete' value='Delete'
-                            onclick="window.location='/delete-campus/{{ item['course_id'] }}'"></td>
+                        onclick="window.location='/delete-course/{{ item['course_id'] }}'"></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    <br>
 
     <!-- Form (Add Course) -->
     <div class="courses-forms">
@@ -59,13 +61,47 @@
         </form>
     </div>
 
+    <!-- Table -->
+    <div id="sections-container">
+        <h3>Sections</h3>
+        <table id="sections-table">
+            <thead>
+            <tr>
+                <th>Section ID</th>
+                <th>Course ID</th>
+                <th>Course Name</th>
+                <th>Instructor ID</th>
+                <th>Instructor Name</th>
+                <th>Campus ID</th>
+                <th>Campus Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in section_items %}
+            <tr>
+                <td>{{ item['section_id'] }}</td>
+                <td>{{ item['course_id'] }}</td>
+                <td>{{ item['course_name'] }}</td>
+                <td>{{ item['instructor_id'] }}</td>
+                <td>{{ item['instructor_name'] }}</td>
+                <td>{{ item['campus_id'] }}</td>
+                <td>{{ item['campus_name'] }}</td>
+                <td> <input type='button' name='delete' value='Delete'
+                    onclick="window.location='/delete-section/{{ item['section_id'] }}'"></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
     <!-- Form (Add Section) -->
     <div class="sections-forms">
         <form method="post">
             <fieldset>
                 <legend>Add a New Section</legend>
                 <label>Course ID:
-                    <input type="number" name="instructor_id" id="instructor_id">
+                    <input type="number" name="course_id" id="course_id">
                 </label></br>
                 <label>Instructor ID:
                     <input type="number" name="instructor_id" id="instructor_id">
@@ -85,15 +121,11 @@
             </fieldset>
         </form>
     </div>
-
-
-
-    <!-- page footer placeholder-->
-    <div id="footer"></div>
+    <br>
 
     <!-- javascript -->
     <script src="../static/header.js"></script>
-    <script src="../static/footer.js"></script>
+
 </body>
 
 </html>
