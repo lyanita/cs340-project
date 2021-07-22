@@ -2,9 +2,9 @@ DROP TABLE IF EXISTS sections;
 
 CREATE TABLE sections(
     section_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    course_id INT,
-    instructor_id INT,
-    campus_id INT,
+    course_id INT NOT NULL,
+    instructor_id INT NOT NULL,
+    campus_id INT NOT NULL,
     FOREIGN KEY (course_id) REFERENCES courses(course_id),
     FOREIGN KEY (instructor_id) REFERENCES instructors(instructor_id),
     FOREIGN KEY (campus_id) REFERENCES campuses(campus_id)
