@@ -74,23 +74,34 @@ def instructors():
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
     instructor_results = instructor_cursor.fetchall()
 
+    campuses_query = "SELECT DISTINCT campus_id, campus_name FROM campuses ORDER BY campus_id ASC;"
+    campuses_cursor = db.execute_query(db_connection=db_connection, query=campuses_query)
+    campuses_results = campuses_cursor.fetchall()
+
     if request.method == "POST":
         instructor_first_name = request.form['instructor_first_name']
         instructor_last_name = request.form['instructor_last_name']
         campus_name = request.form['campus_name']
+        print(campus_name)
 
-        campus_query = "SELECT DISTINCT * FROM campuses WHERE campus_name = %s;"
-        data = (campus_name,)
-        campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query, query_params=data)
-        campus_results = campus_cursor.fetchall()
+        if campus_name != "Unassigned":
+            campus_query = "SELECT DISTINCT * FROM campuses WHERE campus_name = %s;"
+            data = (campus_name,)
+            campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query, query_params=data)
+            campus_results = campus_cursor.fetchall()
 
-        for dict in campus_results:
-            campus = dict.get('campus_name')
-            if campus_name == campus:
-                campus_id = dict.get('campus_id')
+            for dict in campus_results:
+                campus = dict.get('campus_name')
+                if campus_name == campus:
+                    campus_id = dict.get('campus_id')
         
-        insert_query = "INSERT INTO instructors(instructor_first_name, instructor_last_name, campus_id) VALUES (%s, %s, %s);"
-        data = (instructor_first_name, instructor_last_name, campus_id)
+            insert_query = "INSERT INTO instructors(instructor_first_name, instructor_last_name, campus_id) VALUES (%s, %s, %s);"
+            data = (instructor_first_name, instructor_last_name, campus_id)
+        
+        else:
+            insert_query = "INSERT INTO instructors(instructor_first_name, instructor_last_name) VALUES (%s, %s);"
+            data = (instructor_first_name, instructor_last_name)
+        
         insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
         post_message = "You have successfully added a new instructor."
 
@@ -99,7 +110,7 @@ def instructors():
         instructor_results = instructor_cursor.fetchall()
 
     db_connection.close()    
-    return render_template("instructors.html", items=instructor_results, post_message=post_message)
+    return render_template("instructors.html", items=instructor_results, campuses=campuses_results, post_message=post_message)
 
 @app.route("/delete-instructor/<int:id>")
 def delete_instructor(id):
