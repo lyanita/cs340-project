@@ -244,20 +244,21 @@ def register_section(id):
         else:
             flag = False
             for dict in register_results:
-                student_id1 = dict.get('course_id')
-                section_id1 = dict.get('instructor_id')
+                student_id1 = dict.get('student_id')
+                section_id1 = dict.get('section_id')
                 
                 if student_id1 == student_id and section_id1 == section_id:
                     flag = True
                     post_message = "The section is already registered for the student. Please enter different values."
+                    break
             if not flag:
                 register_query = "INSERT INTO students_sections(student_id, section_id) VALUES (%s, %s);"
                 data = (student_id, section_id,)
                 register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
                 post_message = "You have successfully registered for the section."
                 
-            register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
-            register_results = register_cursor.fetchall()
+            #register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
+            #register_results = register_cursor.fetchall()
             
         query = "SELECT * FROM students_sections WHERE student_id = %s;"
         data = (student_id,)
