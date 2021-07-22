@@ -36,21 +36,25 @@ def campuses():
         campus_online = request.form['campus_online']
         print(campus_online)
 
-        flag = False
-        for dict in campus_results:
-            campus = dict.get('campus_name')
-            if campus_name == campus:
-                flag = True
-                post_message = "The campus name is already in use. Please enter another name."
-        if not flag:
-            insert_query = "INSERT INTO campuses(campus_name, campus_city, campus_country, campus_online) VALUES (%s, %s, %s, %s);"
-            data = (campus_name, campus_city, campus_country, campus_online)
-            insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-            post_message = "You have successfully created a new campus."
+        if campus_name == "":
+            post_message = "Please enter a campus name."
+        else:
 
-        campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
-        campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
-        campus_results = campus_cursor.fetchall()
+            flag = False
+            for dict in campus_results:
+                campus = dict.get('campus_name')
+                if campus_name == campus:
+                    flag = True
+                    post_message = "The campus name is already in use. Please enter another name."
+            if not flag:
+                insert_query = "INSERT INTO campuses(campus_name, campus_city, campus_country, campus_online) VALUES (%s, %s, %s, %s);"
+                data = (campus_name, campus_city, campus_country, campus_online)
+                insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
+                post_message = "You have successfully created a new campus."
+
+            campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
+            campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
+            campus_results = campus_cursor.fetchall()
     
     db_connection.close()
     return render_template("campuses.html", items=campus_results, post_message=post_message, delete_message=delete_message)
