@@ -22,6 +22,33 @@
         </ul>
     </div>
 
+    <!-- Form (Add Instructor) -->
+    <div class="forms">
+        <form method="post">
+            <fieldset>
+                <legend>Add a New Instructor</legend>
+                <label>First Name:
+                    <input type="text" name="instructor_first_name" id="instructor_first_name">
+                </label>
+                <label>Last Name:
+                    <input type="text" name="instructor_last_name" id="instructor_last_name">
+                </label>
+                <br>
+                <label>Choose a campus:</label>
+                {% for campus in campuses %}
+                {% set name = campus.campus_name %}
+                <input type="radio" name="campus_name" id="campus_" +{{name}} value={{name}} required>
+                <label for="campus_" +{{name}}>{{name}}</label>
+                {% endfor %}
+                <input type="radio" name="campus_name" id="campus_null" value="Unassigned">
+                <label for="campus_null">Unassigned</label>
+                <br>
+                <input type="submit" id="instructor_post">
+                <p>{{ post_message }}</p>
+            </fieldset>
+        </form>
+    </div>
+
     <!-- Table -->
     <div id="instructors-container">
         <table id="instructors-table">
@@ -34,52 +61,26 @@
                 </tr>
             </thead>
             <tbody>
-            {% for item in items %}
-            <tr>
-                <td>{{ item['instructor_id'] }}</td>
-                <td>{{ item['instructor_first_name'] }}</td>
-                <td>{{ item['instructor_last_name'] }}</td>
-                <td>{{ item['campus_id'] }}</td>
-                <td> <input type='button' name='delete' value='Delete' onclick="window.location='/delete-instructor/{{ item['instructor_id'] }}'"</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item['instructor_id'] }}</td>
+                    <td>{{ item['instructor_first_name'] }}</td>
+                    <td>{{ item['instructor_last_name'] }}</td>
+                    <td>{{ item['campus_id'] }}</td>
+                    <td> <input type='button' name='delete' value='Delete'
+                            onclick="window.location='/delete-instructor/{{ item['instructor_id'] }}'" </td> 
+                </tr>
+                {% endfor %} 
+            </tbody> 
+        </table> 
+    </div> 
+                            
+    <!-- Page Footer Placeholder-->
+    <div id="footer"></div>
 
-        <!-- Form (Add Instructor) -->
-        <div class="forms">
-            <form method="post">
-                <fieldset>
-                    <legend>Add a New Instructor</legend>
-                    <label>First Name:
-                        <input type="text" name="instructor_first_name" id="instructor_first_name">
-                    </label>
-                    <label>Last Name:
-                        <input type="text" name="instructor_last_name" id="instructor_last_name">
-                    </label>
-                    <br>
-                    <label>Choose a campus:</label>
-                    {% for campus in campuses %}
-                    {% set name = campus.campus_name %}
-                    <input type="radio" name="campus_name" id="campus_"+{{name}} value={{name}} required> 
-                    <label for="campus_"+{{name}}>{{name}}</label>
-                    {% endfor %}
-                    <input type="radio" name="campus_name" id="campus_null" value="Unassigned">
-                    <label for="campus_null">Unassigned</label>
-                    <br>
-                    <input type="submit" id="instructor_post">
-                    <p>{{ post_message }}</p>
-                </fieldset>
-            </form>
-        </div>
-
-        <!-- Page Footer Placeholder-->
-        <div id="footer"></div>
-
-        <!-- Javascript -->
-        <script src="../static/header.js"></script>
-        <script src="../static/footer.js"></script>
+    <!-- Javascript -->
+    <script src="../static/header.js"></script>
+    <script src="../static/footer.js"></script>
 
 </body>
 

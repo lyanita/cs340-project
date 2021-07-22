@@ -22,34 +22,6 @@
         </ul>
     </div>
 
-    <!-- Table -->
-    <div id="campuses-container">
-        <table id="campuses-table">
-            <thead>
-                <tr>
-                    <th>Campus_ID</th>
-                    <th>Campus_Name</th>
-                    <th>Campus_City</th>
-                    <th>Campus_Country</th>
-                    <th>Campus_Online</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for item in items %}
-            <tr>
-                <td>{{ item['campus_id'] }}</td>
-                <td>{{ item['campus_name'] }}</td>
-                <td>{{ item['campus_city'] }}</td>
-                <td>{{ item['campus_country'] }}</td>
-                <td>{{ item['campus_online'] }}</td>
-                <td> <input type='button' name='delete' value='Delete' onclick="window.location='/delete-campus/{{ item['campus_id'] }}'"</td>
-                <td> <input type='button' name='update' value='Update' onclick="window.location='/update-campus/{{ item['campus_id'] }}'"</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
     <!-- Form (Add Campus) -->
     <div class="campuses-forms">
         <form method="post">
@@ -79,7 +51,37 @@
         </form>
     </div>
 
+    <!-- Table -->
+    <div id="campuses-container">
+        <table id="campuses-table">
+            <thead>
+                <tr>
+                    <th>Campus_ID</th>
+                    <th>Campus_Name</th>
+                    <th>Campus_City</th>
+                    <th>Campus_Country</th>
+                    <th>Campus_Online</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item['campus_id'] }}</td>
+                <td>{{ item['campus_name'] }}</td>
+                <td>{{ item['campus_city'] }}</td>
+                <td>{{ item['campus_country'] }}</td>
+                <td>{{ item['campus_online'] }}</td>
+                <td> <input type='button' name='delete' value='Delete' 
+                    onclick="window.location='/delete-campus/{{ item['campus_id'] }}'"</td>
+                <td> <input type='button' name='update' value='Update' 
+                    onclick="window.location='/update-campus/{{ item['campus_id'] }}'"</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
+    
     <!-- Page Footer Placeholder-->
     <div id="footer"></div>
 

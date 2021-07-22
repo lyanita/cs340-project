@@ -62,7 +62,8 @@
                 <td>{{ student['student_first_name'] }}</td>
                 <td>{{ student['student_last_name'] }}</td>
                 <td>{{ student['campus_id'] }}</td>
-                <td> <input type='button' name='delete' value='Delete' onclick="window.location='/delete-student/{{ student['student_id'] }}'"</td>
+                <td> <input type='button' name='delete' value='Delete' 
+                    onclick="window.location='/delete-student/{{ student['student_id'] }}'"</td>
             </tr>
             {% endfor %}
             </tbody>
