@@ -7,3 +7,9 @@ CREATE TABLE students_sections(
     FOREIGN KEY(student_id) REFERENCES students(student_id),
     FOREIGN KEY(section_id) REFERENCES sections(section_id)
 );
+
+INSERT INTO students_sections(student_id, sections_id)
+SELECT student_id, sections_id
+FROM students AS t1
+CROSS JOIN sections AS t2
+;
