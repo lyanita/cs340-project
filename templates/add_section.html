@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University - Add sections</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+    <!-- page header placeholder-->
+    <div id="header">
+        <a href="../index.html"><img class="logo" src="../static/img/logo.png"></a>
+    </div>
+
+    <div class="links">
+        <ul class="nav">
+            <li class="link"><a href="../index.html">Home</a></li>
+            <li class="link"><a href="../students.html">Student Enrollment</a></li>
+            <li class="link"><a href="../sections.html">Section Registration</a></li>
+            <li class="link"><a href="../contact.html">Contact Us</a></li>
+            <li class="link"><a href="../campuses.html">Admin - Campus Management</a></li>
+            <li class="link"><a class="active" href="../courses.html">Admin - Course Management</a></li>
+            <li class="link"><a href="../instructors.html">Admin - Instructor Management</a></li>
+        </ul>
+    </div>
+
+    <!-- Table -->
+    <div id="add-section-container">
+        <h4>*Manage sections: Add sections, Delete sections</h4>
+        <table id="add-section-table">
+            <thead>
+                <tr>
+                    <th>Section ID</th>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Instructor ID</th>
+                    <th>Instructor Name</th>
+                    <th>Campus ID</th>
+                    <th>Campus Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item['section_id'] }}</td>
+                    <td>{{ item['course_id'] }}</td>
+                    <td>{{ item['course_name'] }}</td>
+                    <td>{{ item['instructor_id'] }}</td>
+                    <td>{{ item['instructor_name'] }}</td>
+                    <td>{{ item['campus_id'] }}</td>
+                    <td>{{ item['campus_name'] }}</td>
+                    <td> <input type='button' name='delete' value='Delete'
+                        onclick="window.location='/delete-section/{{ item['section_id'] }}'"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    
+    <!-- Form (Add Section) -->
+    <div class="sections-forms">
+        <form method="post">
+            <fieldset>
+                <legend>Add a New Section</legend>
+                <label>Course ID:
+                    <input type="number" name="course_id" id="course_id">
+                </label></br>
+                <label>Instructor ID:
+                    <input type="number" name="instructor_id" id="instructor_id">
+                </label></br>
+                <label>Campus ID:
+                    <input type="number" name="campus_id" id="campus_id">
+                </label></br>
+                <input type="submit" id="section_post">
+                {{ post_message }}
+            </fieldset>
+        </form>
+    </div>
+    <br>
+
+    <!-- page footer placeholder-->
+    <div id="footer"></div>
+
+    <!-- javascript -->
+    <script src="../static/footer.js"></script>
+
+</body>
+
+</html>
