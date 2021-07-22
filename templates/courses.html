@@ -24,7 +24,7 @@
 
     <!-- Table -->
     <div id="courses-container">
-        <h3>Courses</h3>
+        <h4>*Manage courses: Add courses, Delete courses, Add sections</h4>
         <table id="courses-table">
             <thead>
                 <tr>
@@ -33,12 +33,14 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in course_items %}
+                {% for item in items %}
                 <tr>
                     <td>{{ item['course_id'] }}</td>
                     <td>{{ item['course_name'] }}</td>
                     <td> <input type='button' name='delete' value='Delete'
                         onclick="window.location='/delete-course/{{ item['course_id'] }}'"></td>
+                    <td><input type="button" name="add_section" value="Add Section"
+                        onclick="window.location='/add-section/{{ item['course_id'] }}'"/></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -60,71 +62,13 @@
             </fieldset>
         </form>
     </div>
-
-    <!-- Table -->
-    <div id="sections-container">
-        <h3>Sections</h3>
-        <table id="sections-table">
-            <thead>
-            <tr>
-                <th>Section ID</th>
-                <th>Course ID</th>
-                <th>Course Name</th>
-                <th>Instructor ID</th>
-                <th>Instructor Name</th>
-                <th>Campus ID</th>
-                <th>Campus Name</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in section_items %}
-            <tr>
-                <td>{{ item['section_id'] }}</td>
-                <td>{{ item['course_id'] }}</td>
-                <td>{{ item['course_name'] }}</td>
-                <td>{{ item['instructor_id'] }}</td>
-                <td>{{ item['instructor_name'] }}</td>
-                <td>{{ item['campus_id'] }}</td>
-                <td>{{ item['campus_name'] }}</td>
-                <td> <input type='button' name='delete' value='Delete'
-                    onclick="window.location='/delete-section/{{ item['section_id'] }}'"></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <br>
-
-    <!-- Form (Add Section) -->
-    <div class="sections-forms">
-        <form method="post">
-            <fieldset>
-                <legend>Add a New Section</legend>
-                <label>Course ID:
-                    <input type="number" name="course_id" id="course_id">
-                </label></br>
-                <label>Instructor ID:
-                    <input type="number" name="instructor_id" id="instructor_id">
-                </label></br>
-                <label>Campus ID:
-                    <input type="number" name="campus_id" id="campus_id">
-                </label></br>
-                <label>Online/Offline:
-                    <input type="radio" name="campus_online" id="campus_online" value="True">
-                    <label for="campus_online">E-Campus</label>
-                    <input type="radio" name="campus_online" id="campus_offline" value="False">
-                    <label for="campus_offline">In-Person Campus</label>
-                </label>
-                </br>
-                <input type="submit" id="section_post">
-                {{ post_message }}
-            </fieldset>
-        </form>
-    </div>
-    <br>
-
+    
+    <!-- page footer placeholder-->
+    <div id="footer"></div>
+    
     <!-- javascript -->
     <script src="../static/header.js"></script>
+    <script src="../static/footer.js"></script>
 
 </body>
 
