@@ -59,16 +59,34 @@
         <form method="post">
             <fieldset>
                 <legend>Register for sections</legend>
-                <label>First Name:</label>
-                    <input type="text" name="first_name" id="first_name"></br>
-                <label>Last Name:</label>
-                    <input type="text" name="last_name" id="last_name"></br>
                 <label>Student ID:</label>
-                    <input type="text" name="student_id" id="student_id"></br>
+                    <input type="number" name="student_id" id="student_id"></br>
+                <label>Section ID:</label>
+                    <input type="number" name="section_id" id="section_id"></br>
                 <input type="submit" id="section_post">
                 {{ post_message }}
             </fieldset>
         </form>
+    </div>
+
+    <!-- Table -->
+    <div id="student-section-container">
+        <table id="student-section-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Section ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items2 %}
+                <tr>
+                    <td>{{ item['student_id'] }}</td>
+                    <td>{{ item['section_id'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <!-- page footer placeholder-->
