@@ -390,7 +390,7 @@ def students():
     select_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
     select_cursor = db.execute_query(db_connection=db_connection, query=select_query)
     select_results = select_cursor.fetchall()
-    images = os.listdir(os.path.join(app.static_folder, "img"))
+    images = os.listdir(os.path.join(app.static_folder, "img/campus"))
 
     student_query = "SELECT campus_id, COUNT(*) AS count FROM students GROUP BY campus_id ORDER BY campus_id ASC;"
     student_cursor = db.execute_query(db_connection=db_connection, query=student_query)
