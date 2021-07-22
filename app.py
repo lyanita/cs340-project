@@ -52,6 +52,18 @@ def campuses():
                 insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
                 post_message = "You have successfully created a new campus."
 
+                new_campus_query = "SELECT * FROM campuses WHERE campus_name = %s;"
+                data = (campus_name,)
+                new_campus_cursor = db.execute_query(db_connection=db_connection, query=new_campus_query, query_params=data)
+                new_campus_results = new_campus_cursor.fetchall()
+                print(new_campus_results)
+
+                intersect_insert_query = "INSERT INTO courses_campuses(course_id, campus_id) SELECT course_id, campus_id FROM courses t1 CROSS JOIN campuses t2 WHERE t2.campus_id = %s;"
+                for dict in new_campus_results:
+                    campus_id = dict.get('campus_id')
+                data = (campus_id,)
+                intersect_insert_cursor = db.execute_query(db_connection=db_connection, query=intersect_insert_query, query_params=data)
+
             campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
             campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
             campus_results = campus_cursor.fetchall()
@@ -95,8 +107,10 @@ def update_campus(id):
 @app.route("/delete-campus/<int:id>")
 def delete_campus(id):
     db_connection = db.connect_to_database()
+    data=(id,)
+    intersect_delete_query = "DELETE FROM courses_campuses WHERE campus_id = %s;"
+    intersect_delete_cursor = db.execute_query(db_connection=db_connection, query=intersect_delete_query, query_params=data)
     delete_query = "DELETE FROM campuses WHERE campus_id = %s;"
-    data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
     delete_message = "You have deleted campus id #" + str(id) + "."
 
