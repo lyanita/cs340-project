@@ -43,6 +43,7 @@
                 <td>{{ item['campus_country'] }}</td>
                 <td>{{ item['campus_online'] }}</td>
                 <td> <input type='button' name='delete' value='Delete' onclick="window.location='/delete-campus/{{ item['campus_id'] }}'"</td>
+                <td> <input type='button' name='update' value='Update' onclick="window.location='/update-campus/{{ item['campus_id'] }}'"</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -66,9 +67,9 @@
                 </label>
                 </br>
                 <label>Online/Offline:
-                    <input type="radio" name="campus_online" id="campus_online" value="True" required>
+                    <input type="radio" name="campus_online" id="campus_online" value=TRUE required>
                     <label for="campus_online">E-Campus</label>
-                    <input type="radio" name="campus_online" id="campus_offline" value="False">
+                    <input type="radio" name="campus_online" id="campus_offline" value=FALSE>
                     <label for="campus_offline">In-Person Campus</label>
                 </label>
                 <br>

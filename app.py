@@ -33,7 +33,7 @@ def campuses():
         campus_name = request.form['campus_name']
         campus_city = request.form['campus_city']
         campus_country = request.form['campus_country']
-        campus_online = request.form['campus_online']
+        campus_online = True if request.form['campus_online'] == 'TRUE' else False
         print(campus_online)
 
         if campus_name == "":
@@ -58,6 +58,39 @@ def campuses():
     
     db_connection.close()
     return render_template("campuses.html", items=campus_results, post_message=post_message, delete_message=delete_message)
+
+@app.route("/update-campus/<int:id>", methods=["GET", "POST"])
+def update_campus(id):
+    post_message = ""
+    db_connection = db.connect_to_database()
+    campus_query = "SELECT * FROM campuses WHERE campus_id = %s;"
+    data = (id,)
+    campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query, query_params=data)
+    campus_results = campus_cursor.fetchall()
+    print(campus_results)
+
+    if request.method == "POST":
+        campus_name = request.form['campus_name']
+        campus_city = request.form['campus_city']
+        campus_country = request.form['campus_country']
+        check = request.form['campus_online']
+        campus_online = True if request.form['campus_online'] == 'TRUE' else False
+        print(check)
+        print(campus_online)
+
+        if campus_name == "":
+            post_message = "Please enter a campus name."
+        else:
+            update_query = "UPDATE campuses SET campus_name = %s, campus_city = %s, campus_country = %s, campus_online = %s WHERE campus_id = %s;"
+            data = (campus_name, campus_city, campus_country, campus_online, id)
+            update_cursor = db.execute_query(db_connection=db_connection, query=update_query, query_params=data)
+        
+        db_connection.close()
+        return redirect("/campuses.html")
+            
+    else:
+        db_connection.close()
+        return render_template("campus_update.html", items=campus_results, post_message=post_message)
 
 @app.route("/delete-campus/<int:id>")
 def delete_campus(id):
