@@ -108,8 +108,8 @@ def update_campus(id):
 def delete_campus(id):
     db_connection = db.connect_to_database()
     data=(id,)
-    intersect_delete_query = "DELETE FROM courses_campuses WHERE campus_id = %s;"
-    intersect_delete_cursor = db.execute_query(db_connection=db_connection, query=intersect_delete_query, query_params=data)
+    #intersect_delete_query = "DELETE FROM courses_campuses WHERE campus_id = %s;"
+    #intersect_delete_cursor = db.execute_query(db_connection=db_connection, query=intersect_delete_query, query_params=data)
     delete_query = "DELETE FROM campuses WHERE campus_id = %s;"
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
     delete_message = "You have deleted campus id #" + str(id) + "."

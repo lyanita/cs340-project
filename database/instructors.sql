@@ -5,7 +5,7 @@ CREATE TABLE instructors(
     instructor_first_name VARCHAR(255) NOT NULL,
     instructor_last_name VARCHAR(255) NOT NULL,
     campus_id INT,
-    FOREIGN KEY (campus_id) REFERENCES campuses(campus_id)
+    FOREIGN KEY (campus_id) REFERENCES campuses(campus_id) ON DELETE CASCADE
 );
 
 INSERT INTO instructors(instructor_first_name, instructor_last_name, campus_id) 

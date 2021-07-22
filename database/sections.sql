@@ -7,7 +7,7 @@ CREATE TABLE sections(
     campus_id INT NOT NULL,
     FOREIGN KEY (course_id) REFERENCES courses(course_id),
     FOREIGN KEY (instructor_id) REFERENCES instructors(instructor_id),
-    FOREIGN KEY (campus_id) REFERENCES campuses(campus_id)
+    FOREIGN KEY (campus_id) REFERENCES campuses(campus_id) ON DELETE CASCADE
 );
 
 INSERT INTO sections(course_id, instructor_id, campus_id) 
