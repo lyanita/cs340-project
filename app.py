@@ -215,10 +215,11 @@ def sections():
     db_connection.close()
     return render_template("sections.html", items=results)
 
-@app.route("/register-section/<int:id>")
+@app.route("/register-section/<int:id>", methods=["GET", "POST"])
 def register_section(id):
     db_connection = db.connect_to_database()
-    query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
+    post_message = ""
+    register_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
         FROM sections s \
         JOIN courses c ON s.course_id = c.course_id \
         JOIN instructors i ON s.instructor_id = i.instructor_id \
@@ -226,57 +227,80 @@ def register_section(id):
         WHERE section_id = %s \
         ORDER BY section_id ASC;"
     data = (id,)
-    register_cursor = db.execute_query(db_connection=db_connection, query=query, query_params=data)
+    register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
     register_results = register_cursor.fetchall()
+    
+    query = "SELECT * FROM students_sections WHERE section_id = %s;"
+    data = (id,)
+    cursor = db.execute_query(db_connection=db_connection, query=query, query_params=data)
+    results = ""
+    
+    if request.method == "POST":
+        student_id = request.form['student_id']
+        section_id = request.form['section_id']
+
+        if student_id == "" or section_id == "":
+            post_message = "Please complete all fields in the form."
+        else:
+            flag = False
+            for dict in register_results:
+                student_id1 = dict.get('course_id')
+                section_id1 = dict.get('instructor_id')
+                
+                if student_id1 == student_id and section_id1 == section_id:
+                    flag = True
+                    post_message = "The section is already registered for the student. Please enter different values."
+            if not flag:
+                register_query = "INSERT INTO students_sections(student_id, section_id) VALUES (%s, %s);"
+                data = (student_id, section_id,)
+                register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
+                post_message = "You have successfully registered for the section."
+                
+            register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
+            register_results = register_cursor.fetchall()
+            
+        query = "SELECT * FROM students_sections WHERE student_id = %s;"
+        data = (student_id,)
+        cursor = db.execute_query(db_connection=db_connection, query=query, query_params=data)
+        results = cursor.fetchall()
+        
     db_connection.close()
-    return render_template("section_register.html", items=register_results)
+    return render_template("section_register.html", items=register_results, items2=results, post_message=post_message)
 
 @app.route("/courses.html", methods=["GET", "POST"])
 def courses():
     db_connection = db.connect_to_database()
     post_message = ""
+    delete_message = ""
     course_query = "SELECT * FROM courses ORDER BY course_id ASC;"
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_results = course_cursor.fetchall()
-    
-    section_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
-        FROM sections s \
-        JOIN courses c ON s.course_id = c.course_id \
-        JOIN instructors i ON s.instructor_id = i.instructor_id \
-        JOIN campuses ca ON s.campus_id = ca.campus_id \
-        ORDER BY section_id ASC;"
-    section_cursor = db.execute_query(db_connection=db_connection, query=section_query)
-    section_results = section_cursor.fetchall()
-    
+
     if request.method == "POST":
-        if request.form['course_name']:
-            course_name = request.form['course_name']
-            insert_query = "INSERT INTO courses(course_name) VALUES (%s);"
-            data = (course_name)
-            insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-        
+        course_name = request.form['course_name']
+        print(course_name)
+
+        if course_name == "":
+            post_message = "Please enter a course name."
+        else:
+            flag = False
+            for dict in course_results:
+                course = dict.get('course_name')
+                if course_name == course:
+                    flag = True
+                    post_message = "The course name is already in use. Please enter another name."
+            if not flag:
+                insert_query = "INSERT INTO courses(course_name) VALUES (%s);"
+                data = (course_name,)
+                insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
+                post_message = "You have successfully created a new course."
+
             course_query = "SELECT * FROM courses ORDER BY course_id ASC;"
             course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
             course_results = course_cursor.fetchall()
-            
-        if request.form['course_id'] and request.form['instructor_id'] and request.form['campus_id']:
-            course_id = request.form['course_id']
-            instructor_id = request.form['instructor_id']
-            campus_id = request.form['campus_id']
-                        
-            insert_query = "INSERT INTO sections(course_id, instructor_id, campus_id) VALUES (%s, %s, %s);"
-            data = (course_name, instructor_id, campus_id)
-            insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-        
-            section_query = "SELECT * FROM sections ORDER BY section_id ASC;"
-            section_cursor = db.execute_query(db_connection=db_connection, query=section_query)
-            section_results = section_cursor.fetchall()
-    
-        else:
-            post_message = "Fill out all fields."
     
     db_connection.close()
-    return render_template("courses.html", course_items=course_results, section_items=section_results, post_message=post_message)
+    return render_template("courses.html", items=course_results, post_message=post_message, delete_message=delete_message)
 
 @app.route("/delete-course/<int:id>")
 def delete_course(id):
@@ -295,6 +319,58 @@ def delete_course(id):
 
     db_connection.close()
     return redirect("/courses.html")
+
+@app.route("/add-section/<int:id>", methods=["GET", "POST"])
+def add_section(id):
+    db_connection = db.connect_to_database()
+    post_message = ""
+    add_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
+        FROM sections s \
+        JOIN courses c ON s.course_id = c.course_id \
+        JOIN instructors i ON s.instructor_id = i.instructor_id \
+        JOIN campuses ca ON s.campus_id = ca.campus_id \
+        WHERE c.course_id = %s \
+        ORDER BY section_id ASC;"
+    data = (id,)
+    add_cursor = db.execute_query(db_connection=db_connection, query=add_query, query_params=data)
+    add_results = add_cursor.fetchall()
+    
+    if request.method == "POST":
+        course_id = request.form['course_id']
+        instructor_id = request.form['instructor_id']
+        campus_id = request.form['campus_id']
+
+        if course_id == "" or instructor_id == "" or campus_id == "":
+            post_message = "Please complete all fields in the form."
+        else:
+            flag = False
+            for dict in add_results:
+                course_id1 = dict.get('course_id')
+                instructor_id1 = dict.get('instructor_id')
+                campus_id1 = dict.get('campus_id')
+                
+                if course_id1 == course_id and instructor_id1 == instructor_id and campus_id1 == campus_id:
+                    flag = True
+                    post_message = "The section already exists. Please enter different values."
+            if not flag:
+                add_query = "INSERT INTO sections(course_id, instructor_id, campus_id) VALUES (%s, %s, %s);"
+                data = (course_id, instructor_id, campus_id,)
+                add_cursor = db.execute_query(db_connection=db_connection, query=add_query, query_params=data)
+                post_message = "You have successfully created a new section."
+                
+            add_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
+                        FROM sections s \
+                        JOIN courses c ON s.course_id = c.course_id \
+                        JOIN instructors i ON s.instructor_id = i.instructor_id \
+                        JOIN campuses ca ON s.campus_id = ca.campus_id \
+                        WHERE c.course_id = %s \
+                        ORDER BY section_id ASC;"
+            data = (id,)
+            add_cursor = db.execute_query(db_connection=db_connection, query=add_query, query_params=data)
+            add_results = add_cursor.fetchall()
+            
+    db_connection.close()
+    return render_template("add_section.html", items=add_results, post_message=post_message)
 
 @app.route("/delete-section/<int:id>")
 def delete_section(id):
