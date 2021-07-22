@@ -258,15 +258,16 @@ def students():
     population_query = "SELECT * FROM students ORDER BY student_id ASC;"
     population_cursor = db.execute_query(db_connection=db_connection, query=population_query)
     population_results = population_cursor.fetchall()
+
+    campus_query = "SELECT DISTINCT campus_id, campus_name FROM campuses ORDER BY campus_id ASC;"
+    campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
+    campus_results = campus_cursor.fetchall()
     
     if request.method == "POST":
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         campus = request.form['campus']
         
-        campus_query = "SELECT DISTINCT campus_id, campus_name FROM campuses ORDER BY campus_id ASC;"
-        campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
-        campus_results = campus_cursor.fetchall()
         for dict in campus_results:
             campus_name = dict.get('campus_name')
             if campus_name == campus:
@@ -281,7 +282,7 @@ def students():
         register_cursor = db.execute_query(db_connection=db_connection, query=register_query)
         register_results = register_cursor.fetchall()
         print(register_results)
-        student_id = str(register_results[0].get('student_id') + 1)
+        student_id = str(register_results[0].get('student_id'))
         post_message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
 
         population_query = "SELECT * FROM students ORDER BY student_id ASC;"
@@ -289,7 +290,7 @@ def students():
         population_results = population_cursor.fetchall()
 
     db_connection.close()
-    return render_template("students.html", items=select_results, students=population_results, images=images, count=student_results, post_message=post_message)
+    return render_template("students.html", items=select_results, students=population_results, campuses=campus_results, images=images, count=student_results, post_message=post_message)
 
 @app.route("/delete-student/<int:id>")
 def delete_student(id):
