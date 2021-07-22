@@ -35,7 +35,7 @@
                     <label>Choose a campus:</label>
                     {% for campus in campuses %}
                     {% set name = campus.campus_name %}
-                    <input type="radio" name="campus" id="campus_"+{{name}} value={{name}}>
+                    <input type="radio" name="campus" id="campus_"+{{name}} value={{name}} required>
                     <label for="campus_"+{{name}}>{{name}}</label>
                     {% endfor %}
                 <br>

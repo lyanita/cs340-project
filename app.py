@@ -84,6 +84,9 @@ def instructors():
         campus_name = request.form['campus_name']
         print(campus_name)
 
+        if instructor_first_name == "" or instructor_last_name == "":
+            post_message = "Please complete all fields in the form."
+
         if campus_name != "Unassigned":
             campus_query = "SELECT DISTINCT * FROM campuses WHERE campus_name = %s;"
             data = (campus_name,)
@@ -278,27 +281,32 @@ def students():
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         campus = request.form['campus']
-        
-        for dict in campus_results:
-            campus_name = dict.get('campus_name')
-            if campus_name == campus:
-                campus_id = dict.get('campus_id')
-                print(campus_id)
-        
-        insert_query = "INSERT INTO students(student_first_name, student_last_name, campus_id) VALUES (%s, %s, %s);"
-        data = (first_name, last_name, campus_id)
-        insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
+        print(first_name)
+        print(campus)
 
-        register_query = "SELECT MAX(student_id) AS student_id FROM students;"
-        register_cursor = db.execute_query(db_connection=db_connection, query=register_query)
-        register_results = register_cursor.fetchall()
-        print(register_results)
-        student_id = str(register_results[0].get('student_id'))
-        post_message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
+        if first_name == "" or last_name == "":
+            post_message = "Please complete all fields in the form."
+        else:
+            for dict in campus_results:
+                campus_name = dict.get('campus_name')
+                if campus_name == campus:
+                    campus_id = dict.get('campus_id')
+                    print(campus_id)
+        
+            insert_query = "INSERT INTO students(student_first_name, student_last_name, campus_id) VALUES (%s, %s, %s);"
+            data = (first_name, last_name, campus_id)
+            insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
 
-        population_query = "SELECT * FROM students ORDER BY student_id ASC;"
-        population_cursor = db.execute_query(db_connection=db_connection, query=population_query)
-        population_results = population_cursor.fetchall()
+            register_query = "SELECT MAX(student_id) AS student_id FROM students;"
+            register_cursor = db.execute_query(db_connection=db_connection, query=register_query)
+            register_results = register_cursor.fetchall()
+            print(register_results)
+            student_id = str(register_results[0].get('student_id'))
+            post_message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
+
+            population_query = "SELECT * FROM students ORDER BY student_id ASC;"
+            population_cursor = db.execute_query(db_connection=db_connection, query=population_query)
+            population_results = population_cursor.fetchall()
 
     db_connection.close()
     return render_template("students.html", items=select_results, students=population_results, campuses=campus_results, images=images, count=student_results, post_message=post_message)
