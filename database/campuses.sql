@@ -6,7 +6,7 @@ CREATE TABLE campuses(
     campus_city TEXT,
     campus_country TEXT,
     campus_online BOOLEAN
-);
+) ENGINE = InnoDB;
 
 INSERT INTO campuses(campus_name, campus_city, campus_country, campus_online)
 VALUES 

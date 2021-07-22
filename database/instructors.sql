@@ -6,7 +6,7 @@ CREATE TABLE instructors(
     instructor_last_name VARCHAR(255) NOT NULL,
     campus_id INT,
     FOREIGN KEY (campus_id) REFERENCES campuses(campus_id) ON DELETE CASCADE
-);
+) ENGINE = InnoDB;
 
 INSERT INTO instructors(instructor_first_name, instructor_last_name, campus_id) 
 VALUES
