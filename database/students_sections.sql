@@ -9,7 +9,8 @@ CREATE TABLE students_sections(
 ) ENGINE = InnoDB;
 
 INSERT INTO students_sections(student_id, section_id)
-SELECT student_id, section_id
-FROM students AS t1
-CROSS JOIN sections AS t2
+VALUES 
+    (1,1), 
+    (1,2), 
+    (2,2)
 ;
