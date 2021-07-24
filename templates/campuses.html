@@ -56,11 +56,12 @@
         <table id="campuses-table">
             <thead>
                 <tr>
-                    <th>Campus_ID</th>
-                    <th>Campus_Name</th>
-                    <th>Campus_City</th>
-                    <th>Campus_Country</th>
-                    <th>Campus_Online</th>
+                    <th>Campus ID</th>
+                    <th>Campus Name</th>
+                    <th>Campus City</th>
+                    <th>Campus Country</th>
+                    <th>Campus Type Code</th>
+                    <th>Campus Type Description</th>
                 </tr>
             </thead>
             <tbody>
@@ -71,6 +72,11 @@
                 <td>{{ item['campus_city'] }}</td>
                 <td>{{ item['campus_country'] }}</td>
                 <td>{{ item['campus_online'] }}</td>
+                {% if item.campus_online == 1 %}
+                <td>E-Campus</td>
+                {% else %}
+                <td>In Person Campus</td>
+                {% endif %}
                 <td> <input type='button' name='delete' value='Delete' 
                     onclick="window.location='/delete-campus/{{ item['campus_id'] }}'"</td>
                 <td> <input type='button' name='update' value='Update' 
