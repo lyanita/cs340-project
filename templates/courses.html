@@ -39,10 +39,11 @@
                     <td>{{ item['course_name'] }}</td>
                     <td> <input type='button' name='delete' value='Delete'
                         onclick="window.location='/delete-course/{{ item['course_id'] }}'"></td>
-                    <td><input type="button" name="add_section" value="Add Section"
-                        onclick="window.location='/add-section/{{ item['course_id'] }}'"/></td>
+                    <td><input type="button" name="manage_section" value="Manage Section"
+                        onclick="window.location='/manage-section/{{ item['course_id'] }}'"/></td>
                 </tr>
                 {% endfor %}
+                {{ delete_message }}
             </tbody>
         </table>
     </div>
