@@ -54,10 +54,11 @@
         <table id="instructors-table">
             <thead>
                 <tr>
-                    <th>Instructor_ID</th>
-                    <th>Instructor_First_Name</th>
-                    <th>Instructor_Last_Name</th>
-                    <th>Instructor_Campus</th>
+                    <th>Instructor ID</th>
+                    <th>Instructor First Name</th>
+                    <th>Instructor Last Name</th>
+                    <th>Campus ID</th>
+                    <th>Campus Name</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +68,7 @@
                     <td>{{ item['instructor_first_name'] }}</td>
                     <td>{{ item['instructor_last_name'] }}</td>
                     <td>{{ item['campus_id'] }}</td>
+                    <td>{{ item['campus_name'] }}</td>
                     <td> <input type='button' name='delete' value='Delete'
                             onclick="window.location='/delete-instructor/{{ item['instructor_id'] }}'" </td> 
                 </tr>

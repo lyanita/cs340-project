@@ -49,10 +49,11 @@
         <table id="students-table">
             <thead>
                 <tr>
-                    <th>Student_ID</th>
-                    <th>Student_First_Name</th>
-                    <th>Student_Last_Name</th>
-                    <th>Campus_ID</th>
+                    <th>Student ID</th>
+                    <th>Student First Name</th>
+                    <th>Student Last Name</th>
+                    <th>Campus ID</th>
+                    <th>Campus Name</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,6 +63,7 @@
                 <td>{{ student['student_first_name'] }}</td>
                 <td>{{ student['student_last_name'] }}</td>
                 <td>{{ student['campus_id'] }}</td>
+                <td>{{ student['campus_name'] }}</td>
                 <td> <input type='button' name='delete' value='Delete' 
                     onclick="window.location='/delete-student/{{ student['student_id'] }}'"</td>
             </tr>

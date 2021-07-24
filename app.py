@@ -121,7 +121,7 @@ def delete_campus(id):
 def instructors():
     db_connection = db.connect_to_database()
     post_message = ""
-    instructor_query = "SELECT * FROM instructors ORDER BY instructor_id ASC;"
+    instructor_query = "SELECT ins.*, cps.campus_name FROM instructors ins LEFT JOIN campuses cps ON ins.campus_id = cps.campus_id ORDER BY instructor_id ASC;"
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
     instructor_results = instructor_cursor.fetchall()
 
@@ -159,7 +159,7 @@ def instructors():
         insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
         post_message = "You have successfully added a new instructor."
 
-        instructor_query = "SELECT * FROM instructors ORDER BY instructor_id ASC;"
+        instructor_query = "SELECT ins.*, cps.campus_name FROM instructors ins LEFT JOIN campuses cps ON ins.campus_id = cps.campus_id ORDER BY instructor_id ASC;"
         instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
         instructor_results = instructor_cursor.fetchall()
 
@@ -229,27 +229,33 @@ def register_section(id):
     data = (id,)
     register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
     register_results = register_cursor.fetchall()
+    print(register_results)
     
     query = "SELECT * FROM students_sections WHERE section_id = %s;"
     data = (id,)
     cursor = db.execute_query(db_connection=db_connection, query=query, query_params=data)
-    results = ""
+    results = cursor.fetchall()
+    print(results)
     
     if request.method == "POST":
         student_id = request.form['student_id']
         section_id = request.form['section_id']
+        print("Student ID is " + str(student_id) + " and Section ID is " + str(section_id))
+
 
         if student_id == "" or section_id == "":
             post_message = "Please complete all fields in the form."
         else:
             flag = False
-            for dict in register_results:
+            for dict in results:
                 student_id1 = dict.get('student_id')
                 section_id1 = dict.get('section_id')
+                print("Student ID1 is " + str(student_id1) + " and Section ID1 is " + str(section_id1))
                 
-                if student_id1 == student_id and section_id1 == section_id:
+                if int(student_id1) == int(student_id) and int(section_id1) == int(section_id):
                     flag = True
                     post_message = "The section is already registered for the student. Please enter different values."
+                    print("Duplicate")
                     break
             if not flag:
                 register_query = "INSERT INTO students_sections(student_id, section_id) VALUES (%s, %s);"
@@ -307,9 +313,10 @@ def courses():
 def delete_course(id):
     db_connection = db.connect_to_database()
     select_query = "SELECT * FROM sections WHERE course_id = %s;"
-    data = (id)
+    data = (id,)
     select_cursor = db.execute_query(db_connection=db_connection, query=select_query, query_params=data)
     select_results = select_cursor.fetchall()
+    print(select_results)
     if len(select_results) != 0:
         post_message = "The course has sections created. Delete the sections first."
         return render_template("courses.html", post_message=post_message)
@@ -376,13 +383,19 @@ def add_section(id):
 @app.route("/delete-section/<int:id>")
 def delete_section(id):
     db_connection = db.connect_to_database()
-    delete_query = "DELETE FROM sections WHERE section_id = %s;"
     data = (id,)
+    course_query = "SELECT * FROM sections WHERE section_id = %s;"
+    course_cursor = db.execute_query(db_connection=db_connection, query=course_query, query_params=data)
+    course_results = course_cursor.fetchall()
+    for dict in course_results:
+        course_id = dict.get("course_id")
+    delete_query = "DELETE FROM sections WHERE section_id = %s;"
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
     delete_message = "You have deleted section id #" + str(id) + "."
 
     db_connection.close()
-    return redirect("/courses.html")
+    #return redirect("/courses.html")
+    return redirect("/add-section/"+str(course_id))
 
 @app.route("/students.html", methods=["GET", "POST"])
 def students():
@@ -397,7 +410,7 @@ def students():
     student_cursor = db.execute_query(db_connection=db_connection, query=student_query)
     student_results = student_cursor.fetchall()
 
-    population_query = "SELECT * FROM students ORDER BY student_id ASC;"
+    population_query = "SELECT std.*, cps.campus_name FROM students std LEFT JOIN campuses cps ON std.campus_id = cps.campus_id ORDER BY student_id ASC;"
     population_cursor = db.execute_query(db_connection=db_connection, query=population_query)
     population_results = population_cursor.fetchall()
 
@@ -432,7 +445,7 @@ def students():
             student_id = str(register_results[0].get('student_id'))
             post_message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
 
-            population_query = "SELECT * FROM students ORDER BY student_id ASC;"
+            population_query = "SELECT std.*, cps.campus_name FROM students std LEFT JOIN campuses cps ON std.campus_id = cps.campus_id ORDER BY student_id ASC;"
             population_cursor = db.execute_query(db_connection=db_connection, query=population_query)
             population_results = population_cursor.fetchall()
 
