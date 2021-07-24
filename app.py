@@ -46,6 +46,7 @@ def campuses():
                 if campus_name == campus:
                     flag = True
                     post_message = "The campus name is already in use. Please enter another name."
+                    break
             if not flag:
                 insert_query = "INSERT INTO campuses(campus_name, campus_city, campus_country, campus_online) VALUES (%s, %s, %s, %s);"
                 data = (campus_name, campus_city, campus_country, campus_online)
@@ -296,6 +297,7 @@ def courses():
                 if course_name == course:
                     flag = True
                     post_message = "The course name is already in use. Please enter another name."
+                    break
             if not flag:
                 insert_query = "INSERT INTO courses(course_name) VALUES (%s);"
                 data = (course_name,)
