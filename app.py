@@ -24,9 +24,7 @@ def index():
 def campuses():
     db_connection = db.connect_to_database()
     post_message = ""
-    #delete_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else ""
-    #delete_message = session['delete_message']
     campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
     campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
     campus_results = campus_cursor.fetchall()
@@ -116,8 +114,6 @@ def delete_campus(id):
     delete_query = "DELETE FROM campuses WHERE campus_id = %s;"
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
     delete_message = "You have deleted campus id #" + str(id) + "."
-    #delete_message = json.dumps({"main": "You have deleted campus id #" + str(id) + "."})
-    #session['delete_message'] = delete_message
 
     db_connection.close()
     return redirect(url_for('campuses', delete_message=delete_message, **request.args))
@@ -408,6 +404,7 @@ def delete_section(id):
 def students():
     db_connection = db.connect_to_database()
     post_message = ""
+    delete_message = request.args.get("delete_message") if request.args.get("delete_message") else ""
     select_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
     select_cursor = db.execute_query(db_connection=db_connection, query=select_query)
     select_results = select_cursor.fetchall()
@@ -457,7 +454,7 @@ def students():
             population_results = population_cursor.fetchall()
 
     db_connection.close()
-    return render_template("students.html", items=select_results, students=population_results, campuses=campus_results, images=images, count=student_results, post_message=post_message)
+    return render_template("students.html", items=select_results, students=population_results, campuses=campus_results, images=images, count=student_results, post_message=post_message, delete_message=delete_message)
 
 @app.route("/delete-student/<int:id>")
 def delete_student(id):
@@ -468,7 +465,8 @@ def delete_student(id):
     delete_message = "You have deleted student id #" + str(id) + "."
 
     db_connection.close()
-    return redirect("/students.html")
+    return redirect(url_for('students', delete_message=delete_message, **request.args))
+    #return redirect("/students.html")
 
 @app.route("/contact.html")
 def contact():
