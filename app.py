@@ -413,7 +413,7 @@ def delete_section(id):
 
     db_connection.close()
     #return redirect("/courses.html")
-    return redirect("/add-section/"+str(course_id))
+    return redirect("/manage-section/"+str(course_id))
 
 @app.route("/students.html", methods=["GET", "POST"])
 def students():
