@@ -322,29 +322,13 @@ def courses():
 @app.route("/delete-course/<int:id>")
 def delete_course(id):
     db_connection = db.connect_to_database()
-    post_message = ""
-    delete_message = ""
-    select_query = "SELECT * FROM sections WHERE course_id = %s;"
-    data = (id,)
-    select_cursor = db.execute_query(db_connection=db_connection, query=select_query, query_params=data)
-    select_results = select_cursor.fetchall()
-    print(select_results)
-    query = "SELECT * FROM courses ORDER BY course_id ASC;"
-    cursor = db.execute_query(db_connection=db_connection, query=query)
-    results = cursor.fetchall()    
-    
-    if len(select_results) != 0:
-        # delete all sections for the given course_id
-        delete_query = "DELETE FROM sections WHERE course_id = %s;"
-        delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)       
-
     delete_query = "DELETE FROM courses WHERE course_id = %s;"
+    data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
     delete_message = "You have deleted course id #" + str(id) + "."
 
     db_connection.close()
     return redirect("../courses.html")
-    #return render_template("/delete-course/"+str(id), items=results, post_message=post_message, delete_message=delete_message)
 
 @app.route("/manage-section/<int:id>", methods=["GET", "POST"])
 def manage_section(id):
