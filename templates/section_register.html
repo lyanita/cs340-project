@@ -68,9 +68,10 @@
             </fieldset>
         </form>
     </div>
-
+    <br>
     <!-- Table -->
     <div id="student-section-container">
+        <h4>{{ post_message2 }}</h4>
         <table id="student-section-table">
             <thead>
                 <tr>
@@ -83,6 +84,8 @@
                 <tr>
                     <td>{{ item['student_id'] }}</td>
                     <td>{{ item['section_id'] }}</td>
+                    <td> <input type='button' name='delete' value='Delete'
+                        onclick="window.location='/delete-student-section/{{ item['student_id'] }}{{ item['section_id'] }}'"></td>
                 </tr>
                 {% endfor %}
             </tbody>
