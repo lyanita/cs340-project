@@ -123,6 +123,7 @@ def delete_campus(id):
 def instructors():
     db_connection = db.connect_to_database()
     post_message = ""
+    delete_message = request.args.get("delete_message") if request.args.get("delete_message") else ""
     instructor_query = "SELECT ins.*, cps.campus_name FROM instructors ins LEFT JOIN campuses cps ON ins.campus_id = cps.campus_id ORDER BY instructor_id ASC;"
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
     instructor_results = instructor_cursor.fetchall()
@@ -166,7 +167,7 @@ def instructors():
         instructor_results = instructor_cursor.fetchall()
 
     db_connection.close()    
-    return render_template("instructors.html", items=instructor_results, campuses=campuses_results, post_message=post_message)
+    return render_template("instructors.html", items=instructor_results, campuses=campuses_results, post_message=post_message, delete_message=delete_message)
 
 @app.route("/delete-instructor/<int:id>")
 def delete_instructor(id):
@@ -177,7 +178,8 @@ def delete_instructor(id):
     delete_message = "You have deleted instructor id #" + str(id) + "."
 
     db_connection.close()
-    return redirect("/instructors.html")
+    return redirect(url_for('instructors', delete_message=delete_message, **request.args))
+    #return redirect("/instructors.html")
 
 @app.route("/sections.html", methods=["GET", "POST"])
 def sections():
