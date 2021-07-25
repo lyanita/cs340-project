@@ -216,10 +216,11 @@ def sections():
     db_connection.close()
     return render_template("sections.html", items=results)
 
-@app.route("/register-section/<int:id>", methods=["GET", "POST"])
-def register_section(id):
+@app.route("/section-register/<int:id>", methods=["GET", "POST"])
+def section_register(id):
     db_connection = db.connect_to_database()
     post_message = ""
+    post_message2 = ""
     register_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
         FROM sections s \
         JOIN courses c ON s.course_id = c.course_id \
@@ -230,7 +231,6 @@ def register_section(id):
     data = (id,)
     register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
     register_results = register_cursor.fetchall()
-    print(register_results)
     
     query = "SELECT * FROM students_sections WHERE section_id = %s;"
     data = (id,)
@@ -242,7 +242,6 @@ def register_section(id):
         student_id = request.form['student_id']
         section_id = request.form['section_id']
         print("Student ID is " + str(student_id) + " and Section ID is " + str(section_id))
-
 
         if student_id == "" or section_id == "":
             post_message = "Please complete all fields in the form."
@@ -263,9 +262,7 @@ def register_section(id):
                 data = (student_id, section_id,)
                 register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
                 post_message = "You have successfully registered for the section."
-                
-            #register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
-            #register_results = register_cursor.fetchall()
+                post_message2 = "*List of Sections registered for student_id #" + str(student_id)
             
         query = "SELECT * FROM students_sections WHERE student_id = %s;"
         data = (student_id,)
@@ -273,7 +270,7 @@ def register_section(id):
         results = cursor.fetchall()
         
     db_connection.close()
-    return render_template("section_register.html", items=register_results, items2=results, post_message=post_message)
+    return render_template("section_register.html", items=register_results, items2=results, post_message=post_message, post_message2=post_message2)
 
 @app.route("/courses.html", methods=["GET", "POST"])
 def courses():
