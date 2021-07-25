@@ -91,6 +91,31 @@
             {% else %}
             {{ count[loop.index0].count }}
             {% endif %}
+            <P>Courses Offered: </P>
+            <div id="courses_campuses-container">
+                <table id="courses_campuses-container">
+                    <thead>
+                        <tr>
+                            <th>Campus ID</th>
+                            <th>Campus Name</th>
+                            <th>Course ID</th>
+                            <th>Course Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses %}
+                        <tr>
+                            {% if course.campus_name == item.campus_name %}
+                            <td>{{course.campus_id}}</td>
+                            <td>{{course.campus_name}}</td>
+                            <td>{{course.course_id}}</td>
+                            <td>{{course.course_name}}</td>
+                            {% endif %}
+                        {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         {% endfor %}
     </div>

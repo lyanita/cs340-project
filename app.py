@@ -423,7 +423,11 @@ def students():
     campus_query = "SELECT DISTINCT campus_id, campus_name FROM campuses ORDER BY campus_id ASC;"
     campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
     campus_results = campus_cursor.fetchall()
-    
+
+    course_query = "SELECT cps.campus_id, cps.campus_name, crs.course_id, crs.course_name FROM courses_campuses cmb LEFT JOIN courses crs ON cmb.course_id = crs.course_id LEFT JOIN campuses cps ON cmb.campus_id = cps.campus_id;"
+    course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
+    course_results = course_cursor.fetchall()
+
     if request.method == "POST":
         first_name = request.form['first_name']
         last_name = request.form['last_name']
@@ -456,7 +460,7 @@ def students():
             population_results = population_cursor.fetchall()
 
     db_connection.close()
-    return render_template("students.html", items=select_results, students=population_results, campuses=campus_results, images=images, count=student_results, post_message=post_message, delete_message=delete_message)
+    return render_template("students.html", items=select_results, students=population_results, campuses=campus_results, courses=course_results, images=images, count=student_results, post_message=post_message, delete_message=delete_message)
 
 @app.route("/delete-student/<int:id>")
 def delete_student(id):
