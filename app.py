@@ -1,5 +1,5 @@
 # Dependencies
-from flask import Flask, render_template, json, url_for, request, session, redirect
+from flask import Flask, render_template, json, url_for, request, session, redirect, flash
 import os
 import database.db_connector as db
 from markupsafe import escape
@@ -24,7 +24,9 @@ def index():
 def campuses():
     db_connection = db.connect_to_database()
     post_message = ""
-    delete_message = ""
+    #delete_message = ""
+    delete_message = request.args.get("delete_message") if request.args.get("delete_message") else ""
+    #delete_message = session['delete_message']
     campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
     campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
     campus_results = campus_cursor.fetchall()
@@ -114,9 +116,12 @@ def delete_campus(id):
     delete_query = "DELETE FROM campuses WHERE campus_id = %s;"
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
     delete_message = "You have deleted campus id #" + str(id) + "."
+    #delete_message = json.dumps({"main": "You have deleted campus id #" + str(id) + "."})
+    #session['delete_message'] = delete_message
 
     db_connection.close()
-    return redirect("/campuses.html")
+    return redirect(url_for('campuses', delete_message=delete_message, **request.args))
+    #return redirect("/campuses.html")
 
 @app.route("/instructors.html", methods=["GET", "POST"])
 def instructors():
