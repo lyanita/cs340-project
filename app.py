@@ -272,6 +272,17 @@ def section_register(id):
     db_connection.close()
     return render_template("section_register.html", items=register_results, items2=results, post_message=post_message, post_message2=post_message2)
 
+@app.route("/delete-student-section/<int:id1><int:id2>")
+def delete_student_section(id1, id2):
+    db_connection = db.connect_to_database()
+    delete_query = "DELETE FROM students_sections WHERE student_id = %s and section_id = %s;"
+    data = (id1, id2,)
+    delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
+    delete_message = "You have deleted section id #" + str(id2) + "registerd for student_id #" + str(id1) + "."
+
+    db_connection.close()
+    return redirect("/sections.html")
+
 @app.route("/courses.html", methods=["GET", "POST"])
 def courses():
     db_connection = db.connect_to_database()
