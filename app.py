@@ -346,8 +346,8 @@ def delete_course(id):
     return redirect("../courses.html")
     #return render_template("/delete-course/"+str(id), items=results, post_message=post_message, delete_message=delete_message)
 
-@app.route("/add-section/<int:id>", methods=["GET", "POST"])
-def add_section(id):
+@app.route("/manage-section/<int:id>", methods=["GET", "POST"])
+def manage_section(id):
     db_connection = db.connect_to_database()
     post_message = ""
     add_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
@@ -396,7 +396,7 @@ def add_section(id):
             add_results = add_cursor.fetchall()
             
     db_connection.close()
-    return render_template("add_section.html", items=add_results, post_message=post_message)
+    return render_template("manage_section.html", items=add_results, post_message=post_message)
 
 @app.route("/delete-section/<int:id>")
 def delete_section(id):
