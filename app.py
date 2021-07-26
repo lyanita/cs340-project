@@ -424,7 +424,9 @@ def students():
     campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
     campus_results = campus_cursor.fetchall()
 
-    course_query = "SELECT cps.campus_id, cps.campus_name, crs.course_id, crs.course_name FROM courses_campuses cmb JOIN courses crs ON cmb.course_id = crs.course_id JOIN campuses cps ON cmb.campus_id = cps.campus_id;"
+    course_query = "SELECT cps.campus_id, cps.campus_name, crs.course_id, crs.course_name FROM courses_campuses cmb \
+                    JOIN courses crs ON cmb.course_id = crs.course_id \
+                    JOIN campuses cps ON cmb.campus_id = cps.campus_id;"
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_results = course_cursor.fetchall()
 
