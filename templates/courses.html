@@ -22,7 +22,7 @@
         </ul>
     </div>
     
-    <h4>*Manage courses: List all courses, Add/Delete courses, manage sections</h4>
+    <h4>*Manage courses: List all courses, Add/Delete courses, Manage sections</h4>
     
     <!-- Form (Add Course) -->
     <div class="courses-forms">
@@ -55,7 +55,7 @@
                     <td>{{ item['course_name'] }}</td>
                     <td> <input type='button' name='delete' value='Delete'
                         onclick="window.location='/delete-course/{{ item['course_id'] }}'"></td>
-                    <td><input type="button" name="manage_section" value="Manage Section"
+                    <td><input type="button" name="manage_section" value="Manage"
                         onclick="window.location='/manage-section/{{ item['course_id'] }}'"/></td>
                 </tr>
                 {% endfor %}
