@@ -184,6 +184,7 @@ def delete_instructor(id):
 @app.route("/sections.html", methods=["GET", "POST"])
 def sections():
     db_connection = db.connect_to_database()
+    post_message = ""
     query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
         FROM sections s \
         JOIN courses c ON s.course_id = c.course_id \
@@ -193,6 +194,7 @@ def sections():
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()    
     
+    # search from sections table
     if request.method == "POST":        
         section_id = request.form['section_id']
         course_id = request.form['course_id']
@@ -204,7 +206,7 @@ def sections():
             JOIN courses c ON s.course_id = c.course_id \
             JOIN instructors i ON s.instructor_id = i.instructor_id \
             JOIN campuses ca ON s.campus_id = ca.campus_id \
-            WHERE section_id LIKE %s OR c.course_id LIKE %s OR i.instructor_id LIKE %s OR ca.campus_id LIKE %s \
+            WHERE section_id = %s OR c.course_id = %s OR i.instructor_id = %s OR ca.campus_id = %s \
             ORDER BY section_id ASC;"
         data = (section_id, course_id, instructor_id, campus_id)        
         search_cursor = db.execute_query(db_connection=db_connection, query=search_query, query_params=data)
@@ -212,9 +214,10 @@ def sections():
         
         # if no result, display all rows
         if len(search_results) == 0: 
+            post_message = "No search results founds. Displaying all sections."
             cursor.execute(query)
             search_results = cursor.fetchall()            
-        return render_template("sections.html", items=search_results)
+        return render_template("sections.html", items=search_results, post_message=post_message)
     
     db_connection.close()
     return render_template("sections.html", items=results)
@@ -362,7 +365,7 @@ def manage_section(id):
                 instructor_id1 = dict.get('instructor_id')
                 campus_id1 = dict.get('campus_id')
                 
-                if course_id1 == course_id and instructor_id1 == instructor_id and campus_id1 == campus_id:
+                if int(course_id1) == int(course_id) and int(instructor_id1) == int(instructor_id) and int(campus_id1) == int(campus_id):
                     flag = True
                     post_message = "The section already exists. Please enter different values."
             if not flag:
@@ -370,14 +373,14 @@ def manage_section(id):
                 data = (course_id, instructor_id, campus_id,)
                 add_cursor = db.execute_query(db_connection=db_connection, query=add_query, query_params=data)
                 post_message = "You have successfully created a new section."
-                
+            
             add_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
                         FROM sections s \
                         JOIN courses c ON s.course_id = c.course_id \
                         JOIN instructors i ON s.instructor_id = i.instructor_id \
                         JOIN campuses ca ON s.campus_id = ca.campus_id \
                         WHERE c.course_id = %s \
-                        ORDER BY section_id ASC;"
+                        ORDER BY section_id ASC;"  
             data = (id,)
             add_cursor = db.execute_query(db_connection=db_connection, query=add_query, query_params=data)
             add_results = add_cursor.fetchall()
