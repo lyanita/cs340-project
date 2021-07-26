@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>AH University - List courses, Add new courses, Add new sections</title>
+    <title>AH University - Manage courses</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
@@ -21,10 +21,26 @@
             <li class="link"><a href="contact.html">Contact Us</a></li>
         </ul>
     </div>
-
+    
+    <h4>*Manage courses: List all courses, Add/Delete courses, manage sections</h4>
+    
+    <!-- Form (Add Course) -->
+    <div class="courses-forms">
+        <form method="post">
+            <fieldset>
+                <legend>Add a New Course</legend>
+                <label>Course Name:
+                    <input type="text" name="course_name" id="course_name">
+                </label>
+                </br>
+                <input type="submit" id="course_post">
+                {{ post_message }}
+            </fieldset>
+        </form>
+    </div>
+    
     <!-- Table -->
-    <div id="courses-container">
-        <h4>*Manage courses: Add courses, Delete courses, Add sections</h4>
+    <div id="courses-container">        
         <table id="courses-table">
             <thead>
                 <tr>
@@ -49,21 +65,6 @@
     </div>
     <br>
 
-    <!-- Form (Add Course) -->
-    <div class="courses-forms">
-        <form method="post">
-            <fieldset>
-                <legend>Add a New Course</legend>
-                <label>Course Name:
-                    <input type="text" name="course_name" id="course_name">
-                </label>
-                </br>
-                <input type="submit" id="course_post">
-                {{ post_message }}
-            </fieldset>
-        </form>
-    </div>
-    
     <!-- page footer placeholder-->
     <div id="footer"></div>
     
