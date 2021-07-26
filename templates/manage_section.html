@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>AH University - Add sections</title>
+    <title>AH University - Manage sections</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
@@ -23,10 +23,32 @@
             <li class="link"><a href="../contact.html">Contact Us</a></li>
         </ul>
     </div>
+    
+    <h4>*Manage sections: Add/Delete sections</h4>
+    
+    <!-- Form (Add Section) -->
+    <div class="sections-forms">
+        <form method="post">
+            <fieldset>
+                <legend>Add a New Section</legend>
+                <label>Course ID:
+                    <input type="number" name="course_id" id="course_id">
+                </label></br>
+                <label>Instructor ID:
+                    <input type="number" name="instructor_id" id="instructor_id">
+                </label></br>
+                <label>Campus ID:
+                    <input type="number" name="campus_id" id="campus_id">
+                </label></br>
+                <input type="submit" id="section_post">
+                {{ post_message }}
+            </fieldset>
+        </form>
+    </div>
+    <br>
 
     <!-- Table -->
     <div id="add-section-container">
-        <h4>*Manage sections: Add sections, Delete sections</h4>
         <table id="add-section-table">
             <thead>
                 <tr>
@@ -58,27 +80,6 @@
     </div>
     <br>
     
-    <!-- Form (Add Section) -->
-    <div class="sections-forms">
-        <form method="post">
-            <fieldset>
-                <legend>Add a New Section</legend>
-                <label>Course ID:
-                    <input type="number" name="course_id" id="course_id">
-                </label></br>
-                <label>Instructor ID:
-                    <input type="number" name="instructor_id" id="instructor_id">
-                </label></br>
-                <label>Campus ID:
-                    <input type="number" name="campus_id" id="campus_id">
-                </label></br>
-                <input type="submit" id="section_post">
-                {{ post_message }}
-            </fieldset>
-        </form>
-    </div>
-    <br>
-
     <!-- page footer placeholder-->
     <div id="footer"></div>
 
