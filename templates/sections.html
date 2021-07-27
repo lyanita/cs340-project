@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AH University - Search for sections, Manage section registration</title>
+    <title>AH University - View/Search/Delete Sections</title>
     <link rel="stylesheet" href="../static/css/main.css">
   </head>
 
@@ -9,20 +9,11 @@
     <!-- page header placeholder-->
     <div id="header"></div>
 
-    <div class="links">
-      <ul class="nav">
-        <li class="link"><a href="index.html">Home</a></li>
-        <li class="link"><a href="students.html">Student Enrollment</a></li>
-        <li class="link"><a class="active" href="sections.html">Section Registration</a></li>
-        <li class="link"><a href="courses.html">Course Management</a></li>
-        <li class="link"><a href="instructors.html">Instructor Management</a></li>
-        <li class="link"><a href="campuses.html">Campus Management</a></li>
-        <li class="link"><a href="contact.html">Contact Us</a></li>
-      </ul>
-    </div>
+    <!-- navbar placeholder-->
+    <div id="navbar"></div>
     
-    <h4>*List all sections, Search for sections, Manage section registration</h4>
-    
+    <h3>View/Search/Delete Sections</h3>
+
     <!-- Form (Search Section) -->
     <div id="sections-search">
       <form method='post'>
@@ -44,6 +35,7 @@
 
     <!-- Table -->
     <div id="sections-container">
+      {{ post_message }}
       <table id="sections-table">
         <thead>
           <tr>
@@ -67,12 +59,10 @@
             <td>{{ item['campus_id'] }}</td>
             <td>{{ item['campus_name'] }}</td>
             <td>
-              <input
-                type="button"
-                name="register"
-                value="Register"
-                onclick="window.location='/section-register/{{ item['section_id'] }}'"/>
-            </td>
+              <input type="button" name="register" value="Register"
+                onclick="window.location='/section-register/{{ item['section_id'] }}'"/></td>
+            <td> <input type='button' name='delete' value='Delete'
+              onclick="window.location='/delete-section/{{ item['section_id'] }}'"></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -84,6 +74,7 @@
 
     <!-- javascript -->
     <script src="../static/header.js"></script>
+    <script src="../static/nav.js"></script>
     <script src="../static/footer.js"></script>
   </body>
 </html>
