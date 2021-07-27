@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University - Add New Campuses</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+    <!-- Page Header Placeholder-->
+    <div id="header"></div>
+
+    <!-- navbar placeholder-->
+    <div id="navbar"></div>
+
+    <h3>Add New Campuses</h3>
+    
+    <!-- Form (Add Campus) -->
+    <div class="campuses-forms">
+        <form method="post">
+            <fieldset>
+                <legend>Add a New Campus</legend>
+                <label>Campus Name:
+                    <input type="text" name="campus_name" id="campus_name">
+                </label>
+                </br>
+                <label>City:
+                    <input type="text" name="campus_city" id="campus_city">
+                </label></br>
+                <label>Country:
+                    <input type="text" name="campus_country" id="campus_country">
+                </label>
+                </br>
+                <label>Online/Offline:
+                    <input type="radio" name="campus_online" id="campus_online" value=TRUE required>
+                    <label for="campus_online">E-Campus</label>
+                    <input type="radio" name="campus_online" id="campus_offline" value=FALSE>
+                    <label for="campus_offline">In-Person Campus</label>
+                </label>
+                <br>
+                <input type="submit" id="campus_post">
+                <p>{{ post_message }}</p>
+                <p>{{ delete_message }}</p>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- Page Footer Placeholder-->
+    <div id="footer"></div>
+
+    <!-- Javascript -->
+    <script src="../static/header.js"></script>
+    <script src="../static/nav.js"></script>
+    <script src="../static/footer.js"></script>
+</body>
+
+</html>

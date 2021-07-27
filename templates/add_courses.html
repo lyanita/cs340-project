@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University - Add New Courses</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+    <!-- page header placeholder-->
+    <div id="header"></div>
+
+    <!-- navbar placeholder-->
+    <div id="navbar"></div>
+    
+    <h3>Add New Courses</h3>
+    
+    <!-- Form (Add Course) -->
+    <div class="courses-forms">
+        <form method="post">
+            <fieldset>
+                <legend>Add a New Course</legend>
+                <label>Course Name:
+                    <input type="text" name="course_name" id="course_name">
+                </label>
+                </br>
+                <input type="submit" id="course_post">
+                {{ post_message }}
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- page footer placeholder-->
+    <div id="footer"></div>
+    
+    <!-- javascript -->
+    <script src="../static/header.js"></script>
+    <script src="../static/nav.js"></script>
+    <script src="../static/footer.js"></script>
+
+</body>
+
+</html>
