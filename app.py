@@ -504,6 +504,31 @@ def contact():
     db_connection.close()
     return render_template("contact.html", items=campus_results, markers=json.dumps(coordinates_list))
 
+
+@app.route("/add_campuses.html")
+def add_campuses():
+    return render_template("/add_campuses.html")
+
+@app.route("/add_courses.html")
+def add_courses():
+    return render_template("/add_courses.html")
+
+@app.route("/add_sections.html")
+def add_sections():
+    return render_template("/add_sections.html")
+
+@app.route("/section_register.html")
+def section_register_temp():
+    return render_template("/section_register.html")
+
+@app.route("/add_instructors.html")
+def add_instructors():
+    return render_template("/add_instructors.html")
+
+@app.route("/add_students.html")
+def add_students():
+    return render_template("/add_students.html")
+
 # Listener
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 7676))
