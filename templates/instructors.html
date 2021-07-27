@@ -10,45 +10,10 @@
     <!-- Page Header Placeholder-->
     <div id="header"></div>
 
-    <div class="links">
-        <ul class="nav">
-            <li class="link"><a href="index.html">Home</a></li>
-            <li class="link"><a href="students.html">Student Enrollment</a></li>
-            <li class="link"><a href="sections.html">Section Registration</a></li>
-            <li class="link"><a href="courses.html">Course Management</a></li>
-            <li class="link"><a class="active" href="instructors.html">Instructor Management</a></li>
-            <li class="link"><a href="campuses.html">Campus Management</a></li>
-            <li class="link"><a href="contact.html">Contact Us</a></li>
-        </ul>
-    </div>
-    <h4>*Manage instructors: List all instructors, Add/Delete instructors</h4>
-    <!-- Form (Add Instructor) -->
-    <div class="forms">
-        <form method="post">
-            <fieldset>
-                <legend>Add a New Instructor</legend>
-                <label>First Name:
-                    <input type="text" name="instructor_first_name" id="instructor_first_name">
-                </label>
-                <label>Last Name:
-                    <input type="text" name="instructor_last_name" id="instructor_last_name">
-                </label>
-                <br>
-                <label>Choose a campus:</label>
-                {% for campus in campuses %}
-                {% set name = campus.campus_name %}
-                <input type="radio" name="campus_name" id="campus_" +{{name}} value={{name}} required>
-                <label for="campus_" +{{name}}>{{name}}</label>
-                {% endfor %}
-                <input type="radio" name="campus_name" id="campus_null" value="Unassigned">
-                <label for="campus_null">Unassigned</label>
-                <br>
-                <input type="submit" id="instructor_post">
-                <p>{{ post_message }}</p>
-                <p>{{ delete_message }}</p>
-            </fieldset>
-        </form>
-    </div>
+    <!-- navbar placeholder-->
+    <div id="navbar"></div>
+
+    <h3>View/Delete instructors</h3>
 
     <!-- Table -->
     <div id="instructors-container">
@@ -83,6 +48,7 @@
 
     <!-- Javascript -->
     <script src="../static/header.js"></script>
+    <script src="../static/nav.js"></script>
     <script src="../static/footer.js"></script>
 
 </body>
