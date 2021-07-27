@@ -2,51 +2,18 @@
 <html>
 
 <head>
-    <title>AH University - Manage students</title>
+    <title>AH University - View/Delete Students</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
 <body>
-
+    <!-- Page Header Placeholder-->
     <div id="header"></div>
+        
+    <!-- navbar placeholder -->
+    <div id="navbar"></div>
 
-      <div class="links">
-        <ul class="nav">
-            <li class="link"><a href="index.html">Home</a></li>
-            <li class="link"><a class="active" href="students.html">Student Enrollment</a></li>
-            <li class="link"><a href="sections.html">Section Registration</a></li>
-            <li class="link"><a href="courses.html">Course Management</a></li>
-            <li class="link"><a href="instructors.html">Instructor Management</a></li>
-            <li class="link"><a href="campuses.html">Campus Management</a></li>
-            <li class="link"><a href="contact.html">Contact Us</a></li>
-        </ul>
-    </div>
-
-    <h4>*Manage students: List all students, Add/Delete students</h4>
-    
-    <div class="forms">
-        <form method="post">
-            <fieldset>
-                <legend>Enroll in a Campus</legend>
-                    <label>First Name:
-                        <input type="text" name="first_name" id="first_name">
-                    </label>
-                    <label>Last Name:
-                        <input type="text" name="last_name" id="last_name">
-                    </label>
-                    <label>Choose a campus:</label>
-                    {% for campus in campuses %}
-                    {% set name = campus.campus_name %}
-                    <input type="radio" name="campus" id="campus_"+{{name}} value={{name}} required>
-                    <label for="campus_"+{{name}}>{{name}}</label>
-                    {% endfor %}
-                <br>
-                <input type="submit" id="student_post">
-                <p>{{ post_message }}</p>
-                <p>{{ delete_message }}</p>
-            </fieldset>
-        </form>
-    </div>
+    <h3>View/Delete Students</h3>
 
     <div class="students-container">
         <table id="students-table">
@@ -127,6 +94,7 @@
 
     <!-- Javascript -->
     <script src="../static/header.js"></script>
+    <script src="../static/nav.js"></script>
     <script src="../static/footer.js"></script>
 
 </body>
