@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>AH University - Manage section registration</title>
+    <title>AH University - View/Create Section Registration</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
@@ -12,47 +12,10 @@
         <a href="../index.html"><img class="logo" src="../static/img/logo.png"></a>
     </div>
 
-    <div class="links">
-        <ul class="nav">
-            <li class="link"><a href="../index.html">Home</a></li>
-            <li class="link"><a href="../students.html">Student Enrollment</a></li>
-            <li class="link"><a class="active" href="../sections.html">Section Registration</a></li>
-            <li class="link"><a href="../courses.html">Course Management</a></li>
-            <li class="link"><a href="../instructors.html">Instructor Management</a></li>
-            <li class="link"><a href="../campuses.html">Campus Management</a></li>
-            <li class="link"><a href="../contact.html">Contact Us</a></li>
-        </ul>
-    </div>
-    <h4>*Manage section registration</h4>
-    <!-- Table -->
-    <div id="section-register-container">
-        <table id="section-register-table">
-            <thead>
-                <tr>
-                    <th>Section ID</th>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Instructor ID</th>
-                    <th>Instructor Name</th>
-                    <th>Campus ID</th>
-                    <th>Campus Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                <tr>
-                    <td>{{ item['section_id'] }}</td>
-                    <td>{{ item['course_id'] }}</td>
-                    <td>{{ item['course_name'] }}</td>
-                    <td>{{ item['instructor_id'] }}</td>
-                    <td>{{ item['instructor_name'] }}</td>
-                    <td>{{ item['campus_id'] }}</td>
-                    <td>{{ item['campus_name'] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <!-- navbar placeholder-->
+    <div id="navbar"></div>
+
+    <h3>View/Create Section Registration</h3>
 
     <!-- Form (Register Section) -->
     <div class="section-register-forms">
@@ -69,6 +32,7 @@
         </form>
     </div>
     <br>
+
     <!-- Table -->
     <div id="student-section-container">
         <h4>{{ post_message2 }}</h4>
@@ -96,6 +60,7 @@
     <div id="footer"></div>
 
     <!-- javascript -->
+    <script src="../static/nav.js"></script>
     <script src="../static/footer.js"></script>
 
 </body>
