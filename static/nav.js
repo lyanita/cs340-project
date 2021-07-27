@@ -12,7 +12,7 @@ document.getElementById("navbar").innerHTML =
             '<button class="dropbtn">Courses</button>' +
             '<div class="dropdown-content">' +
               '<a href="courses.html">Manage Courses</a>' +
-              '<a href="add_courses.html">AddCourses</a>' +
+              '<a href="add_courses.html">Add Courses</a>' +
             '</div>' +
           '</div>' +
           '<div class="dropdown">' +
