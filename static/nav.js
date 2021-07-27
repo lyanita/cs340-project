@@ -20,7 +20,7 @@ document.getElementById("navbar").innerHTML =
             '<div class="dropdown-content">' +
               '<a href="sections.html">Manage Sections</a>' +
               '<a href="add_sections.html">Add Sections</a>' +
-              '<a href="section-register.html">Section Registration</a>' +
+              '<a href="section_register.html">Section Registration</a>' +
             '</div>' +
           '</div>' +
           '<div class="dropdown">' +
