@@ -1,57 +1,49 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>AH University</title>
-    <link rel="stylesheet" href="../static/css/main.css">
-</head>
-
-<body>
+    <link rel="stylesheet" href="../static/css/main.css" />
+  </head>
+  <body>
 
     <!-- page header placeholder-->
     <div id="header"></div>
         
-    <div class="links">
-        <ul class="nav">
-            <li class="link"><a class="active" href="index.html">Home</a></li>
-            <li class="link"><a href="students.html">Student Enrollment</a></li>
-            <li class="link"><a href="sections.html">Section Registration</a></li>
-            <li class="link"><a href="courses.html">Course Management</a></li>
-            <li class="link"><a href="instructors.html">Instructor Management</a></li>
-            <li class="link"><a href="campuses.html">Campus Management</a></li>
-            <li class="link"><a href="contact.html">Contact Us</a></li>
-        </ul>
+    <!-- navbar placeholder-->
+    <div id="navbar"></div>
+
+    <!-- page links -->
+    <div class="entities">
+      <a href="students.html">View/Delete Students</a><br />
+      <a href="add_students.html">Add New Students</a><br />
+      <br />
     </div>
-
-    <!-- picture carousel animation -->
-    <div class="imageContainer">
-
-        <!-- image slides -->
-
-        <img class="imageSlides" src="../static/img/sports.jpg" alt="sports">
-        <img class="imageSlides" src="../static/img/graduation.jpg" alt="graduation">
-        <img class="imageSlides" src="../static/img/students.jpg" alt="campus">
-        <div id="messages">IMAGINE THE POSSIBILITIES</div>
-
-        <!-- side arrows for manual forward and backward scroll -->
-        <img id="leftArrow" class="slideshowArrow" src="../static/img/white-arrow-left.png" alt="left-arrow-white">
-        <img id="rightArrow" class="slideshowArrow" src="../static/img/white-arrow-right.png" alt="right-arrow-white">
-
-        <!-- slideshow circles on the bottom of image slides -->
-        <div class="slideshowCircles">
-            <span class="circle"></span>
-            <span class="circle"></span>
-            <span class="circle"></span>
-        </div>
+    <div class="entities">
+      <a href="courses.html">View/Delete Courses</a><br />
+      <a href="add_courses.html">Add New Courses</a><br />
+      <br />
     </div>
-
+    <div class="entities">
+      <a href="sections.html">View/Search/Delete Sections</a><br />
+      <a href="add_sections.html">Add New Sections</a><br />
+      <a href="section_register.html">Section Registration</a><br />
+      <br />
+    </div>
+    <div class="entities">
+      <a href="instructors.html">View/Delete Instructors</a><br />
+      <a href="add_instructors.html">Add New Instructors</a><br />
+      <br />
+    </div>
+    <div class="entities">
+      <a href="campuses.html">View/Delete Campuses</a><br />
+      <a href="add_campuses.html">Add New Campuses</a><br />
+    </div>
     <!-- page footer placeholder-->
     <div id="footer"></div>
 
     <!-- javascript -->
     <script src="../static/header.js"></script>
+    <script src="../static/nav.js"></script>
     <script src="../static/footer.js"></script>
-    <script src="../static/slideshow.js"></script>
-</body>
-
+  </body>
 </html>
