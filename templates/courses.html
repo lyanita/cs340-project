@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>AH University - Manage courses</title>
+    <title>AH University - Manage Courses</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
@@ -10,35 +10,11 @@
     <!-- page header placeholder-->
     <div id="header"></div>
 
-    <div class="links">
-        <ul class="nav">
-            <li class="link"><a href="index.html">Home</a></li>
-            <li class="link"><a href="students.html">Student Enrollment</a></li>
-            <li class="link"><a href="sections.html">Section Registration</a></li>
-            <li class="link"><a class="active" href="courses.html">Course Management</a></li>
-            <li class="link"><a href="instructors.html">Instructor Management</a></li>
-            <li class="link"><a href="campuses.html">Campus Management</a></li>
-            <li class="link"><a href="contact.html">Contact Us</a></li>
-        </ul>
-    </div>
+    <!-- navbar placeholder-->
+    <div id="navbar"></div>
     
-    <h4>*Manage courses: List all courses, Add/Delete courses, Manage sections</h4>
-    
-    <!-- Form (Add Course) -->
-    <div class="courses-forms">
-        <form method="post">
-            <fieldset>
-                <legend>Add a New Course</legend>
-                <label>Course Name:
-                    <input type="text" name="course_name" id="course_name">
-                </label>
-                </br>
-                <input type="submit" id="course_post">
-                {{ post_message }}
-            </fieldset>
-        </form>
-    </div>
-    
+    <h3>View/Delete Courses</h3>
+
     <!-- Table -->
     <div id="courses-container">        
         <table id="courses-table">
@@ -70,6 +46,7 @@
     
     <!-- javascript -->
     <script src="../static/header.js"></script>
+    <script src="../static/nav.js"></script>
     <script src="../static/footer.js"></script>
 
 </body>
