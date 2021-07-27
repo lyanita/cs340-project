@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>AH University - Manage campuses</title>
+    <title>AH University - Manage Campuses</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
@@ -10,48 +10,11 @@
     <!-- Page Header Placeholder-->
     <div id="header"></div>
 
-    <div class="links">
-        <ul class="nav">
-            <li class="link"><a href="index.html">Home</a></li>
-            <li class="link"><a href="students.html">Student Enrollment</a></li>
-            <li class="link"><a href="sections.html">Section Registration</a></li>
-            <li class="link"><a href="courses.html">Course Management</a></li>
-            <li class="link"><a href="instructors.html">Instructor Management</a></li>
-            <li class="link"><a class="active" href="campuses.html">Campus Management</a></li>
-            <li class="link"><a href="contact.html">Contact Us</a></li>
-        </ul>
-    </div>
-    <h4>*Manage campuses: List all campuses, Add/Delete/Update campuses</h4>
-    <!-- Form (Add Campus) -->
-    <div class="campuses-forms">
-        <form method="post">
-            <fieldset>
-                <legend>Add a New Campus</legend>
-                <label>Campus Name:
-                    <input type="text" name="campus_name" id="campus_name">
-                </label>
-                </br>
-                <label>City:
-                    <input type="text" name="campus_city" id="campus_city">
-                </label></br>
-                <label>Country:
-                    <input type="text" name="campus_country" id="campus_country">
-                </label>
-                </br>
-                <label>Online/Offline:
-                    <input type="radio" name="campus_online" id="campus_online" value=TRUE required>
-                    <label for="campus_online">E-Campus</label>
-                    <input type="radio" name="campus_online" id="campus_offline" value=FALSE>
-                    <label for="campus_offline">In-Person Campus</label>
-                </label>
-                <br>
-                <input type="submit" id="campus_post">
-                <p>{{ post_message }}</p>
-                <p>{{ delete_message }}</p>
-            </fieldset>
-        </form>
-    </div>
+    <!-- navbar placeholder-->
+    <div id="navbar"></div>
 
+    <h3>View/Delete/Update Campuses</h3>
+    
     <!-- Table -->
     <div id="campuses-container">
         <table id="campuses-table">
@@ -87,13 +50,13 @@
             </tbody>
         </table>
     </div>
-
     
     <!-- Page Footer Placeholder-->
     <div id="footer"></div>
 
     <!-- Javascript -->
     <script src="../static/header.js"></script>
+    <script src="../static/nav.js"></script>
     <script src="../static/footer.js"></script>
 </body>
 
