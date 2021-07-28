@@ -341,6 +341,32 @@ def courses():
     db_connection = db.connect_to_database()
     post_message = ""
     delete_message = ""
+
+    course_query = "SELECT * FROM courses ORDER BY course_id ASC;"
+    course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
+    course_results = course_cursor.fetchall()
+    
+    db_connection.close()
+    return render_template("courses.html", items=course_results, post_message=post_message, delete_message=delete_message)
+
+@app.route("/delete-course/<int:id>")
+def delete_course(id):
+    """Delete a course from the Courses table"""
+    db_connection = db.connect_to_database()
+    delete_query = "DELETE FROM courses WHERE course_id = %s;"
+    data = (id,)
+    delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
+    delete_message = "You have deleted course id #" + str(id) + "."
+
+    db_connection.close()
+    return redirect("../courses.html")
+
+@app.route("/add_courses.html", methods=["GET", "POST"])
+def add_courses():
+    """Add a course to the Courses table"""
+    db_connection = db.connect_to_database()
+    post_message = ""
+
     course_query = "SELECT * FROM courses ORDER BY course_id ASC;"
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_results = course_cursor.fetchall()
@@ -365,24 +391,8 @@ def courses():
                 insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
                 post_message = "You have successfully created a new course."
 
-            course_query = "SELECT * FROM courses ORDER BY course_id ASC;"
-            course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
-            course_results = course_cursor.fetchall()
-    
     db_connection.close()
-    return render_template("courses.html", items=course_results, post_message=post_message, delete_message=delete_message)
-
-@app.route("/delete-course/<int:id>")
-def delete_course(id):
-    """"""
-    db_connection = db.connect_to_database()
-    delete_query = "DELETE FROM courses WHERE course_id = %s;"
-    data = (id,)
-    delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted course id #" + str(id) + "."
-
-    db_connection.close()
-    return redirect("../courses.html")
+    return render_template("add_courses.html", post_message=post_message)
 
 @app.route("/manage-section/<int:id>", methods=["GET", "POST"])
 def manage_section(id):
@@ -472,7 +482,7 @@ def students():
 def delete_student(id):
     """Delete a student from the Students table"""
     db_connection = db.connect_to_database()
-    
+
     delete_query = "DELETE FROM students WHERE student_id = %s;"
     data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
@@ -544,10 +554,6 @@ def contact():
     
     db_connection.close()
     return render_template("contact.html", items=campus_results, markers=json.dumps(coordinates_list))
-
-@app.route("/add_courses.html")
-def add_courses():
-    return render_template("/add_courses.html")
 
 @app.route("/add_sections.html")
 def add_sections():
