@@ -449,7 +449,7 @@ def manage_section(id):
 
 @app.route("/delete-section/<int:id>")
 def delete_section(id):
-    """"""
+    """Delete a section from the Sections table"""
     db_connection = db.connect_to_database()
     data = (id,)
     course_query = "SELECT * FROM sections WHERE section_id = %s;"
@@ -462,8 +462,7 @@ def delete_section(id):
     delete_message = "You have deleted section id #" + str(id) + "."
 
     db_connection.close()
-    #return redirect("/courses.html")
-    return redirect("/manage-section/"+str(course_id))
+    return redirect(url_for('sections', delete_message=delete_message, **request.args))
 
 @app.route("/students.html", methods=["GET", "POST"])
 def students():
