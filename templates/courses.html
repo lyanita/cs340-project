@@ -31,8 +31,6 @@
                     <td>{{ item['course_name'] }}</td>
                     <td> <input type='button' name='delete' value='Delete'
                         onclick="window.location='/delete-course/{{ item['course_id'] }}'"></td>
-                    <td><input type="button" name="manage_section" value="Manage"
-                        onclick="window.location='/manage-section/{{ item['course_id'] }}'"/></td>
                 </tr>
                 {% endfor %}
                 {{ delete_message }}
