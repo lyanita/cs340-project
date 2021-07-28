@@ -240,6 +240,14 @@ def sections():
         ORDER BY section_id ASC;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()    
+
+    course_query = "SELECT DISTINCT course_name FROM courses ORDER BY course_name ASC;"
+    course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
+    course_result = course_cursor.fetchall()
+
+    campus_query = "SELECT DISTINCT campus_name FROM campuses ORDER BY campus_name ASC;"
+    campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
+    campus_result = campus_cursor.fetchall()
     
     # search from Sections table
     if request.method == "POST": 
@@ -252,19 +260,19 @@ def sections():
             section_id = request.form['section_id']
             if section_id == "":
                 err_message = "Please enter valid Section ID."
-                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message)
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
                 
         if request.form['search_radio'] == 'course_name':
             course_name = request.form['course_name']
             if course_name == "":
                 err_message = "Please enter valid Course Name."          
-                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message)
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
 
         if request.form['search_radio'] == 'campus_name':
             campus_name = request.form['campus_name']
             if campus_name == "":
                 err_message = "Please enter valid Campus Name."
-                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message)                
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)                
                         
         search_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
             FROM sections s \
@@ -282,10 +290,10 @@ def sections():
             err_message = "No search results founds."
             cursor.execute(query)
             search_results = cursor.fetchall()            
-        return render_template("sections.html", items=search_results, post_message=post_message, err_message=err_message)
+        return render_template("sections.html", items=search_results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
     
     db_connection.close()
-    return render_template("sections.html", items=results, post_message=post_message, err_message=err_message)
+    return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
 
 @app.route("/add_sections.html", methods=["GET", "POST"])
 def add_sections():
