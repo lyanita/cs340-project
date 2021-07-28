@@ -150,6 +150,7 @@ def add_campuses():
     db_connection.close()
     return render_template("add_campuses.html", post_message=post_message)
 
+# Instructors
 @app.route("/instructors.html", methods=["GET", "POST"])
 def instructors():
     """Display records from the Instructors table"""
@@ -224,11 +225,13 @@ def add_instructors():
     db_connection.close()
     return render_template("add_instructors.html", post_message=post_message, campuses=campuses_results)
 
+# Sections
 @app.route("/sections.html", methods=["GET", "POST"])
 def sections():
-    """"""
+    """Display records from the Sections table and search sections"""
     db_connection = db.connect_to_database()
     post_message = ""
+    err_message = ""
     query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
         FROM sections s \
         JOIN courses c ON s.course_id = c.course_id \
@@ -238,33 +241,51 @@ def sections():
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()    
     
-    #search from Sections table
-    if request.method == "POST":        
-        section_id = request.form['section_id']
-        course_id = request.form['course_id']
-        instructor_id = request.form['instructor_id']
-        campus_id = request.form['campus_id']
+    # search from Sections table
+    if request.method == "POST": 
+        section_id = ""
+        course_name = ""
+        campus_name = ""
         
+        # check for valid input
+        if request.form['search_radio'] == 'section_id':
+            section_id = request.form['section_id']
+            if section_id == "":
+                err_message = "Please enter valid Section ID."
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message)
+                
+        if request.form['search_radio'] == 'course_name':
+            course_name = request.form['course_name']
+            if course_name == "":
+                err_message = "Please enter valid Course Name."          
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message)
+
+        if request.form['search_radio'] == 'campus_name':
+            campus_name = request.form['campus_name']
+            if campus_name == "":
+                err_message = "Please enter valid Campus Name."
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message)                
+                        
         search_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
             FROM sections s \
             JOIN courses c ON s.course_id = c.course_id \
             JOIN instructors i ON s.instructor_id = i.instructor_id \
             JOIN campuses ca ON s.campus_id = ca.campus_id \
-            WHERE section_id = %s OR c.course_id = %s OR i.instructor_id = %s OR ca.campus_id = %s \
+            WHERE section_id = %s OR c.course_name like %s OR ca.campus_name like %s \
             ORDER BY section_id ASC;"
-        data = (section_id, course_id, instructor_id, campus_id)        
+        data = (section_id, course_name, campus_name)        
         search_cursor = db.execute_query(db_connection=db_connection, query=search_query, query_params=data)
         search_results = search_cursor.fetchall()
         
-        #if no result, display all rows
+        # if no search result, display all rows
         if len(search_results) == 0: 
-            post_message = "No search results founds. Displaying all sections."
+            err_message = "No search results founds."
             cursor.execute(query)
             search_results = cursor.fetchall()            
-        return render_template("sections.html", items=search_results, post_message=post_message)
+        return render_template("sections.html", items=search_results, post_message=post_message, err_message=err_message)
     
     db_connection.close()
-    return render_template("sections.html", items=results)
+    return render_template("sections.html", items=results, post_message=post_message, err_message=err_message)
 
 @app.route("/section-register/<int:id>", methods=["GET", "POST"])
 def section_register(id):
@@ -335,19 +356,19 @@ def delete_student_section(id1, id2):
     db_connection.close()
     return redirect("/sections.html")
 
+# Courses
 @app.route("/courses.html", methods=["GET", "POST"])
 def courses():
     """"""
     db_connection = db.connect_to_database()
     post_message = ""
-    delete_message = ""
 
     course_query = "SELECT * FROM courses ORDER BY course_id ASC;"
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_results = course_cursor.fetchall()
     
     db_connection.close()
-    return render_template("courses.html", items=course_results, post_message=post_message, delete_message=delete_message)
+    return render_template("courses.html", items=course_results, post_message=post_message)
 
 @app.route("/delete-course/<int:id>")
 def delete_course(id):
@@ -464,6 +485,7 @@ def delete_section(id):
     db_connection.close()
     return redirect(url_for('sections', delete_message=delete_message, **request.args))
 
+# Students
 @app.route("/students.html", methods=["GET", "POST"])
 def students():
     """Display records from the Students table"""
@@ -528,6 +550,7 @@ def add_students():
     db_connection.close()
     return render_template("add_students.html", campuses=campus_results, post_message=post_message)
 
+# Contact
 @app.route("/contact.html")
 def contact():
     """Renders a contact us page with map coordinates of campus locations"""
