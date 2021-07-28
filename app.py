@@ -267,12 +267,16 @@ def sections():
             if course_name == "":
                 err_message = "Please enter valid Course Name."          
                 return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
+            else:
+                course_name = "%" + course_name + "%"
 
         if request.form['search_radio'] == 'campus_name':
             campus_name = request.form['campus_name']
             if campus_name == "":
                 err_message = "Please enter valid Campus Name."
-                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)                
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
+            else:
+                campus_name = "%" + campus_name + "%"              
                         
         search_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
             FROM sections s \
