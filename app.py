@@ -330,7 +330,7 @@ def delete_student_section(id1, id2):
     delete_query = "DELETE FROM students_sections WHERE student_id = %s and section_id = %s;"
     data = (id1, id2,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted section id #" + str(id2) + "registerd for student_id #" + str(id1) + "."
+    delete_message = "You have deleted section id #" + str(id2) + "for student_id #" + str(id1) + "."
 
     db_connection.close()
     return redirect("/sections.html")
@@ -389,7 +389,7 @@ def add_courses():
                 insert_query = "INSERT INTO courses(course_name) VALUES (%s);"
                 data = (course_name,)
                 insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-                post_message = "You have successfully created a new course."
+                post_message = "A new course, " + course_name + ", has been created."
 
     db_connection.close()
     return render_template("add_courses.html", post_message=post_message)
@@ -524,7 +524,7 @@ def add_students():
             register_cursor = db.execute_query(db_connection=db_connection, query=register_query)
             register_results = register_cursor.fetchall()
             student_id = str(register_results[0].get('student_id'))
-            post_message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
+            post_message = "A new student, " + first_name + " " + last_name + ", has been added to the database with student id #" + student_id + "."
 
     db_connection.close()
     return render_template("add_students.html", campuses=campus_results, post_message=post_message)
