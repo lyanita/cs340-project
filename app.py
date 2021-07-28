@@ -287,29 +287,27 @@ def sections():
     db_connection.close()
     return render_template("sections.html", items=results, post_message=post_message, err_message=err_message)
 
-@app.route("/section-register/<int:id>", methods=["GET", "POST"])
-def section_register(id):
-    """"""
+@app.route("/add_sections.html")
+def add_sections():
+    return render_template("/add_sections.html")
+
+@app.route("/section_register.html", methods=["GET", "POST"])
+def section_register():
+    """"Display records from the Students & Sections intersection table and handles Students & Sections registration"""
     db_connection = db.connect_to_database()
     post_message = ""
-    post_message2 = ""
-    register_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
-        FROM sections s \
-        JOIN courses c ON s.course_id = c.course_id \
-        JOIN instructors i ON s.instructor_id = i.instructor_id \
-        JOIN campuses ca ON s.campus_id = ca.campus_id \
-        WHERE section_id = %s \
-        ORDER BY section_id ASC;"
-    data = (id,)
-    register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
-    register_results = register_cursor.fetchall()
-    
-    query = "SELECT * FROM students_sections WHERE section_id = %s;"
-    data = (id,)
-    cursor = db.execute_query(db_connection=db_connection, query=query, query_params=data)
+    query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
+        FROM students_sections ss \
+        JOIN students s ON ss.student_id = s.student_id \
+        JOIN sections se ON se.section_id = ss.section_id \
+        JOIN courses c ON c.course_id = se.section_id \
+        JOIN instructors i ON i.instructor_id = se.section_id\
+        JOIN campuses ca ON ca.campus_id = i.campus_id \
+        ORDER BY student_id,section_id ASC;"
+    cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
-    print(results)
-    
+
+    # handle students & sections registration
     if request.method == "POST":
         student_id = request.form['student_id']
         section_id = request.form['section_id']
@@ -334,15 +332,11 @@ def section_register(id):
                 data = (student_id, section_id,)
                 register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
                 post_message = "You have successfully registered for the section."
-                post_message2 = "*List of Sections registered for student_id #" + str(student_id)
-            
-        query = "SELECT * FROM students_sections WHERE student_id = %s;"
-        data = (student_id,)
-        cursor = db.execute_query(db_connection=db_connection, query=query, query_params=data)
+                #post_message2 = "*List of Sections registered for student_id #" + str(student_id)
+        cursor = db.execute_query(db_connection=db_connection, query=query)
         results = cursor.fetchall()
-        
     db_connection.close()
-    return render_template("section_register.html", items=register_results, items2=results, post_message=post_message, post_message2=post_message2)
+    return render_template("section_register.html", items=results, post_message=post_message)
 
 @app.route("/delete-student-section/<int:id1><int:id2>")
 def delete_student_section(id1, id2):
@@ -354,7 +348,7 @@ def delete_student_section(id1, id2):
     delete_message = "You have deleted section id #" + str(id2) + "for student_id #" + str(id1) + "."
 
     db_connection.close()
-    return redirect("/sections.html")
+    return redirect("/section_register.html")
 
 # Courses
 @app.route("/courses.html", methods=["GET", "POST"])
@@ -576,15 +570,6 @@ def contact():
     
     db_connection.close()
     return render_template("contact.html", items=campus_results, markers=json.dumps(coordinates_list))
-
-@app.route("/add_sections.html")
-def add_sections():
-    return render_template("/add_sections.html")
-
-@app.route("/section_register.html")
-def section_register_temp():
-    return render_template("/section_register.html")
-
 
 # Listener
 if __name__ == "__main__":
