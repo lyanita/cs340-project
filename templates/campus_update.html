@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>AH University - Update campuses</title>
+    <title>AH University - Update Campuses</title>
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 
@@ -10,18 +10,8 @@
     <!-- Page Header Placeholder-->
     <div id="header"></div>
 
-    <!-- Note the hrefs linke to the previous directory-->
-    <div class="links">
-        <ul class="nav">
-            <li class="link"><a href="../index.html">Home</a></li>
-            <li class="link"><a href="../students.html">Student Enrollment</a></li>
-            <li class="link"><a href="../sections.html">Section Registration</a></li>
-            <li class="link"><a href="../courses.html">Course Management</a></li>
-            <li class="link"><a href="../instructors.html">Instructor Management</a></li>
-            <li class="link"><a class="active" href="../campuses.html">Campus Management</a></li>
-            <li class="link"><a href="../contact.html">Contact Us</a></li>
-        </ul>
-    </div>
+    <!-- Navbar Placeholder-->
+    <div id="navbar"></div>
 
     <!-- Form (Update Campus) -->
     <div class="campuses-forms">
@@ -52,7 +42,7 @@
                 <br>
                 {% endfor %}
                 <input type="submit" id="campus_post">
-                {{ post_message }}
+                <p>{{ post_message }}</p>
             </fieldset>
         </form>
     </div>
@@ -63,6 +53,7 @@
 
     <!-- Javascript -->
     <script src="../static/header.js"></script>
+    <script src="../static/nav.js"></script>
     <script src="../static/footer.js"></script>
 </body>
 
