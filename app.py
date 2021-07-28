@@ -12,68 +12,35 @@ app = Flask(__name__)
 app.permanent_session_lifetime = datetime.timedelta(days=365)
 
 # Routes
+# Home
 @app.route("/")
 def root():
+    """Render index.html as home page"""
     return render_template("index.html")
 
 @app.route("/index.html")
 def index():
+    """Render index.html as home page"""
     return render_template("index.html")
 
+# Campus
 @app.route("/campuses.html", methods=["GET", "POST"])
 def campuses():
+    """"""
     db_connection = db.connect_to_database()
     post_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else ""
+
     campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
     campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
     campus_results = campus_cursor.fetchall()
 
-    if request.method == "POST":
-        campus_name = request.form['campus_name']
-        campus_city = request.form['campus_city']
-        campus_country = request.form['campus_country']
-        campus_online = True if request.form['campus_online'] == 'TRUE' else False
-        print(campus_online)
-
-        if campus_name == "":
-            post_message = "Please enter a campus name."
-        else:
-
-            flag = False
-            for dict in campus_results:
-                campus = dict.get('campus_name')
-                if campus_name == campus:
-                    flag = True
-                    post_message = "The campus name is already in use. Please enter another name."
-                    break
-            if not flag:
-                insert_query = "INSERT INTO campuses(campus_name, campus_city, campus_country, campus_online) VALUES (%s, %s, %s, %s);"
-                data = (campus_name, campus_city, campus_country, campus_online)
-                insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-                post_message = "You have successfully created a new campus."
-
-                new_campus_query = "SELECT * FROM campuses WHERE campus_name = %s;"
-                data = (campus_name,)
-                new_campus_cursor = db.execute_query(db_connection=db_connection, query=new_campus_query, query_params=data)
-                new_campus_results = new_campus_cursor.fetchall()
-                print(new_campus_results)
-
-                intersect_insert_query = "INSERT INTO courses_campuses(course_id, campus_id) SELECT course_id, campus_id FROM courses t1 CROSS JOIN campuses t2 WHERE t2.campus_id = %s;"
-                for dict in new_campus_results:
-                    campus_id = dict.get('campus_id')
-                data = (campus_id,)
-                intersect_insert_cursor = db.execute_query(db_connection=db_connection, query=intersect_insert_query, query_params=data)
-
-            campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
-            campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
-            campus_results = campus_cursor.fetchall()
-    
     db_connection.close()
     return render_template("campuses.html", items=campus_results, post_message=post_message, delete_message=delete_message)
 
 @app.route("/update-campus/<int:id>", methods=["GET", "POST"])
 def update_campus(id):
+    """"""
     post_message = ""
     db_connection = db.connect_to_database()
     campus_query = "SELECT * FROM campuses WHERE campus_id = %s;"
@@ -107,27 +74,97 @@ def update_campus(id):
 
 @app.route("/delete-campus/<int:id>")
 def delete_campus(id):
+    """"""
     db_connection = db.connect_to_database()
-    data=(id,)
-    #intersect_delete_query = "DELETE FROM courses_campuses WHERE campus_id = %s;"
-    #intersect_delete_cursor = db.execute_query(db_connection=db_connection, query=intersect_delete_query, query_params=data)
     delete_query = "DELETE FROM campuses WHERE campus_id = %s;"
+    data=(id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
     delete_message = "You have deleted campus id #" + str(id) + "."
 
     db_connection.close()
     return redirect(url_for('campuses', delete_message=delete_message, **request.args))
-    #return redirect("/campuses.html")
+
+@app.route("/add_campuses.html", methods=["GET", "POST"])
+def add_campuses():
+    db_connection = db.connect_to_database()
+    post_message = ""
+
+    campus_query = "SELECT * FROM campuses ORDER BY campus_id ASC;"
+    campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
+    campus_results = campus_cursor.fetchall()
+
+    if request.method == "POST":
+        campus_name = request.form['campus_name']
+        campus_city = request.form['campus_city']
+        campus_country = request.form['campus_country']
+        campus_online = True if request.form['campus_online'] == 'TRUE' else False
+        print(campus_online)
+
+        if campus_name == "":
+            post_message = "Please enter a campus name."
+        else:
+
+            flag = False
+            for dict in campus_results:
+                campus = dict.get('campus_name')
+                if campus_name == campus:
+                    flag = True
+                    post_message = "The campus name is already in use. Please enter another name."
+                    break
+
+            if not flag:
+                insert_query = "INSERT INTO campuses(campus_name, campus_city, campus_country, campus_online) VALUES (%s, %s, %s, %s);"
+                data = (campus_name, campus_city, campus_country, campus_online)
+                insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
+                post_message = "You have successfully created a new campus."
+
+                new_campus_query = "SELECT * FROM campuses WHERE campus_name = %s;"
+                data = (campus_name,)
+                new_campus_cursor = db.execute_query(db_connection=db_connection, query=new_campus_query, query_params=data)
+                new_campus_results = new_campus_cursor.fetchall()
+                print(new_campus_results)
+
+                intersect_insert_query = "INSERT INTO courses_campuses(course_id, campus_id) SELECT course_id, campus_id FROM courses t1 CROSS JOIN campuses t2 WHERE t2.campus_id = %s;"
+                for dict in new_campus_results:
+                    campus_id = dict.get('campus_id')
+                data = (campus_id,)
+                intersect_insert_cursor = db.execute_query(db_connection=db_connection, query=intersect_insert_query, query_params=data)
+
+    db_connection.close()
+    return render_template("add_campuses.html", post_message=post_message)
 
 @app.route("/instructors.html", methods=["GET", "POST"])
 def instructors():
     db_connection = db.connect_to_database()
     post_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else ""
+    
     instructor_query = "SELECT ins.*, cps.campus_name FROM instructors ins LEFT JOIN campuses cps ON ins.campus_id = cps.campus_id ORDER BY instructor_id ASC;"
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
     instructor_results = instructor_cursor.fetchall()
 
+    campuses_query = "SELECT DISTINCT campus_id, campus_name FROM campuses ORDER BY campus_id ASC;"
+    campuses_cursor = db.execute_query(db_connection=db_connection, query=campuses_query)
+    campuses_results = campuses_cursor.fetchall()
+
+    db_connection.close()    
+    return render_template("instructors.html", items=instructor_results, campuses=campuses_results, post_message=post_message, delete_message=delete_message)
+
+@app.route("/delete-instructor/<int:id>")
+def delete_instructor(id):
+    db_connection = db.connect_to_database()
+    delete_query = "DELETE FROM instructors WHERE instructor_id = %s;"
+    data = (id,)
+    delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
+    delete_message = "You have deleted instructor id #" + str(id) + "."
+
+    db_connection.close()
+    return redirect(url_for('instructors', delete_message=delete_message, **request.args))
+
+@app.route("/add_instructors.html", methods=["GET", "POST"])
+def add_instructors():
+    db_connection = db.connect_to_database()
+    post_message = ""
     campuses_query = "SELECT DISTINCT campus_id, campus_name FROM campuses ORDER BY campus_id ASC;"
     campuses_cursor = db.execute_query(db_connection=db_connection, query=campuses_query)
     campuses_results = campuses_cursor.fetchall()
@@ -162,24 +199,8 @@ def instructors():
         insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
         post_message = "You have successfully added a new instructor."
 
-        instructor_query = "SELECT ins.*, cps.campus_name FROM instructors ins LEFT JOIN campuses cps ON ins.campus_id = cps.campus_id ORDER BY instructor_id ASC;"
-        instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
-        instructor_results = instructor_cursor.fetchall()
-
-    db_connection.close()    
-    return render_template("instructors.html", items=instructor_results, campuses=campuses_results, post_message=post_message, delete_message=delete_message)
-
-@app.route("/delete-instructor/<int:id>")
-def delete_instructor(id):
-    db_connection = db.connect_to_database()
-    delete_query = "DELETE FROM instructors WHERE instructor_id = %s;"
-    data = (id,)
-    delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted instructor id #" + str(id) + "."
-
     db_connection.close()
-    return redirect(url_for('instructors', delete_message=delete_message, **request.args))
-    #return redirect("/instructors.html")
+    return render_template("add_instructors.html", post_message=post_message, campuses=campuses_results)
 
 @app.route("/sections.html", methods=["GET", "POST"])
 def sections():
@@ -477,7 +498,43 @@ def delete_student(id):
 
     db_connection.close()
     return redirect(url_for('students', delete_message=delete_message, **request.args))
-    #return redirect("/students.html")
+
+@app.route("/add_students.html", methods=["GET", "POST"])
+def add_students():
+    db_connection = db.connect_to_database()
+    post_message = ""
+    campus_query = "SELECT DISTINCT campus_id, campus_name FROM campuses ORDER BY campus_id ASC;"
+    campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
+    campus_results = campus_cursor.fetchall()
+
+    if request.method == "POST":
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        campus = request.form['campus']
+        print(first_name)
+        print(campus)
+
+        if first_name == "" or last_name == "":
+            post_message = "Please complete all fields in the form."
+        else:
+            for dict in campus_results:
+                campus_name = dict.get('campus_name')
+                if campus_name == campus:
+                    campus_id = dict.get('campus_id')
+                    print(campus_id)
+        
+            insert_query = "INSERT INTO students(student_first_name, student_last_name, campus_id) VALUES (%s, %s, %s);"
+            data = (first_name, last_name, campus_id)
+            insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
+
+            register_query = "SELECT MAX(student_id) AS student_id FROM students;"
+            register_cursor = db.execute_query(db_connection=db_connection, query=register_query)
+            register_results = register_cursor.fetchall()
+            student_id = str(register_results[0].get('student_id'))
+            post_message = "Thanks for registering, " + first_name + "! Your student ID is " + student_id + "."
+
+    db_connection.close()
+    return render_template("add_students.html", campuses=campus_results, post_message=post_message)
 
 @app.route("/contact.html")
 def contact():
@@ -504,11 +561,6 @@ def contact():
     db_connection.close()
     return render_template("contact.html", items=campus_results, markers=json.dumps(coordinates_list))
 
-
-@app.route("/add_campuses.html")
-def add_campuses():
-    return render_template("/add_campuses.html")
-
 @app.route("/add_courses.html")
 def add_courses():
     return render_template("/add_courses.html")
@@ -521,13 +573,6 @@ def add_sections():
 def section_register_temp():
     return render_template("/section_register.html")
 
-@app.route("/add_instructors.html")
-def add_instructors():
-    return render_template("/add_instructors.html")
-
-@app.route("/add_students.html")
-def add_students():
-    return render_template("/add_students.html")
 
 # Listener
 if __name__ == "__main__":
