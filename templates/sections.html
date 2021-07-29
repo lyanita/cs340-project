@@ -67,9 +67,6 @@
             <td>{{ item['instructor_name'] }}</td>
             <td>{{ item['campus_id'] }}</td>
             <td>{{ item['campus_name'] }}</td>
-            <td>
-              <input type="button" name="register" value="Register"
-                onclick="window.location='/section-register/{{ item['section_id'] }}'"/></td>
             <td> <input type='button' name='delete' value='Delete'
               onclick="window.location='/delete-section/{{ item['section_id'] }}'"></td>
           </tr>
