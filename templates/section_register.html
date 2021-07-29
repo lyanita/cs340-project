@@ -15,7 +15,7 @@
     <!-- navbar placeholder-->
     <div id="navbar"></div>
 
-    <h3>View/Create Section Registration</h3>
+    <h3>Students & Sections Registration - View/Create/Delete </h3>
 
     <!-- Form (Register Section) -->
     <div class="section-register-forms">
@@ -35,19 +35,26 @@
 
     <!-- Table -->
     <div id="student-section-container">
-        <h4>{{ post_message2 }}</h4>
         <table id="student-section-table">
             <thead>
                 <tr>
                     <th>Student ID</th>
+                    <th>Student Name</th>
                     <th>Section ID</th>
+                    <th>Course Name</th>
+                    <th>Instructor Name</th>
+                    <th>Campus Name</th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in items2 %}
+                {% for item in items %}
                 <tr>
                     <td>{{ item['student_id'] }}</td>
+                    <td>{{ item['student_name'] }}</td>
                     <td>{{ item['section_id'] }}</td>
+                    <td>{{ item['course_name'] }}</td>
+                    <td>{{ item['instructor_name'] }}</td>
+                    <td>{{ item['campus_name'] }}</td>
                     <td> <input type='button' name='delete' value='Delete'
                         onclick="window.location='/delete-student-section/{{ item['student_id'] }}{{ item['section_id'] }}'"></td>
                 </tr>
