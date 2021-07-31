@@ -369,8 +369,8 @@ def section_register():
         FROM students_sections ss \
         JOIN students s ON ss.student_id = s.student_id \
         JOIN sections se ON se.section_id = ss.section_id \
-        JOIN courses c ON c.course_id = se.section_id \
-        JOIN instructors i ON i.instructor_id = se.section_id\
+        JOIN courses c ON c.course_id = se.course_id \
+        JOIN instructors i ON i.instructor_id = se.instructor_id\
         JOIN campuses ca ON ca.campus_id = i.campus_id \
         ORDER BY student_id,section_id ASC;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
@@ -427,7 +427,7 @@ def section_register():
                 register_query = "INSERT INTO students_sections(student_id, section_id) VALUES (%s, %s);"
                 data = (student_id, section_id,)
                 register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
-                post_message = "You have successfully registered for the section."
+                post_message = "You have successfully enrolled " + student_first_name + " " + student_last_name + " in section #" + section_id + "."
                 #post_message2 = "*List of Sections registered for student_id #" + str(student_id)
         cursor = db.execute_query(db_connection=db_connection, query=query)
         results = cursor.fetchall()
