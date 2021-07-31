@@ -301,6 +301,7 @@ def sections():
 
 @app.route("/add_sections.html", methods=["GET", "POST"])
 def add_sections():
+    """Add a section to the Sections table"""
     db_connection = db.connect_to_database()
     post_message = ""
     section_query = "SELECT * FROM sections ORDER BY section_id ASC;"
@@ -377,8 +378,18 @@ def section_register():
 
     # handle students & sections registration
     if request.method == "POST":
-        student_id = request.form['student_id']
+        student_first_name = request.form['student_first_name']
+        student_last_name = request.form['student_last_name']
         section_id = request.form['section_id']
+        
+        # get student_id for the given first name and last name
+        student_id_query = "SELECT student_id FROM students WHERE student_first_name = %s and student_last_name = %s"
+        data = (student_first_name, student_last_name)
+        student_id_cursor = db.execute_query(db_connection=db_connection, query=student_id_query, query_params=data)
+        student_id_results = student_id_cursor.fetchall()
+        student_id = ""
+        for dict in student_id_results:
+            student_id = dict.get('student_id')
         print("Student ID is " + str(student_id) + " and Section ID is " + str(section_id))
 
         if student_id == "" or section_id == "":
@@ -425,7 +436,7 @@ def section_register():
 
 @app.route("/delete-student-section/<int:id1><int:id2>")
 def delete_student_section(id1, id2):
-    """"""
+    """Delete a row from the Students_Sections intersection table """
     db_connection = db.connect_to_database()
     delete_query = "DELETE FROM students_sections WHERE student_id = %s and section_id = %s;"
     data = (id1, id2,)
@@ -438,7 +449,7 @@ def delete_student_section(id1, id2):
 # Courses
 @app.route("/courses.html", methods=["GET", "POST"])
 def courses():
-    """"""
+    """Display records from the Courses table"""
     db_connection = db.connect_to_database()
     post_message = ""
 
