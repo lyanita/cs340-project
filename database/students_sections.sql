@@ -11,6 +11,6 @@ CREATE TABLE students_sections(
 INSERT INTO students_sections(student_id, section_id)
 VALUES 
     (1,1), 
-    (1,2), 
-    (2,2)
+    (2,1), 
+    (3,2)
 ;
