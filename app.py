@@ -395,6 +395,23 @@ def section_register():
                     post_message = "The section is already registered for the student. Please enter different values."
                     print("Duplicate")
                     break
+                
+                # verify if student's registered campus and the section's campus match
+                student_campus_query = "SELECT campus_id FROM students WHERE student_id = %s"
+                data = (student_id,)
+                student_campus_cursor = db.execute_query(db_connection=db_connection, query=student_campus_query, query_params=data)
+                student_campus_results = student_campus_cursor.fetchall()
+                
+                section_campus_query = "SELECT campus_id FROM sections WHERE section_id = %s"
+                data = (section_id,)
+                section_campus_cursor = db.execute_query(db_connection=db_connection, query=section_campus_query, query_params=data)
+                section_campus_results = section_campus_cursor.fetchall()
+                
+                if student_campus_results != section_campus_results:
+                    flag = True
+                    post_message = "The section is not available in the student's registered campus. Please enter different values."
+                    break
+                
             if not flag:
                 register_query = "INSERT INTO students_sections(student_id, section_id) VALUES (%s, %s);"
                 data = (student_id, section_id,)
