@@ -15,37 +15,37 @@ VALUES
     (
         (SELECT course_id FROM courses WHERE course_name = "Introduction to Databases"),
         (SELECT instructor_id FROM instructors WHERE instructor_first_name = "Chuckie" and instructor_last_name = "Finster"),
-        (SELECT campus_id FROM campuses WHERE campus_name = "Corvallis")
+        (SELECT campus_id FROM instructors WHERE instructor_first_name = "Chuckie" and instructor_last_name = "Finster")
     ),(
         (SELECT course_id FROM courses WHERE course_name = "Introduction to Databases"),
         (SELECT instructor_id FROM instructors WHERE instructor_first_name = "Kimi" and instructor_last_name = "Finster"),
-        (SELECT campus_id FROM campuses WHERE campus_name = "Davis")
+        (SELECT campus_id FROM instructors WHERE instructor_first_name = "Kimi" and instructor_last_name = "Finster"),
     ),(
         (SELECT course_id FROM courses WHERE course_name = "Introduction to Databases"),
         (SELECT instructor_id FROM instructors WHERE instructor_first_name = "Edwin" and instructor_last_name = "Deville"),
-        (SELECT campus_id FROM campuses WHERE campus_name = "Washington")
+        (SELECT campus_id FROM instructors WHERE instructor_first_name = "Edwin" and instructor_last_name = "Deville"),
     ),(
         (SELECT course_id FROM courses WHERE course_name = "Introduction to Computer Science"),
         (SELECT instructor_id FROM instructors WHERE instructor_first_name = "Chuckie" and instructor_last_name = "Finster"),
-        (SELECT campus_id FROM campuses WHERE campus_name = "Corvallis")
+        (SELECT campus_id FROM instructors WHERE instructor_first_name = "Chuckie" and instructor_last_name = "Finster"),
     ),(
         (SELECT course_id FROM courses WHERE course_name = "Introduction to Computer Science"),
         (SELECT instructor_id FROM instructors WHERE instructor_first_name = "Kimi" and instructor_last_name = "Finster"),
-        (SELECT campus_id FROM campuses WHERE campus_name = "Davis")
+        (SELECT campus_id FROM instructors WHERE instructor_first_name = "Kimi" and instructor_last_name = "Finster"),
     ),(
         (SELECT course_id FROM courses WHERE course_name = "Introduction to Computer Science"),
         (SELECT instructor_id FROM instructors WHERE instructor_first_name = "Edwin" and instructor_last_name = "Deville"),
-        (SELECT campus_id FROM campuses WHERE campus_name = "Washington")
+        (SELECT campus_id FROM instructors WHERE instructor_first_name = "Edwin" and instructor_last_name = "Deville"),
     ),(
         (SELECT course_id FROM courses WHERE course_name = "Software Engineering"),
         (SELECT instructor_id FROM instructors WHERE instructor_first_name = "Tommy" and instructor_last_name = "Pickles"),
-        (SELECT campus_id FROM campuses WHERE campus_name = "Corvallis")
+        (SELECT campus_id FROM instructors WHERE instructor_first_name = "Tommy" and instructor_last_name = "Pickles"),
     ),(
         (SELECT course_id FROM courses WHERE course_name = "Software Engineering"),
         (SELECT instructor_id FROM instructors WHERE instructor_first_name = "Matt" and instructor_last_name = "Chung"),
-        (SELECT campus_id FROM campuses WHERE campus_name = "Davis")
+        (SELECT campus_id FROM instructors WHERE instructor_first_name = "Matt" and instructor_last_name = "Chung"),
     ),(
         (SELECT course_id FROM courses WHERE course_name = "Software Engineering"),
         (SELECT instructor_id FROM instructors WHERE instructor_first_name = "Angel" and instructor_last_name = "Carmin"),
-        (SELECT campus_id FROM campuses WHERE campus_name = "Washington")
+        (SELECT campus_id FROM instructors WHERE instructor_first_name = "Angel" and instructor_last_name = "Carmin"),
     );
