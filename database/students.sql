@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS Students;
 
-CREATE TABLE students(
+CREATE TABLE Students(
     student_id INT NOT NULL UNIQUE PRIMARY KEY AUTO_INCREMENT,
     student_first_name VARCHAR(255) NOT NULL,
     student_last_name VARCHAR(255) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE students(
     FOREIGN KEY (campus_id) references campuses(campus_id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-INSERT INTO students(student_first_name, student_last_name, campus_id) 
+INSERT INTO Students(student_first_name, student_last_name, campus_id) 
 VALUES 
     ("Amal", "Chamlee", 1),
     ("Clair", "Hansel", 1),
