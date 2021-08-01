@@ -369,6 +369,7 @@ def section_register():
     """"Display records from the Students & Sections intersection table and handles Students & Sections registration"""
     db_connection = db.connect_to_database()
     post_message = ""
+    validate_message = ""
     query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
         FROM Students_Sections ss \
         JOIN Students s ON ss.student_id = s.student_id \
@@ -384,63 +385,79 @@ def section_register():
     sections_cursor = db.execute_query(db_connection=db_connection, query=sections_query)
     sections_results = sections_cursor.fetchall()
 
+    students_query = "SELECT CONCAT(student_first_name, ' ', student_last_name) AS student_name FROM Students ORDER BY student_name ASC;"
+    students_cursor = db.execute_query(db_connection=db_connection, query=students_query)
+    students_results = students_cursor.fetchall()
+
     # handle students & sections registration
     if request.method == "POST":
-        student_first_name = request.form['student_first_name']
-        student_last_name = request.form['student_last_name']
-        section_id = request.form['section_id']
+        #student_first_name = request.form['student_first_name']
+        #student_last_name = request.form['student_last_name']
+        student_name = str.split(request.form['student_name'])
+        flag = False
+        for dict in students_results:
+            student_full_name = dict.get('student_name')
+            if student_name == student_full_name:
+                flag = True
+                break
+            else:
+                validate_message = "This student does not exist in the database. Please try again."
+        if flag:
+            student_first_name = student_name[0]
+            student_last_name = student_name[1]
+            section_id = request.form['section_id']
         
-        # get student_id for the given first name and last name
-        student_id_query = "SELECT student_id FROM Students WHERE student_first_name = %s and student_last_name = %s"
-        data = (student_first_name, student_last_name)
-        student_id_cursor = db.execute_query(db_connection=db_connection, query=student_id_query, query_params=data)
-        student_id_results = student_id_cursor.fetchall()
-        student_id = ""
-        for dict in student_id_results:
-            student_id = dict.get('student_id')
-        print("Student ID is " + str(student_id) + " and Section ID is " + str(section_id))
+            # get student_id for the given first name and last name
+            student_id_query = "SELECT student_id FROM Students WHERE student_first_name = %s and student_last_name = %s"
+            data = (student_first_name, student_last_name)
+            student_id_cursor = db.execute_query(db_connection=db_connection, query=student_id_query, query_params=data)
+            student_id_results = student_id_cursor.fetchall()
+            student_id = ""
+            for dict in student_id_results:
+                student_id = dict.get('student_id')
+            print("Student ID is " + str(student_id) + " and Section ID is " + str(section_id))
 
-        if student_id == "" or section_id == "":
-            post_message = "Please complete all fields in the form."
-        else:
-            flag = False
-            for dict in results:
-                student_id1 = dict.get('student_id')
-                section_id1 = dict.get('section_id')
-                print("Student ID1 is " + str(student_id1) + " and Section ID1 is " + str(section_id1))
+            if student_id == "" or section_id == "":
+                post_message = "Please complete all fields in the form."
+            else:
+                flag = False
+                for dict in results:
+                    student_id1 = dict.get('student_id')
+                    section_id1 = dict.get('section_id')
+                    print("Student ID1 is " + str(student_id1) + " and Section ID1 is " + str(section_id1))
                 
-                if int(student_id1) == int(student_id) and int(section_id1) == int(section_id):
-                    flag = True
-                    post_message = "The section is already registered for the student. Please enter different values."
-                    print("Duplicate")
-                    break
+                    if int(student_id1) == int(student_id) and int(section_id1) == int(section_id):
+                        flag = True
+                        post_message = "The section is already registered for the student. Please enter different values."
+                        print("Duplicate")
+                        break
                 
-                # verify if student's registered campus and the section's campus match
-                student_campus_query = "SELECT campus_id FROM Students WHERE student_id = %s"
-                data = (student_id,)
-                student_campus_cursor = db.execute_query(db_connection=db_connection, query=student_campus_query, query_params=data)
-                student_campus_results = student_campus_cursor.fetchall()
+                    # verify if student's registered campus and the section's campus match
+                    student_campus_query = "SELECT campus_id FROM Students WHERE student_id = %s"
+                    data = (student_id,)
+                    student_campus_cursor = db.execute_query(db_connection=db_connection, query=student_campus_query, query_params=data)
+                    student_campus_results = student_campus_cursor.fetchall()
                 
-                section_campus_query = "SELECT campus_id FROM Sections WHERE section_id = %s"
-                data = (section_id,)
-                section_campus_cursor = db.execute_query(db_connection=db_connection, query=section_campus_query, query_params=data)
-                section_campus_results = section_campus_cursor.fetchall()
+                    section_campus_query = "SELECT campus_id FROM Sections WHERE section_id = %s"
+                    data = (section_id,)
+                    section_campus_cursor = db.execute_query(db_connection=db_connection, query=section_campus_query, query_params=data)
+                    section_campus_results = section_campus_cursor.fetchall()
                 
-                if student_campus_results != section_campus_results:
-                    flag = True
-                    post_message = "The section is not available in the student's registered campus. Please enter different values."
-                    break
+                    if student_campus_results != section_campus_results:
+                        flag = True
+                        post_message = "The section is not available in the student's registered campus. Please enter different values."
+                        break
                 
-            if not flag:
-                register_query = "INSERT INTO Students_Sections(student_id, section_id) VALUES (%s, %s);"
-                data = (student_id, section_id,)
-                register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
-                post_message = "You have successfully enrolled " + student_first_name + " " + student_last_name + " in section #" + section_id + "."
-                #post_message2 = "*List of Sections registered for student_id #" + str(student_id)
-        cursor = db.execute_query(db_connection=db_connection, query=query)
-        results = cursor.fetchall()
+                if not flag:
+                    register_query = "INSERT INTO Students_Sections(student_id, section_id) VALUES (%s, %s);"
+                    data = (student_id, section_id,)
+                    register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
+                    post_message = "You have successfully enrolled " + student_first_name + " " + student_last_name + " in section #" + section_id + "."
+                    #post_message2 = "*List of Sections registered for student_id #" + str(student_id)
+            cursor = db.execute_query(db_connection=db_connection, query=query)
+            results = cursor.fetchall()
     db_connection.close()
-    return render_template("section_register.html", items=results, sections=sections_results, post_message=post_message)
+    return render_template("section_register.html", items=results, sections=sections_results, students=students_results, post_message=post_message, validate_message=validate_message)
 
 @app.route("/delete-student-section/<int:id1><int:id2>")
 def delete_student_section(id1, id2):
