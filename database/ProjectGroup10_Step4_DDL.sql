@@ -1,13 +1,13 @@
 -- SQL Statements (Data Definition Queries)
 
 -- Drop tables if they exist
-DROP TABLE IF EXISTS students_sections;
-DROP TABLE IF EXISTS courses_campuses;
-DROP TABLE IF EXISTS sections;
-DROP TABLE IF EXISTS courses;
-DROP TABLE IF EXISTS instructors;
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS campuses;
+DROP TABLE IF EXISTS Students_Sections;
+DROP TABLE IF EXISTS Courses_Campuses;
+DROP TABLE IF EXISTS Sections;
+DROP TABLE IF EXISTS Courses;
+DROP TABLE IF EXISTS Instructors;
+DROP TABLE IF EXISTS Students;
+DROP TABLE IF EXISTS Campuses;
 
 -- a) Data Definition Queries
 CREATE TABLE Campuses(
