@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS courses_campuses;
+DROP TABLE IF EXISTS Courses_Campuses;
 
-CREATE TABLE courses_campuses(
+CREATE TABLE Courses_Campuses(
     course_id INT NOT NULL,
     campus_id INT NOT NULL,
     PRIMARY KEY(course_id, campus_id),
@@ -8,7 +8,7 @@ CREATE TABLE courses_campuses(
     FOREIGN KEY(campus_id) REFERENCES campuses(campus_id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-INSERT INTO courses_campuses(course_id, campus_id)
+INSERT INTO Courses_Campuses(course_id, campus_id)
 SELECT course_id, campus_id
 FROM courses AS t1
 CROSS JOIN campuses as t2
