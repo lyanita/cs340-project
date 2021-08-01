@@ -252,6 +252,10 @@ def sections():
     campus_query = "SELECT DISTINCT campus_name FROM Campuses ORDER BY campus_name ASC;"
     campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
     campus_result = campus_cursor.fetchall()
+
+    sections_query = "SELECT DISTINCT section_id FROM Sections;"
+    sections_cursor = db.execute_query(db_connection=db_connection, query=sections_query)
+    sections_results = sections_cursor.fetchall()
     
     # search from Sections table
     if request.method == "POST": 
@@ -264,13 +268,13 @@ def sections():
             section_id = request.form['section_id']
             if section_id == "":
                 err_message = "Please enter valid Section ID."
-                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result, sections=sections_results)
                 
         if request.form['search_radio'] == 'course_name':
             course_name = request.form['course_name']
             if course_name == "":
                 err_message = "Please enter valid Course Name."          
-                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result, sections=sections_results)
             else:
                 course_name = "%" + course_name + "%"
 
@@ -278,7 +282,7 @@ def sections():
             campus_name = request.form['campus_name']
             if campus_name == "":
                 err_message = "Please enter valid Campus Name."
-                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
+                return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result, sections=sections_results)
             else:
                 campus_name = "%" + campus_name + "%"              
                         
@@ -298,54 +302,97 @@ def sections():
             err_message = "No search results founds."
             cursor.execute(query)
             search_results = cursor.fetchall()            
-        return render_template("sections.html", items=search_results, post_message=post_message, err_message=err_message, delete_message=delete_message, courses=course_result, campuses=campus_result)
+        return render_template("sections.html", items=search_results, post_message=post_message, err_message=err_message, delete_message=delete_message, courses=course_result, campuses=campus_result, sections=sections_results)
     
     db_connection.close()
-    return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, delete_message=delete_message, courses=course_result, campuses=campus_result)
+    return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, delete_message=delete_message, courses=course_result, campuses=campus_result, sections=sections_results)
 
 @app.route("/add_sections.html", methods=["GET", "POST"])
 def add_sections():
     """Add a section to the Sections table"""
     db_connection = db.connect_to_database()
     post_message = ""
+    validate_message = ""
     section_query = "SELECT * FROM Sections ORDER BY section_id ASC;"
     section_cursor = db.execute_query(db_connection=db_connection, query=section_query)
     section_results = section_cursor.fetchall()
+
+    course_query = "SELECT course_id, course_name FROM Courses ORDER BY course_name ASC;"
+    course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
+    course_result = course_cursor.fetchall()
+
+    campus_query = "SELECT campus_id, campus_name FROM Campuses ORDER BY campus_name ASC;"
+    campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
+    campus_result = campus_cursor.fetchall()
+
+    instructor_query = "SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name FROM Instructors ORDER BY instructor_name ASC;"
+    instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
+    instructor_result = instructor_cursor.fetchall()
     
     if request.method == "POST":
-        course_id = request.form['course_id']
-        instructor_id = request.form['instructor_id']
-        campus_id = ""
-        add_query = "INSERT INTO Sections(course_id, instructor_id, campus_id) VALUES (%s, %s, %s);"
-        data = (course_id, instructor_id, campus_id)
+        course_name = request.form['course_name']
+        instructor_name = request.form['instructor_name']
+        campus_name = request.form['campus_name']
 
-        if course_id == "" or instructor_id == "":
-            post_message = "Please complete all fields in the form."
-        else:
-            flag = False
-            for dict in section_results:
-                course_id1 = dict.get('course_id')
-                instructor_id1 = dict.get('instructor_id')                
-                if int(course_id1) == int(course_id) and int(instructor_id1) == int(instructor_id):
-                    flag = True
-                    post_message = "The section already exists. Please enter different values."
+        course_flag = False
+        for dict in course_result:
+            course = dict.get('course_name')
+            if course_name == course:
+                course_id = dict.get('course_id')
+                course_flag = True
+                break
+            else:
+                validate_message = "Invalid entries. Please try again."
+        instructor_flag = False
+        for dict in instructor_result:
+            instructor = dict.get('instructor_name')
+            if instructor_name == instructor:
+                instructor_id = dict.get('instructor_id')
+                instructor_flag = True
+                break
+            else:
+                validate_message = "Invalid entries. Please try again."
+        campus_flag = False
+        for dict in campus_result:
+            campus = dict.get('campus_name')
+            if campus_name == campus:
+                campus_id = dict.get('campus_id')
+                campuse_flag = True
+                break
+            else:
+                validate_message = "Invalid entries. Please try again."
+        
+        if course_flag and instructor_flag and campus_flag:
+            add_query = "INSERT INTO Sections(course_id, instructor_id, campus_id) VALUES (%s, %s, %s);"
+            data = (course_id, instructor_id, campus_id)
+
+            if course_id == "" or instructor_id == "":
+                post_message = "Please complete all fields in the form."
+            else:
+                flag = False
+                for dict in section_results:
+                    course_id1 = dict.get('course_id')
+                    instructor_id1 = dict.get('instructor_id')                
+                    if int(course_id1) == int(course_id) and int(instructor_id1) == int(instructor_id):
+                        flag = True
+                        post_message = "The section already exists. Please enter different values."
                     
-            if not flag:
-                # get campus_id based on instructor_id
-                get_campus_query = "SELECT * FROM Instructors WHERE instructor_id = %s;"
-                data = (instructor_id,)
-                get_campus_cursor = db.execute_query(db_connection=db_connection, query=get_campus_query, query_params=data)
-                get_campus_results = get_campus_cursor.fetchall()
-                for dict in get_campus_results:
-                    campus_id = dict.get('campus_id')
+                if not flag:
+                    # get campus_id based on instructor_id
+                    get_campus_query = "SELECT * FROM Instructors WHERE instructor_id = %s;"
+                    data = (instructor_id,)
+                    get_campus_cursor = db.execute_query(db_connection=db_connection, query=get_campus_query, query_params=data)
+                    get_campus_results = get_campus_cursor.fetchall()
+                    for dict in get_campus_results:
+                        campus_id = dict.get('campus_id')
                     
-                add_query = "INSERT INTO Sections(course_id, instructor_id, campus_id) VALUES (%s, %s, %s);"
-                data = (course_id, instructor_id, campus_id)
-                add_cursor = db.execute_query(db_connection=db_connection, query=add_query, query_params=data)
-                post_message = "You have successfully created a new section."
+                    add_query = "INSERT INTO Sections(course_id, instructor_id, campus_id) VALUES (%s, %s, %s);"
+                    data = (course_id, instructor_id, campus_id)
+                    add_cursor = db.execute_query(db_connection=db_connection, query=add_query, query_params=data)
+                    post_message = "You have successfully created a new section."
             
     db_connection.close()
-    return render_template("/add_sections.html", post_message=post_message)
+    return render_template("/add_sections.html", post_message=post_message, validate_message=validate_message, campuses=campus_result, courses=course_result, instructors=instructor_result)
 
 @app.route("/delete-section/<int:id>")
 def delete_section(id):
