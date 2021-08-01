@@ -18,7 +18,11 @@ h3 {
   padding: 0 0 0 20px;
 }
 
-h4,
+h4 {
+  font-weight: bold;
+  color: #8B0000;
+}
+
 h5,
 h6 {
   letter-spacing: 0;
@@ -165,6 +169,7 @@ td {
 
 .logo {
   height: 35px;
+  padding: 10px;
 }
 
 #header a {
@@ -303,7 +308,7 @@ h1.contact-us {
 .dropbtn {
   background-color: #8B0000;
   color: white;
-  padding: 16px;
+  padding: 16px 30px;
   font-size: 16px;
   border: none;
 }
@@ -344,4 +349,23 @@ h1.contact-us {
 
 .dropdown:hover .dropbtn {
   background-color: black;
+}
+
+.entities {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: top;
+  text-align: center;
+  padding-top: 15vh;
+}
+
+.entities img {
+  width: 200px;
+  padding-bottom: 1vh;
+}
+
+.entities a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
 }
