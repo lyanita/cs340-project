@@ -380,6 +380,10 @@ def section_register():
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
 
+    sections_query = "SELECT DISTINCT section_id FROM Sections;"
+    sections_cursor = db.execute_query(db_connection=db_connection, query=sections_query)
+    sections_results = sections_cursor.fetchall()
+
     # handle students & sections registration
     if request.method == "POST":
         student_first_name = request.form['student_first_name']
@@ -436,7 +440,7 @@ def section_register():
         cursor = db.execute_query(db_connection=db_connection, query=query)
         results = cursor.fetchall()
     db_connection.close()
-    return render_template("section_register.html", items=results, post_message=post_message)
+    return render_template("section_register.html", items=results, sections=sections_results, post_message=post_message)
 
 @app.route("/delete-student-section/<int:id1><int:id2>")
 def delete_student_section(id1, id2):

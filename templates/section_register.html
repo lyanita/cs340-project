@@ -27,9 +27,14 @@
                 <label>Last Name:</label>
                     <input type="text" name="student_last_name" id="student_last_name"></br>
                 <label>Section ID:</label>
-                    <input type="number" name="section_id" id="section_id"></br>
+                    <input type='text' name='section_id' id='section_id' list="section-list">
+                    <datalist id="section-list">
+                        {% for section in sections %}
+                        <option>{{ section['section_id'] }}</option>
+                        {% endfor %}
+                      </datalist>
                 <input type="submit" id="section_post">
-                {{ post_message }}
+                <p>{{ post_message }}</p>
             </fieldset>
         </form>
     </div>
