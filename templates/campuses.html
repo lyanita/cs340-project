@@ -51,6 +51,7 @@
         </table>
         <p>{{ delete_message }}</p>
         <p>{{ update_message }}</p>
+        <p>{{ remove_message }}</p>
     </div>
 
     <div class="info">
@@ -90,6 +91,8 @@
                             <td>{{course.campus_name}}</td>
                             <td>{{course.course_id}}</td>
                             <td>{{course.course_name}}</td>
+                            <td> <input type='button' name='delete' value='Delete'
+                                onclick="window.location='/delete-course-campus/{{ course['course_id'] }}{{ course['campus_id'] }}'"></td>
                             {% endif %}
                         {% endfor %}
                         </tr>
