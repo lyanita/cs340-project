@@ -30,6 +30,7 @@ def campuses():
     db_connection = db.connect_to_database()
     post_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
+    update_message = request.args.get("update_message") if request.args.get("update_message") else ""
 
     select_query = "SELECT * FROM Campuses ORDER BY campus_id ASC;"
     select_cursor = db.execute_query(db_connection=db_connection, query=select_query)
@@ -55,7 +56,7 @@ def campuses():
     course_results = course_cursor.fetchall()
 
     db_connection.close()
-    return render_template("campuses.html", items=select_results, students=population_results, campuses=campus_results, courses=course_results, images=images, count=student_results, post_message=post_message, delete_message=delete_message)
+    return render_template("campuses.html", items=select_results, students=population_results, campuses=campus_results, courses=course_results, images=images, count=student_results, post_message=post_message, delete_message=delete_message, update_message=update_message)
 
 @app.route("/update-campus/<int:id>", methods=["GET", "POST"])
 def update_campus(id):
@@ -82,8 +83,10 @@ def update_campus(id):
             data = (campus_name, campus_city, campus_country, campus_online, id)
             update_cursor = db.execute_query(db_connection=db_connection, query=update_query, query_params=data)
         
+        update_message = "You have updated campus id #" + str(id) + "."
         db_connection.close()
-        return redirect("/campuses.html")
+        #return redirect("/campuses.html")
+        return redirect(url_for('campuses', update_message=update_message, **request.args))
             
     else:
         db_connection.close()
@@ -452,13 +455,14 @@ def courses():
     """Display records from the Courses table"""
     db_connection = db.connect_to_database()
     post_message = ""
+    delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
 
     course_query = "SELECT * FROM Courses ORDER BY course_id ASC;"
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_results = course_cursor.fetchall()
     
     db_connection.close()
-    return render_template("courses.html", items=course_results, post_message=post_message)
+    return render_template("courses.html", items=course_results, delete_message=delete_message)
 
 @app.route("/delete-course/<int:id>")
 def delete_course(id):
@@ -470,7 +474,8 @@ def delete_course(id):
     delete_message = "You have deleted course id #" + str(id) + "."
 
     db_connection.close()
-    return redirect("../courses.html")
+    #return redirect("../courses.html")
+    return redirect(url_for('courses', delete_message=delete_message, **request.args))
 
 @app.route("/add_courses.html", methods=["GET", "POST"])
 def add_courses():
