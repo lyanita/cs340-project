@@ -30,6 +30,7 @@ def campuses():
     db_connection = db.connect_to_database()
     post_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
+    remove_message = request.args.get("remove_message") if request.args.get("remove_message") else "" #retrieve delete_message from GET request
     update_message = request.args.get("update_message") if request.args.get("update_message") else ""
 
     select_query = "SELECT * FROM Campuses ORDER BY campus_id ASC;"
@@ -56,7 +57,7 @@ def campuses():
     course_results = course_cursor.fetchall()
 
     db_connection.close()
-    return render_template("campuses.html", items=select_results, students=population_results, campuses=campus_results, courses=course_results, images=images, count=student_results, post_message=post_message, delete_message=delete_message, update_message=update_message)
+    return render_template("campuses.html", items=select_results, students=population_results, campuses=campus_results, courses=course_results, images=images, count=student_results, post_message=post_message, delete_message=delete_message, update_message=update_message, remove_message=remove_message)
 
 @app.route("/update-campus/<int:id>", methods=["GET", "POST"])
 def update_campus(id):
@@ -152,6 +153,19 @@ def add_campuses():
 
     db_connection.close()
     return render_template("add_campuses.html", post_message=post_message)
+
+@app.route("/delete-course-campus/<int:id1><int:id2>")
+def delete_course_campus(id1, id2):
+    """Delete a row from the Courses_Campuses intersection table """
+    db_connection = db.connect_to_database()
+    delete_query = "DELETE FROM Courses_Campuses WHERE course_id = %s and campus_id = %s;"
+    data = (id1, id2,)
+    delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
+    delete_message = "You have deleted course id #" + str(id1) + " for campus id #" + str(id2) + "."
+
+    db_connection.close()
+    #return redirect("/campuses.html")
+    return redirect(url_for('campuses', remove_message=delete_message, **request.args))
 
 # Instructors
 @app.route("/instructors.html", methods=["GET", "POST"])
@@ -417,6 +431,7 @@ def section_register():
     db_connection = db.connect_to_database()
     post_message = ""
     validate_message = ""
+    delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
     query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
         FROM Students_Sections ss \
         JOIN Students s ON ss.student_id = s.student_id \
@@ -440,7 +455,8 @@ def section_register():
     if request.method == "POST":
         #student_first_name = request.form['student_first_name']
         #student_last_name = request.form['student_last_name']
-        student_name = str.split(request.form['student_name'])
+        student_name_split = str.split(request.form['student_name'])
+        student_name = request.form['student_name']
         flag = False
         for dict in students_results:
             student_full_name = dict.get('student_name')
@@ -450,8 +466,10 @@ def section_register():
             else:
                 validate_message = "This student does not exist in the database. Please try again."
         if flag:
-            student_first_name = student_name[0]
-            student_last_name = student_name[1]
+            student_first_name = student_name_split[0]
+            print(student_first_name)
+            student_last_name = student_name_split[1]
+            print(student_last_name)
             section_id = request.form['section_id']
         
             # get student_id for the given first name and last name
@@ -504,7 +522,7 @@ def section_register():
             cursor = db.execute_query(db_connection=db_connection, query=query)
             results = cursor.fetchall()
     db_connection.close()
-    return render_template("section_register.html", items=results, sections=sections_results, students=students_results, post_message=post_message, validate_message=validate_message)
+    return render_template("section_register.html", items=results, sections=sections_results, students=students_results, post_message=post_message, validate_message=validate_message, delete_message=delete_message)
 
 @app.route("/delete-student-section/<int:id1><int:id2>")
 def delete_student_section(id1, id2):
@@ -513,10 +531,11 @@ def delete_student_section(id1, id2):
     delete_query = "DELETE FROM Students_Sections WHERE student_id = %s and section_id = %s;"
     data = (id1, id2,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted section id #" + str(id2) + "for student_id #" + str(id1) + "."
+    delete_message = "You have deleted section id #" + str(id2) + " for student id #" + str(id1) + "."
 
     db_connection.close()
-    return redirect("/section_register.html")
+    #return redirect("/section_register.html")
+    return redirect(url_for('section_register', delete_message=delete_message, **request.args))
 
 # Courses
 @app.route("/courses.html", methods=["GET", "POST"])
