@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS sections;
+DROP TABLE IF EXISTS Sections;
 
-CREATE TABLE sections(
+CREATE TABLE Sections(
     section_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     course_id INT NOT NULL,
     instructor_id INT NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE sections(
     FOREIGN KEY (campus_id) REFERENCES campuses(campus_id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-INSERT INTO sections(course_id, instructor_id, campus_id) 
+INSERT INTO Sections(course_id, instructor_id, campus_id) 
 VALUES
     (
         (SELECT course_id FROM courses WHERE course_name = "Introduction to Databases"),
