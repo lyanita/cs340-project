@@ -20,8 +20,13 @@
         <fieldset>
           <legend>Search for Sections</legend>
           <input type="radio" name="search_radio" id="radio_section_id" value=section_id required>
-          <label for="radio_section_id">Section ID: <input type='number' name='section_id'></label><br>
+          <label for="radio_section_id">Section ID: <input type='number' name='section_id' list=section-list></label><br>
           <input type="radio" name="search_radio" id="radio_course_name" value=course_name>
+          <datalist id="section-list">
+            {% for section in sections %}
+            <option>{{ section['section_id'] }}</option>
+            {% endfor %}
+          </datalist>
           <label for="radio_course_name">Course Name: <input type='text' name='course_name' list="course-list"></label><br>
           <input type="radio" name="search_radio" id="radio_campus_name" value=campus_name>
           <datalist id="course-list">
