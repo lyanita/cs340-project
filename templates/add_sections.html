@@ -22,17 +22,33 @@
         <form method="post">
             <fieldset>
                 <legend>Add a New Section</legend>
-                <label>Course ID:
-                    <input type="number" name="course_id" id="course_id">
+                <label>Course Name:
+                    <input type='text' name="course_name" id="course_name" list=course-list required>
+                    <datalist id="course-list">
+                        {% for course in courses %}
+                        <option>{{ course['course_name'] }}</option>
+                        {% endfor %}
+                    </datalist>
                 </label></br>
-                <label>Instructor ID:
-                    <input type="number" name="instructor_id" id="instructor_id">
+                <label>Instructor Name:
+                    <input type='text' name="instructor_name" id="instructor_name" list=instructor-list required>
+                    <datalist id="instructor-list">
+                        {% for instructor in instructors %}
+                        <option>{{ instructor['instructor_name'] }}</option>
+                        {% endfor %}
+                    </datalist>
                 </label></br>
-                <label>Campus ID:
-                    <input type="number" name="campus_id" id="campus_id">
+                <label>Campus Name:
+                    <input type='text' name="campus_name" id="campus_name" list=campus-list required>
+                    <datalist id="campus-list">
+                        {% for campus in campuses %}
+                        <option>{{ campus['campus_name'] }}</option>
+                        {% endfor %}
+                    </datalist>
                 </label></br>
                 <input type="submit" id="section_post">
-                {{ post_message }}
+                <p>{{ post_message }}</p>
+                <p>{{ validate_message }}</p>
             </fieldset>
         </form>
     </div>
