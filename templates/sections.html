@@ -36,7 +36,7 @@
             <option>{{ campus['campus_name'] }}</option>
             {% endfor %}
           </datalist>
-          {{ err_message }}
+          <p>{{ err_message }}</p>
         </fieldset>
       </form>
     </div>
@@ -44,7 +44,8 @@
 
     <!-- Table -->
     <div id="sections-container">
-      {{ post_message }}
+      <p>{{ post_message }}</p>
+      <p>{{ delete_message }}</p>
       <table id="sections-table">
         <thead>
           <tr>
