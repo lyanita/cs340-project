@@ -235,6 +235,7 @@ def sections():
     db_connection = db.connect_to_database()
     post_message = ""
     err_message = ""
+    delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
     query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
         FROM Sections s \
         JOIN Courses c ON s.course_id = c.course_id \
@@ -297,10 +298,10 @@ def sections():
             err_message = "No search results founds."
             cursor.execute(query)
             search_results = cursor.fetchall()            
-        return render_template("sections.html", items=search_results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
+        return render_template("sections.html", items=search_results, post_message=post_message, err_message=err_message, delete_message=delete_message, courses=course_result, campuses=campus_result)
     
     db_connection.close()
-    return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result)
+    return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, delete_message=delete_message, courses=course_result, campuses=campus_result)
 
 @app.route("/add_sections.html", methods=["GET", "POST"])
 def add_sections():
