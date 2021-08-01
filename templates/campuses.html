@@ -52,6 +52,36 @@
         <p>{{ delete_message }}</p>
         <p>{{ update_message }}</p>
         <p>{{ remove_message }}</p>
+        <br>
+    </div>
+
+    <!-- Form (Add Campus) -->
+    <div class="campuses-forms">
+        <form method="post">
+            <fieldset>
+                <legend>Add a Course to a Campus</legend>
+                <label>Course Name:
+                    <input type='text' name="course_name" id="course_name" list=course-list required>
+                    <datalist id="course-list">
+                        {% for course in courses %}
+                        <option>{{ course['course_name'] }}</option>
+                        {% endfor %}
+                    </datalist>
+                </label>
+                </br>
+                <label>Campus Name:
+                    <input type='text' name="campus_name" id="campus_name" list=campus-list required>
+                    <datalist id="campus-list">
+                        {% for campus in campuses %}
+                        <option>{{ campus['campus_name'] }}</option>
+                        {% endfor %}
+                    </datalist>
+                </label>
+                <br>
+                <input type="submit" id="campus_post">
+                <p>{{ post_message }}</p>
+            </fieldset>
+        </form>
     </div>
 
     <div class="info">
@@ -84,7 +114,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for course in courses %}
+                        {% for course in courses_campuses %}
                         <tr>
                             {% if course.campus_name == item.campus_name %}
                             <td>{{course.campus_id}}</td>
