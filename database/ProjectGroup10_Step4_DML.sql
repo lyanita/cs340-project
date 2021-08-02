@@ -69,11 +69,11 @@ INSERT INTO Courses(course_name) VALUES (%course_name);
 -- Sections Entity Table
 --
 /*Query to select all records from the Sections table with the corresponding name attributes for each foreign key (e.g. course_name for course_id)*/
-SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name
-FROM Sections s
-JOIN Courses c ON s.course_id = c.course_id
-JOIN Instructors i ON s.instructor_id = i.instructor_id
-JOIN Campuses ca ON s.campus_id = ca.campus_id
+SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
+FROM Sections s \
+JOIN Courses c ON s.course_id = c.course_id \
+JOIN Instructors i ON s.instructor_id = i.instructor_id \
+JOIN Campuses ca ON s.campus_id = ca.campus_id \
 ORDER BY section_id ASC;
 
 /*Queries for search filter*/
