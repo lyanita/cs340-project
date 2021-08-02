@@ -142,8 +142,8 @@ VALUES
 INSERT INTO Students_Sections(student_id, section_id)
 VALUES 
     (1,1), 
-    (1,2), 
-    (2,2)
+    (2,1), 
+    (3,2)
 ;
 
 INSERT INTO Courses_Campuses(course_id, campus_id)
