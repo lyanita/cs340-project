@@ -138,4 +138,4 @@ DELETE FROM Students_Sections WHERE student_id = %student_id and section_id = %s
 /*Query to insert a new set of records into the Courses_Campuses table based on a given 
 campus_id, with the % character being used to denote the variables that will have data from 
 the backend programming language*/
-INSERT INTO Courses_Campuses(course_id, campus_id) SELECT course_id, campus_id FROM courses t1 CROSS JOIN campuses t2 WHERE t2.campus_id = %campus_id;
+INSERT INTO Courses_Campuses(course_id, campus_id) SELECT course_id, campus_id FROM Courses t1 CROSS JOIN Campuses t2 WHERE t2.campus_id = %campus_id;
