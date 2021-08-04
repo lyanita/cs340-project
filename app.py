@@ -29,6 +29,7 @@ def campuses():
     """Display records from the Campuses table"""
     db_connection = db.connect_to_database()
     post_message = ""
+    duplicate_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
     remove_message = request.args.get("remove_message") if request.args.get("remove_message") else "" #retrieve delete_message from GET request
     update_message = request.args.get("update_message") if request.args.get("update_message") else ""
@@ -84,20 +85,30 @@ def campuses():
             else:
                 validate_message = "Invalid entries. Please try again."
 
+        duplicate_flag = False
         if course_flag and campus_flag:
-            insert_query = "INSERT INTO Courses_Campuses(course_id, campus_id) VALUES (%s, %s);"
-            data = (course_id, campus_id,)
-            insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-            post_message = "You have successfully added a new course to the " + campus_name + " campus."
+            for dict in course_campus_results:
+                course_check = dict.get('course_id')
+                campus_check = dict.get('campus_id')
+                if course_id == course_check and campus_id == campus_check:
+                    duplicate_flag = True
+                    duplicate_message = "This entry already exists. Please try again."
+                    print(duplicate_message)
+                    break
+            if not duplicate_flag:
+                insert_query = "INSERT INTO Courses_Campuses(course_id, campus_id) VALUES (%s, %s);"
+                data = (course_id, campus_id,)
+                insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
+                post_message = "You have successfully added a new course to the " + campus_name + " campus."
 
-            course_campus_query = "SELECT cps.campus_id, cps.campus_name, crs.course_id, crs.course_name FROM Courses_Campuses cmb \
-                    JOIN Courses crs ON cmb.course_id = crs.course_id \
-                    JOIN Campuses cps ON cmb.campus_id = cps.campus_id;"
-            course_campus_cursor = db.execute_query(db_connection=db_connection, query=course_campus_query)
-            course_campus_results = course_campus_cursor.fetchall()
+                course_campus_query = "SELECT cps.campus_id, cps.campus_name, crs.course_id, crs.course_name FROM Courses_Campuses cmb \
+                        JOIN Courses crs ON cmb.course_id = crs.course_id \
+                        JOIN Campuses cps ON cmb.campus_id = cps.campus_id;"
+                course_campus_cursor = db.execute_query(db_connection=db_connection, query=course_campus_query)
+                course_campus_results = course_campus_cursor.fetchall()
 
     db_connection.close()
-    return render_template("campuses.html", items=select_results, students=population_results, courses=course_results, campuses=campus_results, courses_campuses=course_campus_results, images=images, count=student_results, post_message=post_message, delete_message=delete_message, update_message=update_message, remove_message=remove_message)
+    return render_template("campuses.html", items=select_results, students=population_results, courses=course_results, campuses=campus_results, courses_campuses=course_campus_results, images=images, count=student_results, post_message=post_message, delete_message=delete_message, update_message=update_message, remove_message=remove_message, duplicate_message=duplicate_message)
 
 @app.route("/update-campus/<int:id>", methods=["GET", "POST"])
 def update_campus(id):
