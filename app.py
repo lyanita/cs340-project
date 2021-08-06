@@ -356,7 +356,7 @@ def sections():
             JOIN Courses c ON s.course_id = c.course_id \
             JOIN Instructors i ON s.instructor_id = i.instructor_id \
             JOIN Campuses ca ON s.campus_id = ca.campus_id \
-            WHERE section_id = %s OR c.course_name like %s OR ca.campus_name like %s \
+            WHERE section_id = %s OR c.course_name = %s OR ca.campus_name = %s \
             ORDER BY section_id ASC;"
         data = (section_id, course_name, campus_name)        
         search_cursor = db.execute_query(db_connection=db_connection, query=search_query, query_params=data)
@@ -385,10 +385,6 @@ def add_sections():
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_result = course_cursor.fetchall()
 
-    campus_query = "SELECT campus_id, campus_name FROM Campuses ORDER BY campus_name ASC;"
-    campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
-    campus_result = campus_cursor.fetchall()
-
     instructor_query = "SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name FROM Instructors ORDER BY instructor_name ASC;"
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
     instructor_result = instructor_cursor.fetchall()
@@ -396,7 +392,6 @@ def add_sections():
     if request.method == "POST":
         course_name = request.form['course_name']
         instructor_name = request.form['instructor_name']
-        campus_name = request.form['campus_name']
 
         course_flag = False
         for dict in course_result:
@@ -416,19 +411,10 @@ def add_sections():
                 break
             else:
                 post_message = "Invalid entries. Please try again."
-        campus_flag = False
-        for dict in campus_result:
-            campus = dict.get('campus_name')
-            if campus_name == campus:
-                campus_id = dict.get('campus_id')
-                campuse_flag = True
-                break
-            else:
-                post_message = "Invalid entries. Please try again."
         
-        if course_flag and instructor_flag and campus_flag:
+        if course_flag and instructor_flag:
             add_query = "INSERT INTO Sections(course_id, instructor_id, campus_id) VALUES (%s, %s, %s);"
-            data = (course_id, instructor_id, campus_id)
+            data = (course_id, instructor_id)
 
             if course_id == "" or instructor_id == "":
                 post_message = "Please complete all fields in the form."
@@ -456,7 +442,7 @@ def add_sections():
                     post_message = "You have successfully created a new section."
             
     db_connection.close()
-    return render_template("/add_sections.html", post_message=post_message, campuses=campus_result, courses=course_result, instructors=instructor_result)
+    return render_template("/add_sections.html", post_message=post_message, courses=course_result, instructors=instructor_result)
 
 @app.route("/delete-section/<int:id>")
 def delete_section(id):
