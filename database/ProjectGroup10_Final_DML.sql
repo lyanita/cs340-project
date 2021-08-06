@@ -88,7 +88,7 @@ FROM Sections s \
 JOIN Courses c ON s.course_id = c.course_id \
 JOIN Instructors i ON s.instructor_id = i.instructor_id \
 JOIN Campuses ca ON s.campus_id = ca.campus_id \
-WHERE section_id = %s OR c.course_name like %s OR ca.campus_name like %s \
+WHERE section_id = %s OR c.course_name = %s OR ca.campus_name = %s \
 ORDER BY section_id ASC;
 
 /*Query to select all records from Sections table*/
