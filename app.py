@@ -413,8 +413,6 @@ def add_sections():
                 post_message = "Invalid entries. Please try again."
         
         if course_flag and instructor_flag:
-            add_query = "INSERT INTO Sections(course_id, instructor_id, campus_id) VALUES (%s, %s, %s);"
-            data = (course_id, instructor_id)
 
             if course_id == "" or instructor_id == "":
                 post_message = "Please complete all fields in the form."
