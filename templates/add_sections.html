@@ -38,14 +38,6 @@
                         {% endfor %}
                     </datalist>
                 </label></br>
-                <label>Campus Name:
-                    <input type='text' name="campus_name" id="campus_name" list=campus-list required>
-                    <datalist id="campus-list">
-                        {% for campus in campuses %}
-                        <option>{{ campus['campus_name'] }}</option>
-                        {% endfor %}
-                    </datalist>
-                </label></br>
                 <input type="submit" id="section_post">
                 <p>{{ post_message }}</p>
                 <p>{{ validate_message }}</p>
