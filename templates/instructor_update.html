@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AH University - Update Instructors</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+
+<body>
+    <!-- Page Header Placeholder-->
+    <div id="header">
+        <a href="../index.html"><img class="logo" src="../static/img/logo.png"></a>
+    </div>
+    
+    <!-- Navbar Placeholder-->
+    <div id="navbar"></div>
+
+    <!-- Form (Update Campus) -->
+    <div class="campuses-forms">
+        <form method="post">
+            <fieldset>
+                <legend>Update an Existing Instructor</legend>
+                {% for item in items %}
+                {% set first_name = item.instructor_first_name %}
+                {% set last_name = item.instructor_last_name %}
+                <label>First Name:
+                    <input type="text" name="instructor_first_name" id="instructor_first_name" value="{{first_name}}" required>
+                </label>
+                </br>
+                <label>Last Name:
+                    <input type="text" name="instructor_last_name" id="instructor_last_name" value="{{last_name}}" required>
+                </label>
+                </br>
+                <label>Choose a campus:</label>
+                {% for campus in campuses %}
+                {% set name = campus.campus_name %}
+                <input type="radio" name="campus_name" id="campus_" +{{name}} value={{name}} required>
+                <label for="campus_" +{{name}}>{{name}}</label>
+                {% endfor %}
+                <input type="radio" name="campus_name" id="campus_null" value="Unassigned">
+                <label for="campus_null">Unassigned</label>
+                <br>
+                {% endfor %}
+                <input type="submit" id="campus_post">
+                <p>{{ post_message }}</p>
+            </fieldset>
+        </form>
+    </div>
+
+
+    <!-- Page Footer Placeholder-->
+    <div id="footer"></div>
+
+    <!-- Javascript -->
+    <script src="../static/nav_campus_update.js"></script>
+    <script src="../static/footer.js"></script>
+</body>
+
+</html>

@@ -37,11 +37,14 @@
                     <td>{{ item['campus_name'] }}</td>
                     <td> <input type='button' name='delete' value='Delete'
                             onclick="window.location='/delete-instructor/{{ item['instructor_id'] }}'" </td> 
+                    <td> <input type='button' name='update' value='Update' 
+                            onclick="window.location='/update-instructor/{{ item['instructor_id'] }}'"</td>
                 </tr>
                 {% endfor %} 
             </tbody> 
         </table> 
         <p>{{ delete_message }}</p>
+        <p>{{ update_message }}</p>
     </div> 
                             
     <!-- Page Footer Placeholder-->

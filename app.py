@@ -225,6 +225,7 @@ def instructors():
     db_connection = db.connect_to_database()
     post_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
+    update_message = request.args.get("update_message") if request.args.get("update_message") else ""
     
     instructor_query = "SELECT ins.*, cps.campus_name FROM Instructors ins LEFT JOIN Campuses cps ON ins.campus_id = cps.campus_id ORDER BY instructor_id ASC;"
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
@@ -235,7 +236,54 @@ def instructors():
     campuses_results = campuses_cursor.fetchall()
 
     db_connection.close()    
-    return render_template("instructors.html", items=instructor_results, campuses=campuses_results, post_message=post_message, delete_message=delete_message)
+    return render_template("instructors.html", items=instructor_results, campuses=campuses_results, post_message=post_message, delete_message=delete_message, update_message=update_message)
+
+@app.route("/update-instructor/<int:id>", methods=["GET", "POST"])
+def update_instructor(id):
+    """Update a record in the Instructors table"""
+    db_connection = db.connect_to_database()
+    post_message = ""
+
+    instructor_query = "SELECT * FROM Instructors WHERE instructor_id = %s;"
+    data = (id,)
+    instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query, query_params=data)
+    instructor_results = instructor_cursor.fetchall()
+    print(instructor_results)
+
+    select_query = "SELECT * FROM Campuses ORDER BY campus_id ASC;"
+    select_cursor = db.execute_query(db_connection=db_connection, query=select_query)
+    select_results = select_cursor.fetchall()
+    print(select_results)
+
+    if request.method == "POST":
+        instructor_first_name = request.form['instructor_first_name']
+        instructor_last_name = request.form['instructor_last_name']
+        campus_name = request.form['campus_name']
+
+        if campus_name != "Unassigned":
+            campus_query = "SELECT DISTINCT * FROM Campuses WHERE campus_name = %s;"
+            data = (campus_name,)
+            campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query, query_params=data)
+            campus_results = campus_cursor.fetchall()
+
+            for dict in campus_results:
+                campus_id = dict.get('campus_id')
+
+        else:
+            campus_id = None
+        
+        update_query = "UPDATE Instructors SET instructor_first_name = %s, instructor_last_name = %s, campus_id = %s WHERE instructor_id = %s;"
+        data = (instructor_first_name, instructor_last_name, campus_id, id)
+        update_cursor = db.execute_query(db_connection=db_connection, query=update_query, query_params=data)
+        
+        update_message = "You have updated instructor id #" + str(id) + "."
+        db_connection.close()
+        return redirect(url_for('instructors', update_message=update_message, **request.args))
+            
+    else:
+        db_connection.close()
+        return render_template("instructor_update.html", items=instructor_results, campuses=select_results, post_message=post_message)
+    
 
 @app.route("/delete-instructor/<int:id>")
 def delete_instructor(id):
