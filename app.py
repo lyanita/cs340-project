@@ -422,7 +422,7 @@ def add_sections():
             campus = dict.get('campus_name')
             if campus_name == campus:
                 campus_id = dict.get('campus_id')
-                campuse_flag = True
+                campus_flag = True
                 break
             else:
                 validate_message = "Invalid entries. Please try again."
