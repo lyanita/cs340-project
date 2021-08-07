@@ -104,13 +104,21 @@ SELECT * FROM Sections ORDER BY section_id ASC;
 
 /*Queries for client side validation*/
 SELECT course_id, course_name FROM Courses ORDER BY course_name ASC;
-SELECT campus_id, campus_name FROM Campuses ORDER BY campus_name ASC;
 SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name 
 FROM Instructors ORDER BY instructor_name ASC;
+
+/*Query to select all records from Instructors table for the particular instructor_id
+with the % character being used to denote the variables that will have data from the 
+backend programming language*/
+SELECT * FROM Instructors WHERE instructor_id = %instructor_id;
 
 /*Query to insert a new section into the Sections table with the % character being used 
 to denote the variables that will have data from the backend programming language*/
 INSERT INTO Sections(course_id, instructor_id, campus_id) VALUES (%course_id, %instructor_id, %campus_id);
+
+/*Query to select any records from the Sections table given a particular section_id, 
+with the % character being used to denote the variable that will have data from the backend programming language*/
+SELECT * FROM Sections WHERE section_id = %section_id;
 
 /*Query to delete any records from the Sections table given a particular section_id, 
 with the % character being used to denote the variable that will have data from the backend programming language*/
@@ -133,14 +141,30 @@ ORDER BY student_id,section_id ASC;
 /*Query to select student name as one string from the Students table*/
 SELECT CONCAT(student_first_name, ' ', student_last_name) AS student_name FROM Students ORDER BY student_name ASC;
 
-/*Query to select student_id from the Students table for given student_first_name and 
+/*Query to select course name from the Courses table*/
+SELECT course_name FROM Courses ORDER BY course_name ASC;
+
+/*Query to select instructor name as one string from the Instructors table*/
+SELECT CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name FROM Instructors ORDER BY instructor_name ASC;
+
+/*Query to select student_id and campus_id from the Students table for given student_first_name and 
 student_last_name, with the % character being used to denote the variables that will have 
 data from the backend programming language*/
-SELECT student_id FROM Students WHERE student_first_name = %student_first_name and student_last_name = %student_last_name;
+SELECT student_id, campus_id FROM Students WHERE student_first_name = %student_first_name and student_last_name = %student_last_name;
 
-/* Query to verify if student's registered campus and the section's campus match*/
-SELECT campus_id FROM Students WHERE student_id = %student_id;
-SELECT campus_id FROM Sections WHERE section_id = %section_id;
+/* Query to select campus_id from the Instructors table for given instructor_first_name and 
+instructor_last_name, with the % character being used to denote the variables that will have 
+data from the backend programming language*/
+SELECT campus_id FROM Instructors WHERE instructor_first_name = %instructor_first_name and instructor_last_name = %instructor_last_name;
+
+/* Query to select any records from the Sections table to get section_id for the given course_name and 
+instructor name, with the % character being used to denote the variables that will have data from the 
+backend programming language*/
+SELECT * FROM Sections se \
+JOIN Courses c ON c.course_id = se.course_id \
+JOIN Campuses ca ON ca.campus_id = se.campus_id \
+JOIN Instructors i ON i.instructor_id = se.instructor_id \
+WHERE course_name = %course_name and instructor_first_name = %instructor_first_name and instructor_last_name = %instructor_last_name;
 
 /*Query to insert a record for the Students_Sections table for a particular student_id and 
 a section_id, with the % character being used to denote the variables that will have data 
