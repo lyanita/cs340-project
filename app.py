@@ -632,22 +632,22 @@ def section_register():
             section_id = ""
             for dict in sections_results:
                 section_id = dict.get('section_id')     
+                
+            # if the section does not exist
+            if section_id == "":
+                flag = True
+                post_message = "There is no such section. Please enter different values."               
 
             for dict in results:
                 student_id1 = dict.get('student_id')
                 section_id1 = dict.get('section_id')
                 print("Student ID1 is " + str(student_id1) + " and Section ID1 is " + str(section_id1))
-            
-            # if the section does not exist
-            if section_id == "":
-                flag = True
-                post_message = "There is no such section. Please enter different values."
-                
-            if int(student_id1) == int(student_id) and int(section_id1) == int(section_id):
-                flag = True
-                post_message = "The section is already registered for the student. Please enter different values."
-                print("Duplicate")
-            
+                # check for a duplicate value
+                if int(student_id1) == int(student_id) and int(section_id1) == int(section_id):
+                    flag = True
+                    post_message = "The section is already registered for the student. Please enter different values."
+                    print("Duplicate")    
+         
             if not flag:
                 register_query = "INSERT INTO Students_Sections(student_id, section_id) VALUES (%s, %s);"
                 data = (student_id, section_id,)
