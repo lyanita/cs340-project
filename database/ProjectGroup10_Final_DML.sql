@@ -33,6 +33,11 @@ VALUES (%instructor_first_name, %instructor_last_name, %campus_id);
 /*Query to delete any records from the Instructors table given a particular instructor_id, with the 
 % sign being used to denote the variables that will have data from the backend programming language*/
 DELETE FROM Instructors WHERE instructor_id = %instructor_id;
+
+/*Query to update an existing set of records to the Instructors table with % character being used 
+to denote the variables that will have data from the backend programming language; campus_id can be updated to NULL*/
+UPDATE Instructors SET instructor_first_name = %s, instructor_last_name = %s, campus_id = %s 
+WHERE instructor_id = %s;
 --
 -- Students Entity Table
 --
@@ -68,7 +73,8 @@ INSERT INTO Courses(course_name) VALUES (%course_name);
 --
 -- Sections Entity Table
 --
-/*Query to select all records from the Sections table with the corresponding name attributes for each foreign key (e.g. course_name for course_id)*/
+/*Query to select all records from the Sections table with the corresponding name attributes 
+for each foreign key (e.g. course_name for course_id)*/
 SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
 FROM Sections s \
 JOIN Courses c ON s.course_id = c.course_id \
@@ -81,8 +87,10 @@ SELECT DISTINCT course_name FROM Courses ORDER BY course_name ASC;
 SELECT DISTINCT campus_name FROM Campuses ORDER BY campus_name ASC;
 SELECT DISTINCT section_id FROM Sections ORDER BY section_id ASC;
 
-/*Query to select all records from the Sections table given a particular section_id, a course_name, or a campus_name, with the % character being used to denote the variables that will have data from the backend programming language;
-This is to select results from searching by section_id, course_name, or campus_name*/
+/*Query to select all records from the Sections table given a particular section_id, a 
+course_name, or a campus_name, with the % character being used to denote the variables that 
+will have data from the backend programming language; this is to select results from searching 
+by section_id, course_name, or campus_name*/
 SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
 FROM Sections s \
 JOIN Courses c ON s.course_id = c.course_id \
@@ -97,17 +105,22 @@ SELECT * FROM Sections ORDER BY section_id ASC;
 /*Queries for client side validation*/
 SELECT course_id, course_name FROM Courses ORDER BY course_name ASC;
 SELECT campus_id, campus_name FROM Campuses ORDER BY campus_name ASC;
-SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name FROM Instructors ORDER BY instructor_name ASC;
+SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name 
+FROM Instructors ORDER BY instructor_name ASC;
 
-/*Query to insert a new section into the Sections table with the % character being used to denote the variables that will have data from the backend programming language*/
+/*Query to insert a new section into the Sections table with the % character being used 
+to denote the variables that will have data from the backend programming language*/
 INSERT INTO Sections(course_id, instructor_id, campus_id) VALUES (%course_id, %instructor_id, %campus_id);
 
-/*Query to delete any records from the Sections table given a particular section_id, with the % character being used to denote the variable that will have data from the backend programming language*/
+/*Query to delete any records from the Sections table given a particular section_id, 
+with the % character being used to denote the variable that will have data from the backend programming language*/
 DELETE FROM Sections WHERE section_id = %section_id;
 --
 -- Students_Sections M:M Intersection Table
 --
-/*Query to select any records from the Students_Sections table with the corresponding name attributes for each foreign key (e.g. course_name for course_id), with the % character being used to denote the variables that will have data from the backend programming language*/
+/*Query to select any records from the Students_Sections table with the corresponding name 
+attributes for each foreign key (e.g. course_name for course_id), with the % character being 
+used to denote the variables that will have data from the backend programming language*/
 SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
 FROM Students_Sections ss \
 JOIN Students s ON ss.student_id = s.student_id \
@@ -120,22 +133,41 @@ ORDER BY student_id,section_id ASC;
 /*Query to select student name as one string from the Students table*/
 SELECT CONCAT(student_first_name, ' ', student_last_name) AS student_name FROM Students ORDER BY student_name ASC;
 
-/*Query to select student_id from the Students table for given student_first_name and student_last_name, with the % character being used to denote the variables that will have data from the backend programming language*/
+/*Query to select student_id from the Students table for given student_first_name and 
+student_last_name, with the % character being used to denote the variables that will have 
+data from the backend programming language*/
 SELECT student_id FROM Students WHERE student_first_name = %student_first_name and student_last_name = %student_last_name;
 
 /* Query to verify if student's registered campus and the section's campus match*/
 SELECT campus_id FROM Students WHERE student_id = %student_id;
 SELECT campus_id FROM Sections WHERE section_id = %section_id;
 
-/*Query to insert a record for the Students_Sections table for a particular student_id and a section_id, with the % character being used to denote the variables that will have data from the backend programming language*/
+/*Query to insert a record for the Students_Sections table for a particular student_id and 
+a section_id, with the % character being used to denote the variables that will have data 
+from the backend programming language*/
 INSERT INTO Students_Sections(student_id, section_id) VALUES (%student_id, %section_id);
 
-/*Query to delete any records from the Students_Sections table given a particular student_id and section_id, with the % character being used to denote the variables that will have data from the backend programming language*/
+/*Query to delete any records from the Students_Sections table given a particular student_id 
+and section_id, with the % character being used to denote the variables that will have data 
+from the backend programming language*/
 DELETE FROM Students_Sections WHERE student_id = %student_id and section_id = %section_id;
 --
 -- Courses_Campuses M:M Intersection Table
 --
+/*Query to select all records from the Courses_Campuses table while joining to the Courses and Campuses
+table respectively to bring in the descriptive fields*/
+SELECT cps.campus_id, cps.campus_name, crs.course_id, crs.course_name FROM Courses_Campuses cmb \
+JOIN Courses crs ON cmb.course_id = crs.course_id \
+JOIN Campuses cps ON cmb.campus_id = cps.campus_id;
+
 /*Query to insert a new set of records into the Courses_Campuses table based on a given 
 campus_id, with the % character being used to denote the variables that will have data from 
-the backend programming language*/
-INSERT INTO Courses_Campuses(course_id, campus_id) SELECT course_id, campus_id FROM Courses t1 CROSS JOIN Campuses t2 WHERE t2.campus_id = %campus_id;
+the backend programming language; this query inserts all values from a cross join between
+Courses and Campuses*/
+INSERT INTO Courses_Campuses(course_id, campus_id) SELECT course_id, campus_id FROM Courses t1 CROSS JOIN Campuses t2 
+WHERE t2.campus_id = %campus_id;
+
+/*Query to delete any records from the Courses_Campuses table given a particular course_id 
+and campus_id, with the % character being used to denote the variables that will have data 
+from the backend programming language*/
+DELETE FROM Courses_Campuses WHERE course_id = %s and campus_id = %s;
