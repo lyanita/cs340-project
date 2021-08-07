@@ -431,18 +431,19 @@ def add_sections():
 
     course_query = "SELECT course_id, course_name FROM Courses ORDER BY course_name ASC;"
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
-    course_result = course_cursor.fetchall()
+    course_results = course_cursor.fetchall()
 
-    instructor_query = "SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name FROM Instructors ORDER BY instructor_name ASC;"
+    instructor_query = "SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name, campus_id FROM Instructors ORDER BY instructor_name ASC;"
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
-    instructor_result = instructor_cursor.fetchall()
-    
+    instructor_results = instructor_cursor.fetchall()
+
     if request.method == "POST":
         course_name = request.form['course_name']
         instructor_name = request.form['instructor_name']
 
+        # validate if the course name exists
         course_flag = False
-        for dict in course_result:
+        for dict in course_results:
             course = dict.get('course_name')
             if course_name == course:
                 course_id = dict.get('course_id')
@@ -450,9 +451,17 @@ def add_sections():
                 break
             else:
                 post_message = "Invalid entries. Please try again."
+               
+        # validate if the instructor name exists 
         instructor_flag = False
-        for dict in instructor_result:
+        for dict in instructor_results:
             instructor = dict.get('instructor_name')
+            campus_id = dict.get('campus_id')
+            
+            # validate if the instructor is assigned to any campus
+            if not campus_id:
+                post_message = "The instructor is not assigned to any campus."
+                break
             if instructor_name == instructor:
                 instructor_id = dict.get('instructor_id')
                 instructor_flag = True
@@ -460,8 +469,8 @@ def add_sections():
             else:
                 post_message = "Invalid entries. Please try again."
         
+        # if both course and instructor inputs are valid
         if course_flag and instructor_flag:
-
             if course_id == "" or instructor_id == "":
                 post_message = "Please complete all fields in the form."
             else:
@@ -488,7 +497,7 @@ def add_sections():
                     post_message = "You have successfully created a new section."
             
     db_connection.close()
-    return render_template("/add_sections.html", post_message=post_message, courses=course_result, instructors=instructor_result)
+    return render_template("/add_sections.html", post_message=post_message, courses=course_results, instructors=instructor_results)
 
 @app.route("/delete-section/<int:id>")
 def delete_section(id):
