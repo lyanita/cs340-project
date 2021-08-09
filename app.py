@@ -404,7 +404,7 @@ def sections():
             JOIN Courses c ON s.course_id = c.course_id \
             JOIN Instructors i ON s.instructor_id = i.instructor_id \
             JOIN Campuses ca ON s.campus_id = ca.campus_id \
-            WHERE section_id = %s OR c.course_name = %s OR ca.campus_name = %s \
+            WHERE section_id = %s OR c.course_name like %s OR ca.campus_name like %s \
             ORDER BY section_id ASC;"
         data = (section_id, course_name, campus_name)        
         search_cursor = db.execute_query(db_connection=db_connection, query=search_query, query_params=data)
