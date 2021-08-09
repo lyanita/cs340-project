@@ -536,7 +536,11 @@ def section_register():
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
 
-    students_query = "SELECT CONCAT(student_first_name, ' ', student_last_name) AS student_name FROM Students ORDER BY student_name ASC;"
+    # select student names with each registered campus info, course names, instructor names with each registered campus for dropdown datalist
+    students_query = "SELECT CONCAT(student_first_name, ' ', student_last_name, '(', c.campus_name, ')') AS student_name \
+        FROM Students s \
+        JOIN Campuses c ON s.campus_id = c.campus_id \
+        ORDER BY student_name ASC;"
     students_cursor = db.execute_query(db_connection=db_connection, query=students_query)
     students_results = students_cursor.fetchall()
 
@@ -544,7 +548,10 @@ def section_register():
     courses_cursor = db.execute_query(db_connection=db_connection, query=courses_query)
     courses_results = courses_cursor.fetchall()
 
-    instructors_query = "SELECT CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name FROM Instructors ORDER BY instructor_name ASC;"
+    instructors_query = "SELECT CONCAT(instructor_first_name, ' ', instructor_last_name, '(', c.campus_name, ')') AS instructor_name \
+        FROM Instructors i \
+        JOIN Campuses c ON i.campus_id = c.campus_id \
+        ORDER BY instructor_name ASC;"
     instructors_cursor = db.execute_query(db_connection=db_connection, query=instructors_query)
     instructors_results = instructors_cursor.fetchall()
     
