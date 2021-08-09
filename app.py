@@ -187,7 +187,7 @@ def add_campuses():
                 insert_query = "INSERT INTO Campuses(campus_name, campus_city, campus_country, campus_online) VALUES (%s, %s, %s, %s);"
                 data = (campus_name, campus_city, campus_country, campus_online)
                 insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-                post_message = "You have successfully created a new campus, " + campus_name + "."
+                post_message = "You have successfully created a new campus, " + campus_name + ". Please note that new records have been automatically added to the Courses_Campuses table based on the existing records from the Courses table."
 
                 new_campus_query = "SELECT * FROM Campuses WHERE campus_name = %s;"
                 data = (campus_name,)
@@ -523,8 +523,6 @@ def section_register():
     post_message = ""
     student_id = ""
     section_id = ""
-    #validate_message = ""
-    #delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
     query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name, ca.campus_name \
         FROM Students_Sections ss \
         JOIN Students s ON ss.student_id = s.student_id \
@@ -754,7 +752,18 @@ def add_courses():
                 insert_query = "INSERT INTO Courses(course_name) VALUES (%s);"
                 data = (course_name,)
                 insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-                post_message = "A new course, " + course_name + ", has been created."
+                post_message = "A new course, " + course_name + ", has been created. Please note that new records have been automatically added to the Courses_Campuses table based on the existing records from the Campuses table."
+
+                new_course_query = "SELECT * FROM Courses WHERE course_name = %s;"
+                data = (course_name,)
+                new_course_cursor = db.execute_query(db_connection=db_connection, query=new_course_query, query_params=data)
+                new_course_results = new_course_cursor.fetchall()
+
+                intersect_insert_query = "INSERT INTO Courses_Campuses(course_id, campus_id) SELECT course_id, campus_id FROM Courses t1 CROSS JOIN Campuses t2 WHERE t1.course_id = %s;"
+                for dict in new_course_results:
+                    course_id = dict.get('course_id')
+                data = (course_id,)
+                intersect_insert_cursor = db.execute_query(db_connection=db_connection, query=intersect_insert_query, query_params=data)
 
     db_connection.close()
     return render_template("add_courses.html", post_message=post_message)
