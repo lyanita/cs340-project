@@ -102,41 +102,65 @@ VALUES
 INSERT INTO Sections(course_id, instructor_id, campus_id) 
 VALUES
     (
-        (SELECT course_id FROM Courses WHERE course_name = "Introduction to Databases"),
-        (SELECT instructor_id FROM Instructors WHERE instructor_first_name = "Chuckie" and instructor_last_name = "Finster"),
-        (SELECT campus_id FROM Campuses WHERE campus_name = "Corvallis")
+        (SELECT course_id FROM Courses WHERE course_id = 1),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 1),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 1)
     ),(
-        (SELECT course_id FROM Courses WHERE course_name = "Introduction to Databases"),
-        (SELECT instructor_id FROM Instructors WHERE instructor_first_name = "Kimi" and instructor_last_name = "Finster"),
-        (SELECT campus_id FROM Campuses WHERE campus_name = "Davis")
+        (SELECT course_id FROM Courses WHERE course_id = 1),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 2),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 2)
     ),(
-        (SELECT course_id FROM Courses WHERE course_name = "Introduction to Databases"),
-        (SELECT instructor_id FROM Instructors WHERE instructor_first_name = "Edwin" and instructor_last_name = "Deville"),
-        (SELECT campus_id FROM Campuses WHERE campus_name = "Washington")
+        (SELECT course_id FROM Courses WHERE course_id = 1),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 3),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 3)
+    ),(        
+        (SELECT course_id FROM Courses WHERE course_id = 1),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 4),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 4)
     ),(
-        (SELECT course_id FROM Courses WHERE course_name = "Introduction to Computer Science"),
-        (SELECT instructor_id FROM Instructors WHERE instructor_first_name = "Chuckie" and instructor_last_name = "Finster"),
-        (SELECT campus_id FROM Campuses WHERE campus_name = "Corvallis")
+        (SELECT course_id FROM Courses WHERE course_id = 1),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 5),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 5)
     ),(
-        (SELECT course_id FROM Courses WHERE course_name = "Introduction to Computer Science"),
-        (SELECT instructor_id FROM Instructors WHERE instructor_first_name = "Kimi" and instructor_last_name = "Finster"),
-        (SELECT campus_id FROM Campuses WHERE campus_name = "Davis")
+        (SELECT course_id FROM Courses WHERE course_id = 2),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 1),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 1)
     ),(
-        (SELECT course_id FROM Courses WHERE course_name = "Introduction to Computer Science"),
-        (SELECT instructor_id FROM Instructors WHERE instructor_first_name = "Edwin" and instructor_last_name = "Deville"),
-        (SELECT campus_id FROM Campuses WHERE campus_name = "Washington")
+        (SELECT course_id FROM Courses WHERE course_id = 2),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 2),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 2)
     ),(
-        (SELECT course_id FROM Courses WHERE course_name = "Software Engineering"),
-        (SELECT instructor_id FROM Instructors WHERE instructor_first_name = "Tommy" and instructor_last_name = "Pickles"),
-        (SELECT campus_id FROM Campuses WHERE campus_name = "Corvallis")
+        (SELECT course_id FROM Courses WHERE course_id = 2),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 3),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 3)
     ),(
-        (SELECT course_id FROM Courses WHERE course_name = "Software Engineering"),
-        (SELECT instructor_id FROM Instructors WHERE instructor_first_name = "Matt" and instructor_last_name = "Chung"),
-        (SELECT campus_id FROM Campuses WHERE campus_name = "Davis")
+        (SELECT course_id FROM Courses WHERE course_id = 2),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 4),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 4)
     ),(
-        (SELECT course_id FROM Courses WHERE course_name = "Software Engineering"),
-        (SELECT instructor_id FROM Instructors WHERE instructor_first_name = "Angel" and instructor_last_name = "Carmin"),
-        (SELECT campus_id FROM Campuses WHERE campus_name = "Washington")
+        (SELECT course_id FROM Courses WHERE course_id = 2),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 5),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 5)
+    ),(
+        (SELECT course_id FROM Courses WHERE course_id = 3),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 1),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 1)
+    ),(
+        (SELECT course_id FROM Courses WHERE course_id = 3),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 2),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 2)
+    ),(
+        (SELECT course_id FROM Courses WHERE course_id = 3),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 3),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 3)
+    ),(
+        (SELECT course_id FROM Courses WHERE course_id = 3),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 4),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 4)
+    ),(
+        (SELECT course_id FROM Courses WHERE course_id = 3),
+        (SELECT instructor_id FROM Instructors WHERE instructor_id = 5),
+        (SELECT campus_id FROM Instructors WHERE instructor_id = 5)
     );
 
 INSERT INTO Students_Sections(student_id, section_id)
