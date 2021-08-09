@@ -399,12 +399,12 @@ def sections():
             else:
                 campus_name = "%" + campus_name + "%"              
                         
-        search_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
+        search_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name, ca.campus_id, campus_name \
             FROM Sections s \
             JOIN Courses c ON s.course_id = c.course_id \
             JOIN Instructors i ON s.instructor_id = i.instructor_id \
             JOIN Campuses ca ON s.campus_id = ca.campus_id \
-            WHERE section_id = %s OR c.course_name like %s OR ca.campus_name like %s \
+            WHERE section_id = %s OR c.course_name LIKE %s OR ca.campus_name LIKE %s \
             ORDER BY section_id ASC;"
         data = (section_id, course_name, campus_name)        
         search_cursor = db.execute_query(db_connection=db_connection, query=search_query, query_params=data)
@@ -525,7 +525,7 @@ def section_register():
     section_id = ""
     #validate_message = ""
     #delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
-    query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
+    query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name, ca.campus_name \
         FROM Students_Sections ss \
         JOIN Students s ON ss.student_id = s.student_id \
         JOIN Sections se ON se.section_id = ss.section_id \
@@ -611,7 +611,7 @@ def section_register():
             print(instructor_last_name)
                     
             # get student_id and campus_id for the given student name
-            student_query = "SELECT student_id, campus_id FROM Students WHERE student_first_name = %s and student_last_name = %s"
+            student_query = "SELECT student_id, campus_id FROM Students WHERE student_first_name = %s AND student_last_name = %s"
             data = (student_first_name, student_last_name)
             student_cursor = db.execute_query(db_connection=db_connection, query=student_query, query_params=data)
             student_results = student_cursor.fetchall()
@@ -623,7 +623,7 @@ def section_register():
             #print("Student ID is " + str(student_id) + " and Section ID is " + str(section_id))
 
             # get campus_id for the given instructor name
-            instructor_query = "SELECT campus_id FROM Instructors WHERE instructor_first_name = %s and instructor_last_name = %s"
+            instructor_query = "SELECT campus_id FROM Instructors WHERE instructor_first_name = %s AND instructor_last_name = %s"
             data = (instructor_first_name, instructor_last_name)
             instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query, query_params=data)
             instructor_results = instructor_cursor.fetchall()
@@ -635,7 +635,7 @@ def section_register():
             if campus_id_student != campus_id_instructor:
                 flag = True
                 post_message = "The instructor does not teach at the student's campus."
-                
+    
             # get section_id for the given course_name and instructor name
             sections_query = "SELECT * FROM Sections se \
                 JOIN Courses c ON c.course_id = se.course_id \
@@ -670,7 +670,7 @@ def section_register():
                 register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
                 post_message = "You have successfully enrolled " + student_first_name + " " + student_last_name + " in section #" + str(section_id) + "."
                 
-    query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
+    query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) AS student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
         FROM Students_Sections ss \
         JOIN Students s ON ss.student_id = s.student_id \
         JOIN Sections se ON se.section_id = ss.section_id \
