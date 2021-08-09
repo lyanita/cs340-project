@@ -292,6 +292,10 @@ h1.contact-us {
   border-spacing: 0px;
 }
 
+#sections-container {
+  min-height: 100vh;
+}
+
 .entities {
   display: block;
   text-align: center;
