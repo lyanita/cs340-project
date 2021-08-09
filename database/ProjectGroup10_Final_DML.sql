@@ -140,7 +140,7 @@ ORDER BY student_id,section_id ASC;
 
 /*Query to select student name as one string along with registered campus info from the Students table joining Campuses table, 
 for dropdown datalist for adding a new row into Students_Sections table*/
-SELECT CONCAT(student_first_name, ' ', student_last_name, '(', c.campus_name, ')') AS student_name \
+SELECT CONCAT(student_first_name, ' ', student_last_name, ' (', c.campus_name, ')') AS student_name \
     FROM Students s \
     JOIN Campuses c ON s.campus_id = c.campus_id \
     ORDER BY student_name ASC;
@@ -151,7 +151,7 @@ SELECT course_name FROM Courses ORDER BY course_name ASC;
 /*Query to select instructor name as one string along with registered campus info from the Instructors table joining Campuses table, 
 for dropdown datalist for adding a new row into Students_Sections table*/
 SELECT CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name FROM Instructors ORDER BY instructor_name ASC;
-SELECT CONCAT(instructor_first_name, ' ', instructor_last_name, '(', c.campus_name, ')') AS instructor_name \
+SELECT CONCAT(instructor_first_name, ' ', instructor_last_name, ' (', c.campus_name, ')') AS instructor_name \
         FROM Instructors i \
         JOIN Campuses c ON i.campus_id = c.campus_id \
         ORDER BY instructor_name ASC;
