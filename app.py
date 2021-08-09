@@ -723,7 +723,7 @@ def delete_course(id):
     delete_query = "DELETE FROM Courses WHERE course_id = %s;"
     data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted course id #" + str(id) + "."
+    delete_message = "You have deleted course id #" + str(id) + ". All sections for the course are also deleted."
 
     db_connection.close()
     #return redirect("../courses.html")
@@ -784,7 +784,7 @@ def delete_student(id):
     delete_query = "DELETE FROM Students WHERE student_id = %s;"
     data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted student id #" + str(id) + "."
+    delete_message = "You have deleted student id #" + str(id) + ". The student's section registration info is also deleted."
 
     db_connection.close()
     return redirect(url_for('students', delete_message=delete_message, **request.args))
