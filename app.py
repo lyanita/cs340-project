@@ -345,6 +345,8 @@ def sections():
     post_message = ""
     err_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
+    
+    # select more columns to display corresponding name attributes instead of displaying only IDs
     query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
         FROM Sections s \
         JOIN Courses c ON s.course_id = c.course_id \
@@ -394,7 +396,8 @@ def sections():
                 return render_template("sections.html", items=results, post_message=post_message, err_message=err_message, courses=course_result, campuses=campus_result, sections=sections_results)
             else:
                 campus_name = "%" + campus_name + "%"              
-                        
+        
+        # select any records that matches the search inputs
         search_query = "SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name, ca.campus_id, campus_name \
             FROM Sections s \
             JOIN Courses c ON s.course_id = c.course_id \
@@ -429,6 +432,8 @@ def add_sections():
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_results = course_cursor.fetchall()
 
+    # select instructor name along with registered campus name. 
+    # if no campus is assigned, the instructor will not appear in the dropdown datalist
     instructor_query = "SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name, ' (', c.campus_name, ')') AS instructor_name, i.campus_id \
                         FROM Instructors i \
                         JOIN Campuses c ON i.campus_id = c.campus_id \
@@ -450,24 +455,20 @@ def add_sections():
                 course_flag = True
                 break
             else:
-                post_message = "Invalid entries. Please try again."
+                post_message = "The course name doesn't exist in the database. Please try again."
                
         # validate if the instructor name exists 
         instructor_flag = False
         for dict in instructor_results:
             instructor = dict.get('instructor_name')
             campus_id = dict.get('campus_id')
-            
-            # validate if the instructor is assigned to any campus
-            if not campus_id:
-                post_message = "The instructor is not assigned to any campus."
-                break
+
             if instructor_name == instructor:
                 instructor_id = dict.get('instructor_id')
                 instructor_flag = True
                 break
             else:
-                post_message = "Invalid entries. Please try again."
+                post_message = "The instructor doesn't exist in the database or is not assigned to any campus. Please try again."
         
         # if both course and instructor inputs are valid
         if course_flag and instructor_flag:
@@ -523,6 +524,8 @@ def section_register():
     post_message = ""
     student_id = ""
     section_id = ""
+    # query to select any records from Students_Sections table
+    # more columns are added to display name attributes for the particular section_id and student_id
     query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name, ca.campus_name \
         FROM Students_Sections ss \
         JOIN Students s ON ss.student_id = s.student_id \
@@ -546,6 +549,8 @@ def section_register():
     courses_cursor = db.execute_query(db_connection=db_connection, query=courses_query)
     courses_results = courses_cursor.fetchall()
 
+    # select instructor name as one string with registered campus
+    # if no campus is assigned, the instructor will not appear in the dropdown datalist
     instructors_query = "SELECT CONCAT(instructor_first_name, ' ', instructor_last_name, ' (', c.campus_name, ')') AS instructor_name \
         FROM Instructors i \
         JOIN Campuses c ON i.campus_id = c.campus_id \
@@ -562,10 +567,10 @@ def section_register():
         instructor_name_split = str.split(request.form['instructor_name'])
         instructor_name = request.form['instructor_name']
         
+        # if there is no input
         if student_name == "" or course_name == "" or instructor_name == "":
             flag = True
-            post_message = "Please complete all fields in the form."
-            
+            post_message = "Please complete all fields in the form."            
 
         # check if the student name is valid
         student_flag = False
@@ -618,7 +623,6 @@ def section_register():
             for dict in student_results:
                 student_id = dict.get('student_id')
                 campus_id_student = dict.get('campus_id')
-            #print("Student ID is " + str(student_id) + " and Section ID is " + str(section_id))
 
             # get campus_id for the given instructor name
             instructor_query = "SELECT campus_id FROM Instructors WHERE instructor_first_name = %s AND instructor_last_name = %s"
@@ -643,15 +647,13 @@ def section_register():
             data = (course_name, instructor_first_name, instructor_last_name)
             sections_cursor = db.execute_query(db_connection=db_connection, query=sections_query, query_params=data)
             sections_results = sections_cursor.fetchall()
-
             for dict in sections_results:
                 section_id = dict.get('section_id')    
-                           
+                
             for dict in results:
                 student_id1 = dict.get('student_id')
                 section_id1 = dict.get('section_id')
                 print("Student ID1 is " + str(student_id1) + " and Section ID1 is " + str(section_id1))
-                # check for a duplicate value
                 
                 # if the student or section does not exist
                 if student_id =="":
@@ -659,18 +661,22 @@ def section_register():
                     post_message = "The student doesn't exist. Please enter a different value."    
                 elif section_id == "":
                     flag = True
-                    post_message = "The section doesn't exist. Please enter a different value."  
+                    post_message = "The section doesn't exist. Please enter a different value."
+                    
+                # check for duplicate values    
                 elif int(student_id1) == int(student_id) and int(section_id1) == int(section_id):
                     flag = True
                     post_message = "The section is already registered for the student. Please enter different values."
                     print("Duplicate")    
-         
+            
+            # if inputs are valid, INSERT a new row to Students_Sections table
             if not flag:
                 register_query = "INSERT INTO Students_Sections(student_id, section_id) VALUES (%s, %s);"
                 data = (student_id, section_id,)
                 register_cursor = db.execute_query(db_connection=db_connection, query=register_query, query_params=data)
                 post_message = "You have successfully enrolled " + student_first_name + " " + student_last_name + " in section #" + str(section_id) + "."
-                
+    
+    # disply updated table once a new record is created           
     query = "SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) AS student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
         FROM Students_Sections ss \
         JOIN Students s ON ss.student_id = s.student_id \
@@ -734,6 +740,7 @@ def add_courses():
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_results = course_cursor.fetchall()
 
+    # Handling POST form
     if request.method == "POST":
         course_name = request.form['course_name']
         print(course_name)
@@ -742,12 +749,15 @@ def add_courses():
             post_message = "Please enter a course name."
         else:
             flag = False
+            # check for duplicate values
             for dict in course_results:
                 course = dict.get('course_name')
                 if course_name == course:
                     flag = True
                     post_message = "The course name is already in use. Please enter another name."
                     break
+                
+            # if input is valid, INSERT a new course
             if not flag:
                 insert_query = "INSERT INTO Courses(course_name) VALUES (%s);"
                 data = (course_name,)
@@ -759,6 +769,7 @@ def add_courses():
                 new_course_cursor = db.execute_query(db_connection=db_connection, query=new_course_query, query_params=data)
                 new_course_results = new_course_cursor.fetchall()
 
+                # auto insert the corresponding FK attributes in the Courses_Campuses intersection table
                 intersect_insert_query = "INSERT INTO Courses_Campuses(course_id, campus_id) SELECT course_id, campus_id FROM Courses t1 CROSS JOIN Campuses t2 WHERE t1.course_id = %s;"
                 for dict in new_course_results:
                     course_id = dict.get('course_id')
