@@ -36,8 +36,8 @@ DELETE FROM Instructors WHERE instructor_id = %instructor_id;
 
 /*Query to update an existing set of records to the Instructors table with % character being used 
 to denote the variables that will have data from the backend programming language; campus_id can be updated to NULL*/
-UPDATE Instructors SET instructor_first_name = %s, instructor_last_name = %s, campus_id = %s 
-WHERE instructor_id = %s;
+UPDATE Instructors SET instructor_first_name = %instructor_first_name, instructor_last_name = %instructor_last_name, campus_id = %campus_id 
+WHERE instructor_id = %instructor_id;
 --
 -- Students Entity Table
 --
@@ -96,16 +96,20 @@ FROM Sections s \
 JOIN Courses c ON s.course_id = c.course_id \
 JOIN Instructors i ON s.instructor_id = i.instructor_id \
 JOIN Campuses ca ON s.campus_id = ca.campus_id \
-WHERE section_id = %s OR c.course_name LIKE %s OR ca.campus_name LIKE %s \
+WHERE section_id = %section_id OR c.course_name LIKE %course_name OR ca.campus_name LIKE %campus_name \
 ORDER BY section_id ASC;
 
 /*Query to select all records from Sections table*/
 SELECT * FROM Sections ORDER BY section_id ASC;
 
-/*Queries for client side validation*/
-SELECT course_id, course_name FROM Courses ORDER BY course_name ASC;
-SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name 
-FROM Instructors ORDER BY instructor_name ASC;
+/*Queries to select any records from the Courses table*/
+SELECT * FROM Courses ORDER BY course_name ASC;
+
+/*Queries to select instructor name as one string with registered campus info from the Instructors table*/
+SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name, ' (', c.campus_name, ')') AS instructor_name, i.campus_id \
+FROM Instructors i \
+JOIN Campuses c ON i.campus_id = c.campus_id \
+ORDER BY instructor_name ASC;
 
 /*Query to select all records from Instructors table for the particular instructor_id
 with the % character being used to denote the variables that will have data from the 
@@ -150,7 +154,6 @@ SELECT course_name FROM Courses ORDER BY course_name ASC;
 
 /*Query to select instructor name as one string along with registered campus info from the Instructors table joining Campuses table, 
 for dropdown datalist for adding a new row into Students_Sections table*/
-SELECT CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name FROM Instructors ORDER BY instructor_name ASC;
 SELECT CONCAT(instructor_first_name, ' ', instructor_last_name, ' (', c.campus_name, ')') AS instructor_name \
         FROM Instructors i \
         JOIN Campuses c ON i.campus_id = c.campus_id \
@@ -203,4 +206,4 @@ WHERE t2.campus_id = %campus_id;
 /*Query to delete any records from the Courses_Campuses table given a particular course_id 
 and campus_id, with the % character being used to denote the variables that will have data 
 from the backend programming language*/
-DELETE FROM Courses_Campuses WHERE course_id = %s AND campus_id = %s;
+DELETE FROM Courses_Campuses WHERE course_id = %course_id AND campus_id = %campus_id;
