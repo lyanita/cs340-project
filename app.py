@@ -429,11 +429,15 @@ def add_sections():
     section_cursor = db.execute_query(db_connection=db_connection, query=section_query)
     section_results = section_cursor.fetchall()
 
-    course_query = "SELECT course_id, course_name FROM Courses ORDER BY course_name ASC;"
+    course_query = "SELECT * FROM Courses ORDER BY course_name ASC;"
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_results = course_cursor.fetchall()
 
-    instructor_query = "SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name, campus_id FROM Instructors ORDER BY instructor_name ASC;"
+    instructor_query = "SELECT instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name, ' (', c.campus_name, ')') AS instructor_name, i.campus_id \
+                        FROM Instructors i \
+                        JOIN Campuses c ON i.campus_id = c.campus_id \
+                        ORDER BY instructor_name ASC;"
+
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
     instructor_results = instructor_cursor.fetchall()
 
