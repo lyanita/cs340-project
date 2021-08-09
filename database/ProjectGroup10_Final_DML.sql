@@ -138,14 +138,23 @@ JOIN Instructors i ON i.instructor_id = se.instructor_id\
 JOIN Campuses ca ON ca.campus_id = i.campus_id \
 ORDER BY student_id,section_id ASC;
 
-/*Query to select student name as one string from the Students table*/
-SELECT CONCAT(student_first_name, ' ', student_last_name) AS student_name FROM Students ORDER BY student_name ASC;
+/*Query to select student name as one string along with registered campus info from the Students table joining Campuses table, 
+for dropdown datalist for adding a new row into Students_Sections table*/
+SELECT CONCAT(student_first_name, ' ', student_last_name, '(', c.campus_name, ')') AS student_name \
+    FROM Students s \
+    JOIN Campuses c ON s.campus_id = c.campus_id \
+    ORDER BY student_name ASC;
 
-/*Query to select course name from the Courses table*/
+/*Query to select course name from the Courses table for dropdown datalist for adding a new row into Students_Sections table*/
 SELECT course_name FROM Courses ORDER BY course_name ASC;
 
-/*Query to select instructor name as one string from the Instructors table*/
+/*Query to select instructor name as one string along with registered campus info from the Instructors table joining Campuses table, 
+for dropdown datalist for adding a new row into Students_Sections table*/
 SELECT CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name FROM Instructors ORDER BY instructor_name ASC;
+SELECT CONCAT(instructor_first_name, ' ', instructor_last_name, '(', c.campus_name, ')') AS instructor_name \
+        FROM Instructors i \
+        JOIN Campuses c ON i.campus_id = c.campus_id \
+        ORDER BY instructor_name ASC;
 
 /*Query to select student_id and campus_id from the Students table for given student_first_name and 
 student_last_name, with the % character being used to denote the variables that will have 
