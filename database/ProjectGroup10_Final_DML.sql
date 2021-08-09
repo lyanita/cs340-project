@@ -75,7 +75,7 @@ INSERT INTO Courses(course_name) VALUES (%course_name);
 --
 /*Query to select all records from the Sections table with the corresponding name attributes 
 for each foreign key (e.g. course_name for course_id)*/
-SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
+SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name, ca.campus_id, campus_name \
 FROM Sections s \
 JOIN Courses c ON s.course_id = c.course_id \
 JOIN Instructors i ON s.instructor_id = i.instructor_id \
@@ -91,12 +91,12 @@ SELECT DISTINCT section_id FROM Sections ORDER BY section_id ASC;
 course_name, or a campus_name, with the % character being used to denote the variables that 
 will have data from the backend programming language; this is to select results from searching 
 by section_id, course_name, or campus_name*/
-SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_id, campus_name \
+SELECT section_id, c.course_id, course_name, i.instructor_id, CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_name, ca.campus_id, campus_name \
 FROM Sections s \
 JOIN Courses c ON s.course_id = c.course_id \
 JOIN Instructors i ON s.instructor_id = i.instructor_id \
 JOIN Campuses ca ON s.campus_id = ca.campus_id \
-WHERE section_id = %s OR c.course_name = %s OR ca.campus_name = %s \
+WHERE section_id = %s OR c.course_name LIKE %s OR ca.campus_name LIKE %s \
 ORDER BY section_id ASC;
 
 /*Query to select all records from Sections table*/
@@ -129,7 +129,7 @@ DELETE FROM Sections WHERE section_id = %section_id;
 /*Query to select any records from the Students_Sections table with the corresponding name 
 attributes for each foreign key (e.g. course_name for course_id), with the % character being 
 used to denote the variables that will have data from the backend programming language*/
-SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) as student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
+SELECT ss.student_id, CONCAT(student_first_name, ' ', student_last_name) AS student_name, se.section_id, c.course_name, CONCAT(instructor_first_name, ' ', instructor_last_name) as instructor_name, ca.campus_name \
 FROM Students_Sections ss \
 JOIN Students s ON ss.student_id = s.student_id \
 JOIN Sections se ON se.section_id = ss.section_id \
@@ -150,12 +150,12 @@ SELECT CONCAT(instructor_first_name, ' ', instructor_last_name) AS instructor_na
 /*Query to select student_id and campus_id from the Students table for given student_first_name and 
 student_last_name, with the % character being used to denote the variables that will have 
 data from the backend programming language*/
-SELECT student_id, campus_id FROM Students WHERE student_first_name = %student_first_name and student_last_name = %student_last_name;
+SELECT student_id, campus_id FROM Students WHERE student_first_name = %student_first_name AND student_last_name = %student_last_name;
 
 /* Query to select campus_id from the Instructors table for given instructor_first_name and 
 instructor_last_name, with the % character being used to denote the variables that will have 
 data from the backend programming language*/
-SELECT campus_id FROM Instructors WHERE instructor_first_name = %instructor_first_name and instructor_last_name = %instructor_last_name;
+SELECT campus_id FROM Instructors WHERE instructor_first_name = %instructor_first_name AND instructor_last_name = %instructor_last_name;
 
 /* Query to select any records from the Sections table to get section_id for the given course_name and 
 instructor name, with the % character being used to denote the variables that will have data from the 
@@ -164,7 +164,7 @@ SELECT * FROM Sections se \
 JOIN Courses c ON c.course_id = se.course_id \
 JOIN Campuses ca ON ca.campus_id = se.campus_id \
 JOIN Instructors i ON i.instructor_id = se.instructor_id \
-WHERE course_name = %course_name and instructor_first_name = %instructor_first_name and instructor_last_name = %instructor_last_name;
+WHERE course_name = %course_name AND instructor_first_name = %instructor_first_name AND instructor_last_name = %instructor_last_name;
 
 /*Query to insert a record for the Students_Sections table for a particular student_id and 
 a section_id, with the % character being used to denote the variables that will have data 
@@ -174,7 +174,7 @@ INSERT INTO Students_Sections(student_id, section_id) VALUES (%student_id, %sect
 /*Query to delete any records from the Students_Sections table given a particular student_id 
 and section_id, with the % character being used to denote the variables that will have data 
 from the backend programming language*/
-DELETE FROM Students_Sections WHERE student_id = %student_id and section_id = %section_id;
+DELETE FROM Students_Sections WHERE student_id = %student_id AND section_id = %section_id;
 --
 -- Courses_Campuses M:M Intersection Table
 --
@@ -194,4 +194,4 @@ WHERE t2.campus_id = %campus_id;
 /*Query to delete any records from the Courses_Campuses table given a particular course_id 
 and campus_id, with the % character being used to denote the variables that will have data 
 from the backend programming language*/
-DELETE FROM Courses_Campuses WHERE course_id = %s and campus_id = %s;
+DELETE FROM Courses_Campuses WHERE course_id = %s AND campus_id = %s;
