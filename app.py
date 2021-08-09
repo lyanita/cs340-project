@@ -537,7 +537,7 @@ def section_register():
     results = cursor.fetchall()
 
     # select student names with each registered campus info, course names, instructor names with each registered campus for dropdown datalist
-    students_query = "SELECT CONCAT(student_first_name, ' ', student_last_name, '(', c.campus_name, ')') AS student_name \
+    students_query = "SELECT CONCAT(student_first_name, ' ', student_last_name, ' (', c.campus_name, ')') AS student_name \
         FROM Students s \
         JOIN Campuses c ON s.campus_id = c.campus_id \
         ORDER BY student_name ASC;"
@@ -548,7 +548,7 @@ def section_register():
     courses_cursor = db.execute_query(db_connection=db_connection, query=courses_query)
     courses_results = courses_cursor.fetchall()
 
-    instructors_query = "SELECT CONCAT(instructor_first_name, ' ', instructor_last_name, '(', c.campus_name, ')') AS instructor_name \
+    instructors_query = "SELECT CONCAT(instructor_first_name, ' ', instructor_last_name, ' (', c.campus_name, ')') AS instructor_name \
         FROM Instructors i \
         JOIN Campuses c ON i.campus_id = c.campus_id \
         ORDER BY instructor_name ASC;"
@@ -615,7 +615,7 @@ def section_register():
             data = (student_first_name, student_last_name)
             student_cursor = db.execute_query(db_connection=db_connection, query=student_query, query_params=data)
             student_results = student_cursor.fetchall()
-            student_id = ""
+
             campus_id_student = ""
             for dict in student_results:
                 student_id = dict.get('student_id')
@@ -645,21 +645,25 @@ def section_register():
             data = (course_name, instructor_first_name, instructor_last_name)
             sections_cursor = db.execute_query(db_connection=db_connection, query=sections_query, query_params=data)
             sections_results = sections_cursor.fetchall()
-            section_id = ""
+
             for dict in sections_results:
-                section_id = dict.get('section_id')     
-                
-            # if the section does not exist
-            if section_id == "":
-                flag = True
-                post_message = "There is no such section. Please enter different values."               
+                section_id = dict.get('section_id')    
+                           
 
             for dict in results:
                 student_id1 = dict.get('student_id')
                 section_id1 = dict.get('section_id')
                 print("Student ID1 is " + str(student_id1) + " and Section ID1 is " + str(section_id1))
                 # check for a duplicate value
-                if int(student_id1) == int(student_id) and int(section_id1) == int(section_id):
+                
+                # if the student or section does not exist
+                if student_id =="":
+                    flag = True
+                    post_message = "The student doesn't exist. Please enter a different value."    
+                elif section_id == "":
+                    flag = True
+                    post_message = "The section id doesn't exist. Please enter a different value."  
+                elif int(student_id1) == int(student_id) and int(section_id1) == int(section_id):
                     flag = True
                     post_message = "The section is already registered for the student. Please enter different values."
                     print("Duplicate")    
