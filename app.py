@@ -31,8 +31,8 @@ def campuses():
     post_message = ""
     duplicate_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
-    remove_message = request.args.get("remove_message") if request.args.get("remove_message") else "" #retrieve delete_message from GET request
-    update_message = request.args.get("update_message") if request.args.get("update_message") else ""
+    remove_message = request.args.get("remove_message") if request.args.get("remove_message") else "" #retrieve remove_message from GET request
+    update_message = request.args.get("update_message") if request.args.get("update_message") else "" #retrieve update_message from GET request
 
     select_query = "SELECT * FROM Campuses ORDER BY campus_id ASC;"
     select_cursor = db.execute_query(db_connection=db_connection, query=select_query)
@@ -73,7 +73,7 @@ def campuses():
                 course_flag = True
                 break
             else:
-                validate_message = "Invalid entries. Please try again."
+                validate_message = "Course does not exist. Please try again."
 
         campus_flag = False
         for dict in campus_results:
@@ -83,7 +83,7 @@ def campuses():
                 campus_flag = True
                 break
             else:
-                validate_message = "Invalid entries. Please try again."
+                validate_message = "Campus does not exist. Please try again."
 
         duplicate_flag = False
         if course_flag and campus_flag:
@@ -99,7 +99,7 @@ def campuses():
                 insert_query = "INSERT INTO Courses_Campuses(course_id, campus_id) VALUES (%s, %s);"
                 data = (course_id, campus_id,)
                 insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-                post_message = "You have successfully added a new course to the " + campus_name + " campus."
+                post_message = "You have successfully added a new course called " + course_name + "to the " + campus_name + " campus."
 
                 course_campus_query = "SELECT cps.campus_id, cps.campus_name, crs.course_id, crs.course_name FROM Courses_Campuses cmb \
                         JOIN Courses crs ON cmb.course_id = crs.course_id \
@@ -137,7 +137,6 @@ def update_campus(id):
         
         update_message = "You have updated campus id #" + str(id) + "."
         db_connection.close()
-        #return redirect("/campuses.html")
         return redirect(url_for('campuses', update_message=update_message, **request.args))
             
     else:
@@ -152,7 +151,7 @@ def delete_campus(id):
     delete_query = "DELETE FROM Campuses WHERE campus_id = %s;"
     data=(id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted campus id #" + str(id) + "."
+    delete_message = "You have deleted campus id #" + str(id) + ". All associated courses, sections, instructors and students will be deleted as well."
 
     db_connection.close()
     return redirect(url_for('campuses', delete_message=delete_message, **request.args))
@@ -176,7 +175,6 @@ def add_campuses():
         if campus_name == "":
             post_message = "Please enter a campus name."
         else:
-
             flag = False
             for dict in campus_results:
                 campus = dict.get('campus_name')
@@ -189,7 +187,7 @@ def add_campuses():
                 insert_query = "INSERT INTO Campuses(campus_name, campus_city, campus_country, campus_online) VALUES (%s, %s, %s, %s);"
                 data = (campus_name, campus_city, campus_country, campus_online)
                 insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
-                post_message = "You have successfully created a new campus."
+                post_message = "You have successfully created a new campus, " + campus_name + "."
 
                 new_campus_query = "SELECT * FROM Campuses WHERE campus_name = %s;"
                 data = (campus_name,)
@@ -215,7 +213,6 @@ def delete_course_campus(id1, id2):
     delete_message = "You have deleted course id #" + str(id1) + " for campus id #" + str(id2) + "."
 
     db_connection.close()
-    #return redirect("/campuses.html")
     return redirect(url_for('campuses', remove_message=delete_message, **request.args))
 
 # Instructors
@@ -225,7 +222,7 @@ def instructors():
     db_connection = db.connect_to_database()
     post_message = ""
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
-    update_message = request.args.get("update_message") if request.args.get("update_message") else ""
+    update_message = request.args.get("update_message") if request.args.get("update_message") else "" #retrieve update_message from GET request
     
     instructor_query = "SELECT ins.*, cps.campus_name FROM Instructors ins LEFT JOIN Campuses cps ON ins.campus_id = cps.campus_id ORDER BY instructor_id ASC;"
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
@@ -284,7 +281,6 @@ def update_instructor(id):
         db_connection.close()
         return render_template("instructor_update.html", items=instructor_results, campuses=select_results, post_message=post_message)
     
-
 @app.route("/delete-instructor/<int:id>")
 def delete_instructor(id):
     """Delete an instructor from the Instructors table"""
@@ -653,7 +649,6 @@ def section_register():
             for dict in sections_results:
                 section_id = dict.get('section_id')    
                            
-
             for dict in results:
                 student_id1 = dict.get('student_id')
                 section_id1 = dict.get('section_id')
@@ -702,7 +697,6 @@ def delete_student_section(id1, id2):
     post_message = "You have deleted section id #" + str(id2) + " for student id #" + str(id1) + "."
 
     db_connection.close()
-    #return redirect("/section_register.html")
     return redirect(url_for('section_register', post_message=post_message, **request.args))
 
 # Courses
@@ -730,7 +724,6 @@ def delete_course(id):
     delete_message = "You have deleted course id #" + str(id) + ". All sections for the course were also deleted."
 
     db_connection.close()
-    #return redirect("../courses.html")
     return redirect(url_for('courses', delete_message=delete_message, **request.args))
 
 @app.route("/add_courses.html", methods=["GET", "POST"])
