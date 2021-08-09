@@ -199,9 +199,16 @@ JOIN Campuses cps ON cmb.campus_id = cps.campus_id;
 /*Query to insert a new set of records into the Courses_Campuses table based on a given 
 campus_id, with the % character being used to denote the variables that will have data from 
 the backend programming language; this query inserts all values from a cross join between
-Courses and Campuses*/
+Courses and Campuses based on a given campus_id*/
 INSERT INTO Courses_Campuses(course_id, campus_id) SELECT course_id, campus_id FROM Courses t1 CROSS JOIN Campuses t2 
 WHERE t2.campus_id = %campus_id;
+
+/*Query to insert a new set of records into the Courses_Campuses table based on a given 
+course_id, with the % character being used to denote the variables that will have data from 
+the backend programming language; this query inserts all values from a cross join between
+Courses and Campuses based on a given course_id*/
+INSERT INTO Courses_Campuses(course_id, campus_id) SELECT course_id, campus_id FROM Courses t1 CROSS JOIN Campuses t2 
+WHERE t1.course_id = %course_id;
 
 /*Query to delete any records from the Courses_Campuses table given a particular course_id 
 and campus_id, with the % character being used to denote the variables that will have data 
