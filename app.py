@@ -293,7 +293,7 @@ def delete_instructor(id):
     delete_query = "DELETE FROM Instructors WHERE instructor_id = %s;"
     data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted instructor id #" + str(id) + "."
+    delete_message = "You have deleted instructor id #" + str(id) + ". All sections lectured by the instructor were also deleted."
 
     db_connection.close()
     return redirect(url_for('instructors', delete_message=delete_message, **request.args))
@@ -662,7 +662,7 @@ def section_register():
                     post_message = "The student doesn't exist. Please enter a different value."    
                 elif section_id == "":
                     flag = True
-                    post_message = "The section id doesn't exist. Please enter a different value."  
+                    post_message = "The section doesn't exist. Please enter a different value."  
                 elif int(student_id1) == int(student_id) and int(section_id1) == int(section_id):
                     flag = True
                     post_message = "The section is already registered for the student. Please enter different values."
@@ -723,7 +723,7 @@ def delete_course(id):
     delete_query = "DELETE FROM Courses WHERE course_id = %s;"
     data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted course id #" + str(id) + ". All sections for the course are also deleted."
+    delete_message = "You have deleted course id #" + str(id) + ". All sections for the course were also deleted."
 
     db_connection.close()
     #return redirect("../courses.html")
@@ -784,7 +784,7 @@ def delete_student(id):
     delete_query = "DELETE FROM Students WHERE student_id = %s;"
     data = (id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
-    delete_message = "You have deleted student id #" + str(id) + ". The student's section registration info is also deleted."
+    delete_message = "You have deleted student id #" + str(id) + ". The student's section registration info was also deleted."
 
     db_connection.close()
     return redirect(url_for('students', delete_message=delete_message, **request.args))
