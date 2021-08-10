@@ -34,27 +34,33 @@ def campuses():
     remove_message = request.args.get("remove_message") if request.args.get("remove_message") else "" #retrieve remove_message from GET request
     update_message = request.args.get("update_message") if request.args.get("update_message") else "" #retrieve update_message from GET request
 
+    # select all records from Courses table
     select_query = "SELECT * FROM Campuses ORDER BY campus_id ASC;"
     select_cursor = db.execute_query(db_connection=db_connection, query=select_query)
     select_results = select_cursor.fetchall()
     images = os.listdir(os.path.join(app.static_folder, "img/campus"))
 
+    # find the number of students at each campus
     student_query = "SELECT campus_id, COUNT(*) AS count FROM Students GROUP BY campus_id ORDER BY campus_id ASC;"
     student_cursor = db.execute_query(db_connection=db_connection, query=student_query)
     student_results = student_cursor.fetchall()
 
+    # join Campuses to Students table
     population_query = "SELECT std.*, cps.campus_name FROM Students std LEFT JOIN Campuses cps ON std.campus_id = cps.campus_id ORDER BY student_id ASC;"
     population_cursor = db.execute_query(db_connection=db_connection, query=population_query)
     population_results = population_cursor.fetchall()
 
+    # select all records from Campuses table
     campus_query = "SELECT DISTINCT campus_id, campus_name FROM Campuses ORDER BY campus_id ASC;"
     campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query)
     campus_results = campus_cursor.fetchall()
 
+    # select all records from Courses table
     course_query = "SELECT DISTINCT course_id, course_name FROM Courses ORDER BY course_id ASC;"
     course_cursor = db.execute_query(db_connection=db_connection, query=course_query)
     course_results = course_cursor.fetchall()
 
+    # select all records from Courses_Campuses intersection table
     course_campus_query = "SELECT cps.campus_id, cps.campus_name, crs.course_id, crs.course_name FROM Courses_Campuses cmb \
                     JOIN Courses crs ON cmb.course_id = crs.course_id \
                     JOIN Campuses cps ON cmb.campus_id = cps.campus_id;"
@@ -68,7 +74,7 @@ def campuses():
         course_flag = False
         for dict in course_results:
             course = dict.get('course_name')
-            if course_name == course:
+            if course_name == course: #check if course exists in Courses table
                 course_id = dict.get('course_id')
                 course_flag = True
                 break
@@ -78,7 +84,7 @@ def campuses():
         campus_flag = False
         for dict in campus_results:
             campus = dict.get('campus_name')
-            if campus_name == campus:
+            if campus_name == campus: #check if campus exists in Campuses table
                 campus_id = dict.get('campus_id')
                 campus_flag = True
                 break
@@ -87,7 +93,7 @@ def campuses():
 
         duplicate_flag = False
         if course_flag and campus_flag:
-            for dict in course_campus_results:
+            for dict in course_campus_results: #do not insert if record already exists in intersection table
                 course_check = dict.get('course_id')
                 campus_check = dict.get('campus_id')
                 if course_id == course_check and campus_id == campus_check:
@@ -131,6 +137,7 @@ def update_campus(id):
         if campus_name == "":
             post_message = "Please enter a campus name."
         else:
+            # update record in Campuses table
             update_query = "UPDATE Campuses SET campus_name = %s, campus_city = %s, campus_country = %s, campus_online = %s WHERE campus_id = %s;"
             data = (campus_name, campus_city, campus_country, campus_online, id)
             update_cursor = db.execute_query(db_connection=db_connection, query=update_query, query_params=data)
@@ -148,6 +155,7 @@ def delete_campus(id):
     """Delete a campus from the Campuses table"""
     db_connection = db.connect_to_database()
 
+    # delete record from Campuses table
     delete_query = "DELETE FROM Campuses WHERE campus_id = %s;"
     data=(id,)
     delete_cursor = db.execute_query(db_connection=db_connection, query=delete_query, query_params=data)
@@ -178,7 +186,7 @@ def add_campuses():
             flag = False
             for dict in campus_results:
                 campus = dict.get('campus_name')
-                if campus_name == campus:
+                if campus_name == campus: #do not insert if campus name is used in an existing record
                     flag = True
                     post_message = "The campus name is already in use. Please enter another name."
                     break
@@ -194,6 +202,7 @@ def add_campuses():
                 new_campus_cursor = db.execute_query(db_connection=db_connection, query=new_campus_query, query_params=data)
                 new_campus_results = new_campus_cursor.fetchall()
 
+                # add new records to M:M relationship
                 intersect_insert_query = "INSERT INTO Courses_Campuses(course_id, campus_id) SELECT course_id, campus_id FROM Courses t1 CROSS JOIN Campuses t2 WHERE t2.campus_id = %s;"
                 for dict in new_campus_results:
                     campus_id = dict.get('campus_id')
@@ -224,6 +233,7 @@ def instructors():
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else "" #retrieve delete_message from GET request
     update_message = request.args.get("update_message") if request.args.get("update_message") else "" #retrieve update_message from GET request
     
+    # select all records from Instructors table joined with Campuses
     instructor_query = "SELECT ins.*, cps.campus_name FROM Instructors ins LEFT JOIN Campuses cps ON ins.campus_id = cps.campus_id ORDER BY instructor_id ASC;"
     instructor_cursor = db.execute_query(db_connection=db_connection, query=instructor_query)
     instructor_results = instructor_cursor.fetchall()
@@ -257,7 +267,7 @@ def update_instructor(id):
         instructor_last_name = request.form['instructor_last_name']
         campus_name = request.form['campus_name']
 
-        if campus_name != "Unassigned":
+        if campus_name != "Unassigned": #if campus_name is not null
             campus_query = "SELECT DISTINCT * FROM Campuses WHERE campus_name = %s;"
             data = (campus_name,)
             campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query, query_params=data)
@@ -266,7 +276,7 @@ def update_instructor(id):
             for dict in campus_results:
                 campus_id = dict.get('campus_id')
 
-        else:
+        else: #if campus_name is null
             campus_id = None
         
         update_query = "UPDATE Instructors SET instructor_first_name = %s, instructor_last_name = %s, campus_id = %s WHERE instructor_id = %s;"
@@ -310,10 +320,10 @@ def add_instructors():
         campus_name = request.form['campus_name']
         print(campus_name)
 
-        if instructor_first_name == "" or instructor_last_name == "":
+        if instructor_first_name == "" or instructor_last_name == "": #fields cannot be blank or null
             post_message = "Please complete all fields in the form."
 
-        if campus_name != "Unassigned":
+        if campus_name != "Unassigned": #if campus_name is not null
             campus_query = "SELECT DISTINCT * FROM Campuses WHERE campus_name = %s;"
             data = (campus_name,)
             campus_cursor = db.execute_query(db_connection=db_connection, query=campus_query, query_params=data)
@@ -327,7 +337,7 @@ def add_instructors():
             insert_query = "INSERT INTO Instructors(instructor_first_name, instructor_last_name, campus_id) VALUES (%s, %s, %s);"
             data = (instructor_first_name, instructor_last_name, campus_id)
         
-        else:
+        else: #if campus_name is null
             insert_query = "INSERT INTO Instructors(instructor_first_name, instructor_last_name) VALUES (%s, %s);"
             data = (instructor_first_name, instructor_last_name)
         
@@ -786,6 +796,7 @@ def students():
     db_connection = db.connect_to_database()
     delete_message = request.args.get("delete_message") if request.args.get("delete_message") else ""
 
+    # select all records from Students joined to Campuses
     population_query = "SELECT std.*, cps.campus_name FROM Students std LEFT JOIN Campuses cps ON std.campus_id = cps.campus_id ORDER BY student_id ASC;"
     population_cursor = db.execute_query(db_connection=db_connection, query=population_query)
     population_results = population_cursor.fetchall()
@@ -822,19 +833,21 @@ def add_students():
         print(first_name)
         print(campus)
 
-        if first_name == "" or last_name == "":
+        if first_name == "" or last_name == "": #fields must not be blank or null
             post_message = "Please complete all fields in the form."
         else:
             for dict in campus_results:
                 campus_name = dict.get('campus_name')
-                if campus_name == campus:
+                if campus_name == campus: #get campus_id for campus_name chosen
                     campus_id = dict.get('campus_id')
                     print(campus_id)
         
+            # insert new record into Students section
             insert_query = "INSERT INTO Students(student_first_name, student_last_name, campus_id) VALUES (%s, %s, %s);"
             data = (first_name, last_name, campus_id)
             insert_cursor = db.execute_query(db_connection=db_connection, query=insert_query, query_params=data)
 
+            # get the student_id of the newly created record
             register_query = "SELECT MAX(student_id) AS student_id FROM Students;"
             register_cursor = db.execute_query(db_connection=db_connection, query=register_query)
             register_results = register_cursor.fetchall()
